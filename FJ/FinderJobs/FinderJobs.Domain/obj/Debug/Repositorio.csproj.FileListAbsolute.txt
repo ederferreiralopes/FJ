@@ -1,0 +1,46 @@
+C:\Users\Eder\documents\visual studio 2015\Projects\ConsoleApplication2\Repository\obj\Debug\Repositorio.csprojResolveAssemblyReference.cache
+C:\Users\Eder\documents\visual studio 2015\Projects\ConsoleApplication2\Repository\bin\Debug\FluentNHibernate.dll
+C:\Users\Eder\documents\visual studio 2015\Projects\ConsoleApplication2\Repository\bin\Debug\Iesi.Collections.dll
+C:\Users\Eder\documents\visual studio 2015\Projects\ConsoleApplication2\Repository\bin\Debug\NHibernate.dll
+C:\Users\Eder\documents\visual studio 2015\Projects\ConsoleApplication2\Repository\bin\Debug\FluentNHibernate.pdb
+C:\Users\Eder\documents\visual studio 2015\Projects\ConsoleApplication2\Repository\bin\Debug\FluentNHibernate.xml
+C:\Users\Eder\documents\visual studio 2015\Projects\ConsoleApplication2\Repository\bin\Debug\Iesi.Collections.xml
+C:\Users\Eder\documents\visual studio 2015\Projects\ConsoleApplication2\Repository\bin\Debug\NHibernate.xml
+C:\Users\Eder\documents\visual studio 2015\Projects\ConsoleApplication2\Repository\bin\Debug\Repositorio.dll
+C:\Users\Eder\documents\visual studio 2015\Projects\ConsoleApplication2\Repository\bin\Debug\Repositorio.pdb
+C:\Users\Eder\documents\visual studio 2015\Projects\ConsoleApplication2\Repository\obj\Debug\Repositorio.dll
+C:\Users\Eder\documents\visual studio 2015\Projects\ConsoleApplication2\Repository\obj\Debug\Repositorio.pdb
+D:\desenv\NHibernateTestes\Repository\bin\Debug\Repositorio.dll
+D:\desenv\NHibernateTestes\Repository\bin\Debug\Repositorio.pdb
+D:\desenv\NHibernateTestes\Repository\bin\Debug\FluentNHibernate.dll
+D:\desenv\NHibernateTestes\Repository\bin\Debug\Iesi.Collections.dll
+D:\desenv\NHibernateTestes\Repository\bin\Debug\NHibernate.dll
+D:\desenv\NHibernateTestes\Repository\bin\Debug\FluentNHibernate.pdb
+D:\desenv\NHibernateTestes\Repository\bin\Debug\FluentNHibernate.xml
+D:\desenv\NHibernateTestes\Repository\bin\Debug\Iesi.Collections.xml
+D:\desenv\NHibernateTestes\Repository\bin\Debug\NHibernate.xml
+D:\desenv\NHibernateTestes\Repository\obj\Debug\Repositorio.csprojResolveAssemblyReference.cache
+D:\desenv\NHibernateTestes\Repository\obj\Debug\Repositorio.dll
+D:\desenv\NHibernateTestes\Repository\obj\Debug\Repositorio.pdb
+D:\desenv\NHibernateTestes\Repositorio\bin\Debug\Repositorio.dll
+D:\desenv\NHibernateTestes\Repositorio\bin\Debug\Repositorio.pdb
+D:\desenv\NHibernateTestes\Repositorio\bin\Debug\FluentNHibernate.dll
+D:\desenv\NHibernateTestes\Repositorio\bin\Debug\Iesi.Collections.dll
+D:\desenv\NHibernateTestes\Repositorio\bin\Debug\NHibernate.dll
+D:\desenv\NHibernateTestes\Repositorio\bin\Debug\FluentNHibernate.pdb
+D:\desenv\NHibernateTestes\Repositorio\bin\Debug\FluentNHibernate.xml
+D:\desenv\NHibernateTestes\Repositorio\bin\Debug\Iesi.Collections.xml
+D:\desenv\NHibernateTestes\Repositorio\bin\Debug\NHibernate.xml
+D:\desenv\NHibernateTestes\Repositorio\obj\Debug\Repositorio.dll
+D:\desenv\NHibernateTestes\Repositorio\obj\Debug\Repositorio.pdb
+D:\desenv\Roberto\Repositorio\bin\Debug\Repositorio.dll
+D:\desenv\Roberto\Repositorio\bin\Debug\Repositorio.pdb
+D:\desenv\Roberto\Repositorio\bin\Debug\FluentNHibernate.dll
+D:\desenv\Roberto\Repositorio\bin\Debug\Iesi.Collections.dll
+D:\desenv\Roberto\Repositorio\bin\Debug\NHibernate.dll
+D:\desenv\Roberto\Repositorio\bin\Debug\FluentNHibernate.pdb
+D:\desenv\Roberto\Repositorio\bin\Debug\FluentNHibernate.xml
+D:\desenv\Roberto\Repositorio\bin\Debug\Iesi.Collections.xml
+D:\desenv\Roberto\Repositorio\bin\Debug\NHibernate.xml
+D:\desenv\Roberto\Repositorio\obj\Debug\Repositorio.dll
+D:\desenv\Roberto\Repositorio\obj\Debug\Repositorio.pdb

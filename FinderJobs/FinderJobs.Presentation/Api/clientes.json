@@ -1,0 +1,79 @@
+﻿{
+  "data": [
+    {
+      "nome": "John Doe",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "John Doe 2",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "John Doe 3",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "John Doe 4",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "John Doe 5",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "John eder",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "John eder 2",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "John eder 3",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "John eder 4",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "John eder 5",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "Eu Doe",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "Eu Doe 2",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "Eu Doe 3",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "Eu Doe 4",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    },
+    {
+      "nome": "Eu Doe 5",
+      "cnpjCpf": "555.123.456-53",
+      "logo": "logo.png"
+    }
+  ]
+}

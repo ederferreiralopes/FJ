@@ -1,0 +1,67 @@
+﻿@model FinderJobs.MVC.ViewModels.UsuarioViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/jquery/jquery-3.1.0.min.js"></script>
+    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/bootstrap/bootstrap.min.js"></script>
+    <title>Finder Jobs</title>
+</head>
+<body class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h4> Acesso</h4>
+            </div>
+            <div class="col-lg-4 text-right">
+                Finder  Jobs - versão 0.1
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            @using (Html.BeginForm("Login", "Acesso", FormMethod.Post, new { @class = "form-inline", enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+    <div class="col-lg-12">
+        <div class="form-group">
+            <div class="editor-field">
+                Login:
+                <input type="text" name="Login" id="Login" class="form-control" />
+                <span id="msgLogin" style="color:red"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="editor-field">
+                Senha:
+                <input type="password" name="Senha" id="Senha" class="form-control" />
+                <span id="msgSenha" style="color:red"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="btn btn-default" type="submit" value="Entrar" />
+        </div>
+        <div class="form-group">
+            <p>
+                @TempData["mensagemErro"]
+            </p>
+        </div>
+    </div>
+            }
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-12">                
+                    Cadastre-se: @Html.ActionLink("Candidato", "Cadastro/1") ou @Html.ActionLink("Empresa", "Cadastro")                
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewBag.Title = "Finder Jobs";
+    var UsuarioModel = (FinderJobs.MVC.ViewModels.UsuarioViewModel)TempData["Usuario"];
+    TempData.Keep("Usuario");
+}
+
+<script src="~/js/DataTablesCandidato.js"></script>
+<script>    
+    $(document).ready(function () {
+
+        $("#editarCadastro").on("click", function () {
+            $("#modalEditarEmpresa").modal();
+        });
+
+        $($("#rbPago").find('input:radio')).each(function () {
+            $(this).bind("click", function () {
+                if ($(this).attr('id') == "Usuario_Pago") {
+                    $("#habilidadesPago").show();
+                    $("#opcaoPaga").show();
+                }
+                else {
+                    $("#habilidadesPago").hide();
+                    $("#opcaoPaga").hide();
+                }
+            });
+        });
+    });
+</script>
+<div class="row">
+    <div class="col-md-12">
+        <section id="controles">
+            <fieldset>
+                <legend>Finder Jobs</legend>
+
+                <br />
+                <table class="display cell-border" id="myTable">
+                    <thead>
+                        <tr>
+                            <th>DataCadastro</th>
+                            <th>Empresa</th>
+                            <th>Descricao</th>
+                            <th>Cep</th>
+                            <th>Habilidades</th>
+                            <th>Distância</th>
+                            <th>Aderência</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </fieldset>
+        </section>
+    </div>
+</div>
+
+<!-- Modal editar cadastro empresa-->
+<div class="modal fade" id="modalEditarEmpresa" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Editar Cadastro</h4>
+            </div>
+            @using (Ajax.BeginForm("EditarUsuario", "Home",
+                                                                            new AjaxOptions
+                                                                            {
+                                                                                HttpMethod = "POST",
+                                                                                InsertionMode = InsertionMode.Replace,
+                                                                                UpdateTargetId = "target",
+                                                                                OnSuccess = "OnAlterarEmpresa"
+                                                                            }, new { id = "formAlterarEmpresa" }))
+            {
+                <div class="modal-body">
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="hidden" name="Id" value="@UsuarioModel.Id" />
+                                <div class="col-md-3 form-group">
+                                    Nome<br />
+                                    <input type="text" name="Nome" id="UsuarioModel_Nome" value="@UsuarioModel.Nome" class="form-control" />
+                                    <span id="msgEmpresaNome" style="color:red"></span>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    Email<br />
+                                    <input type="text" name="Email" id="UsuarioModel_Email" value="@UsuarioModel.Email" class="form-control" />
+                                    <span id="msgEmpresaEmail" style="color:red"></span>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    RG<br />
+                                    <input type="text" name="RgCnpj" id="UsuarioModel_RgCnpj" value="@UsuarioModel.RgCnpj" class="form-control" />
+                                    <span id="msgEmpresaRgCnpj" style="color:red"></span>
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    Cep<br />
+                                    <input type="text" name="Cep" id="UsuarioModel_Cep" value="@UsuarioModel.Cep" class="form-control" />
+                                    <span id="msgEmpresaCep" style="color:red"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="rbPago" class="form-group col-lg-4">
+                                    <label>Gratuito: <input type="radio" value="false" id="" name="" checked="checked"></label>
+                                    <label>Pago: <input type="radio" value="@UsuarioModel.Pago" id="Pago" name="Pago" checked="@UsuarioModel.Pago"></label>
+                                </div>
+                                <div hidden id="opcaoPaga">
+                                    <div class="form-group col-lg-2">
+                                        <label>Valor: R$ 1.000,00</label>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label>Anônimo: @Html.CheckBox("UsuarioModel.Anonimo", UsuarioModel.Anonimo)</label>
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <label>Anexar Arquivo: <input type="file" class="btn btn-primary" /> </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <br />
+                                <input class="btn btn-default" type="submit" value="Gravar" /> <span id="mensagem" style="color:green"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <p id="msgAlteracaoEmpresa"></p>
+                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                </div>
+            }
+        </div>
+    </div>
+</div>

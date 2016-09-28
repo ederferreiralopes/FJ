@@ -1,0 +1,52 @@
+﻿@model FinderJobs.Models.UsuarioModel
+
+@{ ViewBag.Title = "Editar Candidato"; }
+
+<div class="row">
+    <div class="col-md-8">
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Candidatos</legend>
+
+            @using (@Html.BeginForm("EditarCandidato", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.HiddenFor(x => x.Id)
+
+                <div class="editor-label">
+                    @Html.LabelFor(x => x.Nome)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(x => x.Nome)
+                    @Html.ValidationMessageFor(x => x.Nome)
+                </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(x => x.Cep)
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(x => x.Cep)
+                            @Html.ValidationMessageFor(x => x.Cep)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(x => x.Habilidades)
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(x => x.Habilidades)
+                            @Html.ValidationMessageFor(x => x.Habilidades)
+                        </div>
+
+                        <p>
+                            <br />
+                            <input type="submit" value="Alterar" /> <span style="color:green">@TempData["mensagem"]</span>
+                        </p>
+            }
+        </fieldset>
+        <div>
+            @Html.ActionLink("Voltar", "IndexCandidato")
+        </div>
+    </div>
+</div>
