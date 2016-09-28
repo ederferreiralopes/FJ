@@ -1,5 +1,0 @@
-D:\desenv\Roberto\FinderJobs\FinderJobs.Application\bin\Debug\FinderJobs.Application.dll
-D:\desenv\Roberto\FinderJobs\FinderJobs.Application\bin\Debug\FinderJobs.Application.pdb
-D:\desenv\Roberto\FinderJobs\FinderJobs.Application\obj\Debug\FinderJobs.Application.csprojResolveAssemblyReference.cache
-D:\desenv\Roberto\FinderJobs\FinderJobs.Application\obj\Debug\FinderJobs.Application.dll
-D:\desenv\Roberto\FinderJobs\FinderJobs.Application\obj\Debug\FinderJobs.Application.pdb
