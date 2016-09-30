@@ -2,6 +2,7 @@
     Layout = null;
     var boleto = ViewBag.Boleto as BoletoNet.BoletoBancario;
 }
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,6 +22,11 @@
 </head>
 <body class="jumbotron">
     <div class="container">
+        <div class="col-lg-8 col-lg-offset-2 text-center">
+            <a href="#" class="btn btn-lg btn-outline">
+                <i class="fa fa-download"></i> Baixar Boleto
+            </a>
+        </div>
         <div class="boleto">
             @Html.Raw(boleto != null ? boleto.MontaHtmlEmbedded(false, false) : "Não foi possível gerar o boleto")
         </div>        

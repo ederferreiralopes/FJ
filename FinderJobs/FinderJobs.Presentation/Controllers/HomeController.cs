@@ -28,6 +28,7 @@ namespace FinderJobs.MVC.Controllers
             if (TempData["Usuario"] != null)
             {
                 ViewBag.TipoUsuario = "Empresa";
+                ViewBag.Nome = TempData["Nome"];
                 return View("IndexEmpresa");
             }
             else
@@ -41,6 +42,8 @@ namespace FinderJobs.MVC.Controllers
             if (TempData["Usuario"] != null)
             {
                 ViewBag.TipoUsuario = "Candidato";
+                ViewBag.Nome = TempData["Nome"];
+
                 return View("IndexCandidato");
             }
             else

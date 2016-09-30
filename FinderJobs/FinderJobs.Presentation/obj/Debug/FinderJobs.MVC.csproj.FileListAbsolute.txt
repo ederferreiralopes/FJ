@@ -4,7 +4,6 @@ D:\desenv\Roberto\FinderJobs\FinderJobs.Presentation\bin\FinderJobs.MVC.dll
 D:\desenv\Roberto\FinderJobs\FinderJobs.Presentation\bin\FinderJobs.MVC.pdb
 D:\desenv\Roberto\FinderJobs\FinderJobs.Presentation\bin\AutoMapper.dll
 D:\desenv\Roberto\FinderJobs\FinderJobs.Presentation\bin\Boleto.Net.dll
-D:\desenv\Roberto\FinderJobs\FinderJobs.Presentation\bin\EntityFramework.dll
 D:\desenv\Roberto\FinderJobs\FinderJobs.Presentation\bin\FinderJobs.Domain.dll
 D:\desenv\Roberto\FinderJobs\FinderJobs.Presentation\bin\FinderJobs.Infra.Data.dll
 D:\desenv\Roberto\FinderJobs\FinderJobs.Presentation\bin\itextsharp.dll

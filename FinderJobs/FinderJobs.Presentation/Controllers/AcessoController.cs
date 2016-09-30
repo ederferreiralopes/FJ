@@ -35,6 +35,7 @@ namespace FinderJobs.MVC.Controllers
                 Response.Cookies.Add(authCookie);
 
                 TempData["Usuario"] = usuarioViewModel;
+                TempData["Nome"] = usuarioViewModel.Nome;
 
                 if (usuarioViewModel.Tipo.Equals("Empresa"))
                 {
