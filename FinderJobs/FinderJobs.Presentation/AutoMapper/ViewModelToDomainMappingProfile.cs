@@ -9,6 +9,7 @@ namespace FinderJobs.MVC.AutoMapper
         protected override void Configure()
         {
             Mapper.CreateMap<UsuarioViewModel, Usuario>();
+            Mapper.CreateMap<HabilidadeViewModel, Habilidade>();
             Mapper.CreateMap<VagaViewModel, Domain.Entities.Vaga>();
         }
     }

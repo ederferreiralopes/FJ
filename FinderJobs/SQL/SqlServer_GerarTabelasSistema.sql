@@ -17,9 +17,9 @@ CREATE TABLE [dbo].[Candidato] (
 
 GO
 
-CREATE TABLE [dbo].[Habilidades] (
+CREATE TABLE [dbo].[Habilidade] (
     [Id]         INT          IDENTITY (1, 1) NOT NULL,
-    [Habilidade] VARCHAR (40) NULL
+    [Nome] VARCHAR (40) NULL
 );
 
 GO
@@ -32,8 +32,9 @@ CREATE TABLE [dbo].[Usuario] (
     [Nome]         NVARCHAR (50) NULL,
     [Email]        NVARCHAR (50) NULL,
     [Celular]      NVARCHAR (20) NULL,
-    [RgCnpj]       NVARCHAR (20) NULL,
+    [CpfCnpj]       NVARCHAR (20) NULL,
     [Cep]          NVARCHAR (10) NULL,
+	[EnderecoNumero] NVARCHAR (10) NULL,
     [DataCadastro] NVARCHAR (20) NULL,
     [Pago]         BIT           NULL,
     [Anonimo]      BIT           NULL,
@@ -61,34 +62,19 @@ CREATE TABLE [dbo].[Empresa] (
     [Ramo] NVARCHAR (50) NULL
 );
 
-CREATE TABLE [dbo].[Boleto] (
+CREATE TABLE [dbo].[ConfiguracaoBoleto] (
     [Id]                        INT             NOT NULL,
     [CodigoBanco]               INT             NOT NULL,
     [Vencimento]                VARCHAR (10)    NOT NULL,
     [ValorBoleto]               NUMERIC (18, 2) NOT NULL,
     [NumeroDocumento]           VARCHAR (50)    NOT NULL,
-    [Descricao]                 VARBINARY (50)  NOT NULL,
+    [Descricao]                 VARCHAR (50)  NOT NULL,
     [CodigoCarteira]            INT             NOT NULL,
     [CodigoEspecieDocumento]    VARCHAR (10)    NOT NULL,
     [MostrarCodigoCarteira]     BIT             NOT NULL,
     [MostrarComprovanteEntrega] BIT             NOT NULL,
     [CedenteId]                 INT             NOT NULL,
-    [SacadoId]                  INT             NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
-);
-
-GO
-
-CREATE TABLE [dbo].[Sacado](
-	[Id] [int] NOT NULL,
-	[Nome] [varchar](50) NOT NULL,
-	[CpfCnpj] [varchar](14) NOT NULL,
-	[Endereco] [varchar](50) NOT NULL,
-	[Bairro] [varchar](50) NOT NULL,
-	[Cidade] [varchar](50) NOT NULL,
-	[Cep] [varchar](8) NOT NULL,
-	[Uf] [varchar](2) NOT NULL,
-	PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
 GO

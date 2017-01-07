@@ -1,0 +1,15 @@
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Release\FinderJobs.Infra.Data.dll
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Release\FinderJobs.Infra.Data.pdb
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Release\FinderJobs.Domain.dll
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Release\FluentNHibernate.dll
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Release\Iesi.Collections.dll
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Release\NHibernate.dll
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Release\FinderJobs.Domain.pdb
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Release\FluentNHibernate.pdb
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Release\FluentNHibernate.xml
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Release\Iesi.Collections.xml
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Release\NHibernate.xml
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\obj\Release\FinderJobs.Infra.Data.csprojResolveAssemblyReference.cache
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\obj\Release\FinderJobs.Infra.Data.dll
+D:\desenv\Roberto\FinderJobs\FinderJobs.Infra.Data\obj\Release\FinderJobs.Infra.Data.pdb
+D:\Roberto\FinderJobs\FinderJobs.Infra.Data\obj\Release\FinderJobs.Infra.Data.csprojResolveAssemblyReference.cache

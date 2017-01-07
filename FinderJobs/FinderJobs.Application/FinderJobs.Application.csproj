@@ -39,7 +39,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArquivoAppService.cs" />
+    <Compile Include="ConfiguracaoBoletoAppService.cs" />
+    <Compile Include="Interface\IArquivoAppService.cs" />
+    <Compile Include="Interface\IConfiguracaoBoletoAppService.cs" />
+    <Compile Include="Interface\IHabilidadeAppService.cs" />
+    <Compile Include="HabilidadeAppService.cs" />
+    <Compile Include="Interface\IUsuarioHabilidadeAppService.cs" />
+    <Compile Include="UsuarioHabilidadeAppService.cs" />
+    <Compile Include="VagaAppService.cs" />
+    <Compile Include="UsuarioAppService.cs" />
+    <Compile Include="AppServiceBase.cs" />
+    <Compile Include="Interface\IVagaAppService.cs" />
+    <Compile Include="Interface\IUsuarioAppService.cs" />
+    <Compile Include="Interface\IAppServiceBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FinderJobs.Domain\FinderJobs.Domain.csproj">
+      <Project>{50243246-22db-420d-ac8c-831405f84468}</Project>
+      <Name>FinderJobs.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

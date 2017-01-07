@@ -17,11 +17,11 @@ namespace FinderJobs.Domain.Entities
     {
         public HabilidadeMap()
         {
-            Id(x => x.Id)
-                .Not.Nullable();
+            Table("Habilidade");
 
-            Map(x => x.Nome)
-                .Not.Nullable();            
+            LazyLoad();
+            Id(x => x.Id).GeneratedBy.Identity().Column("Id");
+            Map(x => x.Nome).Not.Nullable().Column("Nome");
         }
     }
 }

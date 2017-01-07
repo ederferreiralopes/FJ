@@ -27,7 +27,7 @@ namespace FinderJobs.MVC.ViewModels
         public string Habilidades { get; set; }
         public Vaga Vaga { get; set; }
         public UsuarioViewModel Candidato { get; set; }
-        public DistanciaModel Pesquisa { get; set; }
+        public DistanciaViewModel Pesquisa { get; set; }
     }
 
     public class EmpresaViewModel

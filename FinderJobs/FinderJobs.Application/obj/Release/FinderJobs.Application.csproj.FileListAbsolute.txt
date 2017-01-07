@@ -3,3 +3,4 @@ D:\desenv\Roberto\FinderJobs\FinderJobs.Application\bin\Release\FinderJobs.Appli
 D:\desenv\Roberto\FinderJobs\FinderJobs.Application\obj\Release\FinderJobs.Application.csprojResolveAssemblyReference.cache
 D:\desenv\Roberto\FinderJobs\FinderJobs.Application\obj\Release\FinderJobs.Application.dll
 D:\desenv\Roberto\FinderJobs\FinderJobs.Application\obj\Release\FinderJobs.Application.pdb
+D:\Roberto\FinderJobs\FinderJobs.Application\obj\Release\FinderJobs.Application.csprojResolveAssemblyReference.cache

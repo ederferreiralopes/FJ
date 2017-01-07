@@ -5,7 +5,7 @@ using NHibernate.Linq;
 using FinderJobs.Domain.Entities;
 using FinderJobs.Infra.Data.Repositories;
 using FinderJobs.Infra.Data.Context;
-using FinderJobs.Domain.Interfaces;
+using FinderJobs.Domain.Interfaces.Repositories;
 
 namespace FinderJobs.Infra.Data
 {

@@ -5,7 +5,7 @@ using NHibernate.Linq;
 using FinderJobs.Domain.Entities;
 using FinderJobs.Infra.Data.Repositories;
 using FinderJobs.Infra.Data.Context;
-using FinderJobs.Domain.Interfaces;
+using FinderJobs.Domain.Interfaces.Repositories;
 
 namespace FinderJobs.Infra.Data
 {
@@ -23,7 +23,7 @@ namespace FinderJobs.Infra.Data
         {
             using (var session = SessionFactory.AbrirSession())
             {
-                return (from e in session.Query<Vaga>() where e.IdEmpresa.Equals(idEmpresa) select e).ToList();
+                return (from e in session.Query<Vaga>() where e.Empresa.Id.Equals(idEmpresa) select e).ToList();
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿using FinderJobs.Infra.Data.Context;
-using FinderJobs.Domain.Interfaces;
+using FinderJobs.Domain.Interfaces.Repositories;
 using NHibernate;
 using NHibernate.Linq;
 using System;
@@ -16,15 +16,16 @@ namespace FinderJobs.Infra.Data.Repositories
         /// Método para inserir
         /// </summary>
         /// <param name="obj"></param>        
-        public void Add(TEntity obj)
+        public object Add(TEntity obj)
         {
+            object entidade = null;
             using (ISession session = SessionFactory.AbrirSession())
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
                     try
                     {
-                        session.Save(obj);
+                        entidade = session.Save(obj);
                         transaction.Commit();
                     }
                     catch (Exception erro)
@@ -37,6 +38,8 @@ namespace FinderJobs.Infra.Data.Repositories
                     }
                 }
             }
+
+            return entidade;
         }
 
         public void Update(TEntity obj)

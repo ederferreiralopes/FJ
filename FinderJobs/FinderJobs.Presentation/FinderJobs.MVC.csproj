@@ -47,6 +47,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=3.3.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
@@ -68,6 +69,10 @@
       <HintPath>packages\iTextSharp.5.5.9\lib\itextsharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure">
       <HintPath>packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -86,6 +91,18 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.MVC4.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NReco.PdfGenerator, Version=1.1.12.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
@@ -142,11 +159,17 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="AutoMapper\DomainToViewModelMappingProfile.cs" />
     <Compile Include="AutoMapper\ViewModelToDomainMappingProfile.cs" />
     <Compile Include="AutoMapper\AutoMapperConfig.cs" />
+    <Compile Include="Controllers\HabilidadeController.cs" />
     <Compile Include="Controllers\AcessoController.cs" />
     <Compile Include="Controllers\AssinaturaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -157,22 +180,27 @@
     <Compile Include="ViewModels\BoletoModel.cs" />
     <Compile Include="ViewModels\VagaViewModel.cs" />
     <Compile Include="ViewModels\CadastroViewModel.cs" />
-    <Compile Include="ViewModels\DistanciaModel.cs" />
-    <Compile Include="ViewModels\HabilidadesModel.cs" />
-    <Compile Include="ViewModels\RespostaDistancia.cs" />
-    <Compile Include="ViewModels\CandidatoModel.cs" />
+    <Compile Include="ViewModels\DistanciaViewModel.cs" />
+    <Compile Include="ViewModels\HabilidadeViewModel.cs" />
+    <Compile Include="ViewModels\RespostaViewDistancia.cs" />
+    <Compile Include="ViewModels\CandidatoViewModel.cs" />
     <Compile Include="ViewModels\UsuarioViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Boleto.cs" />
-    <Compile Include="Services\Calculo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="bootstrap\js\bootstrap-confirmation.min.js" />
+    <Content Include="bootstrap\css\bootstrap-switch.css" />
+    <Content Include="bootstrap\css\bootstrap-switch.min.css" />
     <Content Include="bootstrap\css\bootstrap-theme.css" />
     <Content Include="bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="bootstrap\css\bootstrap.css" />
     <Content Include="bootstrap\css\bootstrap.min.css" />
     <Content Include="bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="bootstrap\js\bootstrap-filestyle.min.js" />
+    <Content Include="bootstrap\js\bootstrap-switch.js" />
+    <Content Include="bootstrap\js\bootstrap-switch.min.js" />
     <Content Include="bootstrap\js\bootstrap.js" />
     <Content Include="bootstrap\js\bootstrap.min.js" />
     <Content Include="content\css\finderjobs.css" />
@@ -191,9 +219,11 @@
     <Content Include="content\js\finderjobs.js" />
     <Content Include="content\js\finderjobs.min.js" />
     <Content Include="content\js\jqBootstrapValidation.js" />
-    <Content Include="content\css\Site.css" />
     <Content Include="Global.asax" />
+    <Content Include="images\icone-usuario.png" />
+    <Content Include="images\icone-boleto.png" />
     <Content Include="images\favicon.ico" />
+    <Content Include="images\icone-cartao.png" />
     <Content Include="images\sort_asc.png" />
     <Content Include="images\sort_asc_disabled.png" />
     <Content Include="images\sort_both.png" />
@@ -218,13 +248,16 @@
     <Content Include="dataTables\jquery.dataTables.min.css" />
     <Content Include="dataTables\jquery.dataTables_themeroller.css" />
     <Content Include="dataTables\dataTables.bootstrap.min.js" />
-    <Content Include="dataTables\dataTablesCandidato.js" />
-    <Content Include="dataTables\dataTablesEmpresa.js" />
     <Content Include="dataTables\jquery.dataTables.js" />
     <Content Include="dataTables\jquery.dataTables.min.js" />
+    <Content Include="jquery\jquery-ui.min.js" />
+    <Content Include="notify\notify.css" />
+    <Content Include="notify\notify.js" />
     <Content Include="magicsuggest\magicsuggest-min.js" />
     <Content Include="magicsuggest\magicsuggest-min.css" />
-    <Content Include="index.html" />
+    <Content Include="Views\Candidato.html" />
+    <None Include="Properties\PublishProfiles\FinderJobs.pubxml" />
+    <Content Include="Views\Index.html" />
     <Content Include="jquery\jquery.easing.min.js" />
     <Content Include="jquery\jquery.js" />
     <Content Include="jquery\jquery.min.js" />
@@ -234,7 +267,6 @@
     <Content Include="content\js\ScriptIndex.js" />
     <Content Include="content\js\gerenciarVagas.js" />
     <Content Include="NuGet.exe" />
-    <Content Include="Api\clientes.json" />
     <Content Include="images\Sorting icons.psd" />
     <Content Include="content\fonts\font-awesome\fonts\fontawesome-webfont.eot" />
     <Content Include="content\fonts\font-awesome\fonts\fontawesome-webfont.ttf" />
@@ -293,15 +325,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Home\CandidatoEditar.cshtml" />
-    <Content Include="Views\Home\IndexCandidato.cshtml" />
-    <Content Include="Views\Acesso\CadastroEmpresa.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\Cadastro.html" />
     <Content Include="jquery\jquery-3.1.0.slim.min.map" />
     <Content Include="jquery\jquery-3.1.0.min.map" />
-    <Content Include="Views\Assinatura\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -312,7 +338,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\IndexEmpresa.cshtml" />
+    <Content Include="Views\Empresa.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Browsers\qt.browser">
@@ -320,15 +346,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Acesso\CadastroCandidato.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Acesso\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FinderJobs.Application\FinderJobs.Application.csproj">
+      <Project>{091bf198-1d1c-48a4-8e96-ebddbdba8cde}</Project>
+      <Name>FinderJobs.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FinderJobs.Domain\FinderJobs.Domain.csproj">
       <Project>{50243246-22db-420d-ac8c-831405f84468}</Project>
       <Name>FinderJobs.Domain</Name>
