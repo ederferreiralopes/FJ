@@ -9,3 +9,15 @@ D:\desenv\Roberto\FinderJobs\FinderJobs.Domain\obj\Release\FinderJobs.Domain.csp
 D:\desenv\Roberto\FinderJobs\FinderJobs.Domain\obj\Release\FinderJobs.Domain.dll
 D:\desenv\Roberto\FinderJobs\FinderJobs.Domain\obj\Release\FinderJobs.Domain.pdb
 D:\Roberto\FinderJobs\FinderJobs.Domain\obj\Release\FinderJobs.Domain.csprojResolveAssemblyReference.cache
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\FinderJobs.Domain.dll.config
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\FinderJobs.Domain.dll
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\FinderJobs.Domain.pdb
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\FluentNHibernate.dll
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\Iesi.Collections.dll
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\NHibernate.dll
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\FluentNHibernate.pdb
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\FluentNHibernate.xml
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\Iesi.Collections.xml
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\NHibernate.xml
+D:\Roberto\FinderJobs\FinderJobs.Domain\obj\Release\FinderJobs.Domain.dll
+D:\Roberto\FinderJobs\FinderJobs.Domain\obj\Release\FinderJobs.Domain.pdb

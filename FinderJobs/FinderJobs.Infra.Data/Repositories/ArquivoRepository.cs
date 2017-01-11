@@ -26,5 +26,21 @@ namespace FinderJobs.Infra.Data.Repositories
                 }
             }
         }
+
+        public void Desativar(int usuarioId, string tipo)
+        {
+            using (var session = SessionFactory.AbrirSession())
+            {
+                try
+                {
+                    var query = string.Concat("update arquivo set Ativo = 0 where usuarioId = ", usuarioId, " and tipo = '", tipo, "'");
+                    session.CreateSQLQuery(query)
+                    .ExecuteUpdate();
+                }
+                catch (System.Exception ex)
+                {
+                }
+            }
+        }
     }
 }

@@ -11,6 +11,9 @@ namespace FinderJobs.Application.Interface
     {
         void Desativar(int id);
 
-        IEnumerable<Arquivo> GetArquivo(int UsuarioId, string tipo);        
+        void Desativar(int id, string tipo);
+
+        IEnumerable<Arquivo> GetArquivo(int UsuarioId, string tipo);
+        IEnumerable<Arquivo> CarregarTodos(int UsuarioId);
     }
 }

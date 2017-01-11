@@ -4,3 +4,13 @@ D:\desenv\Roberto\FinderJobs\FinderJobs.Application\obj\Release\FinderJobs.Appli
 D:\desenv\Roberto\FinderJobs\FinderJobs.Application\obj\Release\FinderJobs.Application.dll
 D:\desenv\Roberto\FinderJobs\FinderJobs.Application\obj\Release\FinderJobs.Application.pdb
 D:\Roberto\FinderJobs\FinderJobs.Application\obj\Release\FinderJobs.Application.csprojResolveAssemblyReference.cache
+D:\Roberto\FinderJobs\FinderJobs.Application\bin\Release\FinderJobs.Application.dll.config
+D:\Roberto\FinderJobs\FinderJobs.Application\bin\Release\FinderJobs.Application.dll
+D:\Roberto\FinderJobs\FinderJobs.Application\bin\Release\FinderJobs.Application.pdb
+D:\Roberto\FinderJobs\FinderJobs.Application\bin\Release\FinderJobs.Domain.dll
+D:\Roberto\FinderJobs\FinderJobs.Application\bin\Release\FluentNHibernate.dll
+D:\Roberto\FinderJobs\FinderJobs.Application\bin\Release\FinderJobs.Domain.pdb
+D:\Roberto\FinderJobs\FinderJobs.Application\bin\Release\FluentNHibernate.pdb
+D:\Roberto\FinderJobs\FinderJobs.Application\bin\Release\FluentNHibernate.xml
+D:\Roberto\FinderJobs\FinderJobs.Application\obj\Release\FinderJobs.Application.dll
+D:\Roberto\FinderJobs\FinderJobs.Application\obj\Release\FinderJobs.Application.pdb

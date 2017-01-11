@@ -1,0 +1,302 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Finder Jobs</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bootstrap/css/bootstrap-switch.min.css" rel="stylesheet" />
+    <!-- Theme CSS -->
+    <link href="../content/css/finderjobs.css" rel="stylesheet">
+    <!-- Notify CSS -->
+    <link href="../notify/notify.css" rel="stylesheet" />
+    <!-- Custom Fonts -->
+    <link href="../content/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- DataTables -->
+    <link href="../dataTables/jquery.dataTables.css" rel="stylesheet" />
+    <style>
+        .corFinderJobs {
+            color: #2C3E50;
+        }
+    </style>
+</head>
+<body id="page-top" class="index">
+    <!-- Navigation -->
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="#page-top">Finder Jobs</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li class="">
+                        <a href="javascript: cadastro();" class="portfolio-link" data-toggle="modal">Editar Cadastro</a>
+                    </li>
+                    <li class="">
+                        <a href="../Acesso/Logout" class="portfolio-link" data-toggle="modal">Sair</a>
+                    </li>
+                </ul>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+    </nav>
+
+    <!-- Header -->
+    <header class="alert-info">
+        <div class="container">
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4>Vagas</h4></div>
+                    <div class="panel-body">                       
+                        <table id="myTable" class="display table-striped compact" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Cep</th>
+                                    <th>Empresa</th>
+                                    <th>Distância</th>
+                                    <th>Acertividade</th>
+                                    <th>Habilidades</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="footer-below">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4 class="" style="color: #ed7c31">
+                            Processos Seletivos Inteligentes Utilizando Ciência de Dados
+                        </h4>
+                        <ul class="list-inline">
+                            <li>
+                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                Direitos Reservados &copy; Finder Jobs 2014-2016
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top page-scroll hidden-sm hidden-xs hidden-lg hidden-md">
+        <a class="btn btn-primary" href="#page-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../jquery/jquery.min.js"></script>
+    <!-- Notify JS -->
+    <script src="../notify/notify.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../bootstrap/js/bootstrap-switch.min.js"></script>
+    <script src="../bootstrap/js/bootstrap-filestyle.min.js"></script>
+    <!-- Plugin JavaScript -->
+    <script src="../jquery/jquery.easing.min.js"></script>
+    <!-- Contact Form JavaScript -->
+    <script src="../content/js/jqBootstrapValidation.js"></script>
+    <script src="../content/js/contact_me.js"></script>
+    <!-- Theme JavaScript -->
+    <script src="../content/js/finderjobs.min.js"></script>
+    <!-- google maps -->
+    <script language="javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCycG73VSX4N6sFxieKuCpYBnAKCJrG3XI"></script>
+    <!-- DataTables -->
+    <script src="../dataTables/jquery.dataTables.js"></script>
+    <script src="../dataTables/dataTables.bootstrap.min.js"></script>   
+
+    <script src="../bootstrap/js/bootstrap-confirmation.min.js"></script>
+
+    <script>        
+
+        $(document).ready(function () {
+            processarVagas(false);            
+        });
+
+        function cadastro() {
+
+            var usuario = JSON.parse(localStorage.getItem("usuario"));
+
+            // caregar partial view cadastro.html
+            $.get("../Acesso/Cadastro", function (data) {
+                $('#modalCadastroBody').html('');
+                $('#modalCadastroBody').html(data);
+
+                //carrega usuario
+                $("#Usuario_Id").val(usuario.Id);
+                $("#Usuario_Tipo").val(usuario.Tipo);
+                $("#Usuario_Nome").val(usuario.Nome);
+                $("#Usuario_Login").val(usuario.Login);
+                $("#Usuario_Email").val(usuario.Email);
+                $("#Usuario_Celular").val(usuario.Celular);
+                $("#Usuario_CpfCnpj").val(usuario.CpfCnpj);
+                $("#Usuario_EnderecoCep").val(usuario.EnderecoCep);
+                $("#Usuario_EnderecoLogradouro").val(usuario.EnderecoLogradouro);
+                $("#Usuario_EnderecoNumero").val(usuario.EnderecoNumero);
+                $("#Usuario_EnderecoBairro").val(usuario.EnderecoBairro);
+                $("#Usuario_EnderecoCidade").val(usuario.EnderecoCidade);
+                $("#Usuario_EnderecoUF").val(usuario.EnderecoUF);
+
+                var habilidades = JSON.parse(usuario.Habilidades)
+                if (habilidades.length > 0) {
+                    $.each(habilidades, function (index, value) {
+                        var html = '<span id="habilidade_' + value.Id + '" style="margin: 1px; padding: 4px;" class="alert-info">'
+                                + value.Nome + '<a style="color:red" href="#" id="'
+                                + value.Nome + '" onclick="RemoverHabilidade(\'habilidade_' + value.Id + '\');return false;"><i class="fa fa-times"> </i></a></span>';
+                        $('#dvHabilidadesLista').append(html);
+                    });
+                }
+
+                CarregaTipo(usuario.Tipo);                
+                CarregarTodosArquivos(usuario.Id);
+
+                $('#btnPago').bootstrapSwitch('state', usuario.Pago);
+                $('#btnAnonimo').bootstrapSwitch('state', usuario.Anonimo);
+            });
+        }
+
+        function processarVagas(forcar) {
+
+            var dataSetVagas = JSON.parse(localStorage.getItem("dataSetVagas"));
+
+            if (forcar || dataSetVagas == null || dataSetVagas == undefined) {
+                var usuario = JSON.parse(localStorage.getItem("usuario"));
+                $.get('../Vagas/PesquisaCandidato2/' + usuario.Id, function (data) {
+                    if (data.data.length > 0) {
+                        dataSetVagas = data.data;
+                        localStorage.setItem('dataSetVagas', JSON.stringify(dataSetVagas));
+                        CarregarGridVagas(dataSetVagas);
+                    }
+                    else
+                        return Notify('Não foram encontradas vagas', null, null);
+                });
+            }
+            else
+                CarregarGridVagas(dataSetVagas);
+        }
+
+        function CarregarGridVagas(dataSetVagas) {
+            $('#myTable').DataTable().destroy();
+            $('#myTable').dataTable({
+                "data": dataSetVagas,
+                "scrollX": true,
+                "autoWidth": false,
+                "columnDefs": [
+                    { "width": "12%", "targets": 0 },
+                    { "width": "8%", "targets": 2 },
+                    { "width": "8%", "targets": 4 },
+                    { "width": "8%", "targets": 5 },
+                    { "width": "7%", "targets": 7 },
+
+                ],
+                "columns": [
+                            { "data": "DataCadastro" },
+                            { "data": "Descricao" },
+                            { "data": "Cep" },
+                            { "data": "Empresa" },
+                            { "data": "Distancia" },
+                            { "data": "Aderencia" },
+                            {
+                                "data": "Habilidades",
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+
+                                    var html = '';
+                                    $.each(JSON.parse(data), function (index, value) {
+                                        html += '<span id="habilidade_' + value.Id + '" style="margin: 1px; padding: 4px;" class="alert-info"> ' + value.Nome + '</span>';
+                                    });
+                                    return html;
+                                }
+                            },
+                            {
+                                "data": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    return '<a class="btn btn-sm" href="javascript: enviarEmail(' + full['IdEmpresa'] + ');"><span class="glyphicon glyphicon-envelope"><span></a>';
+                                }
+                            }
+                ],
+                "language": {
+                    "emptyTable": "Não existem registros disponiveis",
+                    "info": "Exibindo _START_ a _END_ de _TOTAL_ registros",
+                    "infoEmpty": "Nenhum registro encontrado",
+                    "infoFiltered": "(filtrado de _MAX_ registros)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": " _MENU_ ",
+                    "loadingRecords": "Carregando...",
+                    "processing": "Processando...",
+                    "search": "",
+                    "zeroRecords": "Nenhum resultado encontrado",
+                    "searchPlaceholder": "Pesquisar",
+                    "paginate": {
+                        "first": "Primeiro",
+                        "last": "Ultimo",
+                        "next": '<i class="fa fa-chevron-circle-right" aria-hidden="true"></i>',
+                        "previous": '<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>'
+                    },
+                    "aria": {
+                        "sortAscending": ":Ativar ordenação ascendente",
+                        "sortDescending": ":Ativar ordenação descendente"
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
+
+<!-- Modal Cadastro -->
+<div class="modal fade" id="modalCadastro" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cadastro</h4>
+            </div>
+            <div class="modal-body" id="modalCadastroBody">
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="form-group col-lg-6 text-center">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    </div>
+                    <div class="form-group col-lg-6 text-center">
+                        <input class="btn btn-default" type="button" id="btnCadastrar" value="Cadastrar" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

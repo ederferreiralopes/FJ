@@ -56,3 +56,8 @@ D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\NHibernate.xml
 D:\Roberto\FinderJobs\FinderJobs.Infra.Data\obj\Debug\FinderJobs.Infra.Data.csprojResolveAssemblyReference.cache
 D:\Roberto\FinderJobs\FinderJobs.Infra.Data\obj\Debug\FinderJobs.Infra.Data.dll
 D:\Roberto\FinderJobs\FinderJobs.Infra.Data\obj\Debug\FinderJobs.Infra.Data.pdb
+D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\FinderJobs.Infra.Data.dll.config
+D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\EntityFramework.dll
+D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\EntityFramework.SqlServer.dll
+D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\EntityFramework.xml
+D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\EntityFramework.SqlServer.xml

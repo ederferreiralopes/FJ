@@ -1,0 +1,10 @@
+#notificacoes {
+    cursor: pointer;
+    position: fixed;
+    right: 0px;
+    z-index: 9999;
+    top: 0px;
+    margin-top: 72px;
+    margin-right: 12px;
+    max-width: 400px;
+}
