@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 
 namespace FinderJobs.Site.Controllers
 {
+    [Authorize]
     public class VagasController : Controller
     {
         private readonly IUsuarioAppService _usuarioService;

@@ -17,7 +17,6 @@ using FinderJobs.Domain.Entities;
 
 namespace FinderJobs.Site.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly IUsuarioAppService _usuarioService;

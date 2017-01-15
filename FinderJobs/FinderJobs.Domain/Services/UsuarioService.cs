@@ -29,6 +29,11 @@ namespace FinderJobs.Domain.Services
             return _usuarioRepository.GetAll().Where(u => u.Login.Equals(login) && u.Senha.Equals(senha)).FirstOrDefault();
         }
 
+        public Usuario GetByEmail(string email)
+        {
+            return _usuarioRepository.GetAll().Where(u => u.Email.Equals(email)).FirstOrDefault();
+        }
+
         public bool ValidarLogin(string login)
         {
             return _usuarioRepository.GetAll().Where(u => u.Login.Equals(login)).Count() > 0;

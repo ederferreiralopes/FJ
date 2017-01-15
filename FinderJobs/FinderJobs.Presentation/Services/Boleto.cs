@@ -1,4 +1,6 @@
-﻿using FinderJobs.Site.ViewModels;
+﻿using FinderJobs.Application.Interface;
+using FinderJobs.Domain.Entities;
+using FinderJobs.Site.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +8,26 @@ using System.Web;
 
 namespace FinderJobs.Site.Services
 {
+
+    public class Acesso
+    {
+
+        private readonly IUsuarioAppService _usuarioService;
+
+        public Acesso(IUsuarioAppService usuarioService)
+        {
+            _usuarioService = usuarioService;
+        }
+
+        public Usuario ValidarAcesso(string usuario, string senha)
+        {
+            return _usuarioService.ValidarAcesso(usuario, senha);
+        }
+    }
     public class Boleto
     {
         public BoletoNet.BoletoBancario GeraBoleto(BoletoModel model)
-        {                        
+        {
             var cedente = new BoletoNet.Cedente(model.Cedente.CpfCnpj,
                             model.Cedente.Nome,
                             model.Cedente.Agencia,
@@ -21,9 +39,9 @@ namespace FinderJobs.Site.Services
 
             var boleto = new BoletoNet.Boleto(
                 model.Vencimento,
-                model.ValorBoleto, 
-                model.CodigoCarteira, 
-                model.Cedente.NossoNumero, 
+                model.ValorBoleto,
+                model.CodigoCarteira,
+                model.Cedente.NossoNumero,
                 cedente
                 );
 

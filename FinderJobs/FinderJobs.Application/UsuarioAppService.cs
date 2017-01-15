@@ -29,9 +29,14 @@ namespace FinderJobs.Application
             return _usuarioService.ValidarAcesso(login, senha);
         }
 
+        public Usuario GetByEmail(string email)
+        {
+            return _usuarioService.GetByEmail(email);
+        }
+
         public bool ValidarLogin(string login)
         {
             return _usuarioService.ValidarLogin(login);
-        }
+        }        
     }
 }

@@ -29,6 +29,7 @@ L:\Roberto\FinderJobs\FinderJobs.Application\bin\Debug\Iesi.Collections.xml
 L:\Roberto\FinderJobs\FinderJobs.Application\obj\Debug\FinderJobs.Application.csprojResolveAssemblyReference.cache
 L:\Roberto\FinderJobs\FinderJobs.Application\obj\Debug\FinderJobs.Application.dll
 L:\Roberto\FinderJobs\FinderJobs.Application\obj\Debug\FinderJobs.Application.pdb
+D:\Roberto\FinderJobs\FinderJobs.Application\bin\Debug\FinderJobs.Application.dll.config
 D:\Roberto\FinderJobs\FinderJobs.Application\bin\Debug\FinderJobs.Application.dll
 D:\Roberto\FinderJobs\FinderJobs.Application\bin\Debug\FinderJobs.Application.pdb
 D:\Roberto\FinderJobs\FinderJobs.Application\bin\Debug\FinderJobs.Domain.dll
@@ -39,4 +40,3 @@ D:\Roberto\FinderJobs\FinderJobs.Application\bin\Debug\FluentNHibernate.xml
 D:\Roberto\FinderJobs\FinderJobs.Application\obj\Debug\FinderJobs.Application.csprojResolveAssemblyReference.cache
 D:\Roberto\FinderJobs\FinderJobs.Application\obj\Debug\FinderJobs.Application.dll
 D:\Roberto\FinderJobs\FinderJobs.Application\obj\Debug\FinderJobs.Application.pdb
-D:\Roberto\FinderJobs\FinderJobs.Application\bin\Debug\FinderJobs.Application.dll.config

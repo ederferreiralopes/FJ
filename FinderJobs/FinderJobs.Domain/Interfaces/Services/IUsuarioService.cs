@@ -14,5 +14,7 @@ namespace FinderJobs.Domain.Interfaces.Services
         bool ValidarLogin(string login);
 
         Usuario ValidarAcesso(string login, string senha);
+
+        Usuario GetByEmail(string email);
     }
 }

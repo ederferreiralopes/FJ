@@ -368,30 +368,30 @@
             var senha = $('#Senha').val();
             if (login != undefined && login.length > 5 && senha != undefined && senha.length > 5) {
                 var dados = {
-                    'Login': login,
-                    'Senha': senha
+                    grant_type: "password",
+                    username : login,
+                    password : senha
                 };
 
                 $.ajax({
-                    url: "../Acesso/Login",
-                    type: "post",
-                    data: JSON.stringify(dados),
+                    url: "../api/security/token",
+                    type: "POST",
+                    data: dados,
                     contentType: 'application/json',
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.sucesso) {
-                            localStorage.setItem('usuario', JSON.stringify(data.usuario));
+                    success: function (data) {                        
+                        if (data != null && data.access_token != null) {                            
+                            localStorage.setItem('token', data.access_token);
                             localStorage.setItem('dataSetVagas', null);
-                            Notify('Autorizado!', null, null, 'success');
-                            Notify('Redirecionando para sua home!', null, null, 'success');
-                            window.location.replace('../Home?tipo=' + data.usuario.Tipo);
+                            Notify('Autorizado!', null, null, 'success');                            
+
+                            GetCadastro();
                         }
                         else {
                             Notify('Usuário e senha inválidos', null, null, 'danger');
                         }
                     },
-                    error: function (result) {
-                        Notify('Ocorreu um erro ' + result, null, null, 'danger');
+                    error: function (result) {                        
+                        Notify(result.responseJSON.error_description, null, null, 'danger');
                     }
                 });
             }
@@ -404,6 +404,32 @@
                 $("#btnEntrar").button('reset');
             }, 1000);
         });
+
+        function GetCadastro() {
+            $.ajax({
+                url: "../Cadastro/GetCadastro",
+                type: "GET",                
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.sucesso) {
+                        Notify('Redirecionando para sua home!', null, null, 'success');
+                        localStorage.setItem('usuario', JSON.stringify(data.usuario));                        
+                        window.location.replace('../Home?tipo=' + data.usuario.Tipo);
+                    }
+                    else {
+                        Notify('Erro ao recuperar cadastro', null, null, 'danger');
+                    }
+                },
+                error: function (result) {                    
+                    Notify(result.responseJSON.error_description, null, null, 'danger');
+                },
+                beforeSend: setHeader
+            });
+        }
+
+        function setHeader(xhr) {
+            xhr.setRequestHeader('Authorization', 'bearer ' + localStorage.getItem('token'));
+        }
     </script>
 
 </body>

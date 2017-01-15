@@ -62,6 +62,11 @@ D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\FinderJobs.Domain.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\FinderJobs.Infra.Data.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Iesi.Collections.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\log4net.dll
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.Owin.Cors.dll
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.Owin.dll
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.Owin.Security.dll
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.Owin.Security.OAuth.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.Web.Infrastructure.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\MySql.Data.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\MySql.Data.Entity.EF6.dll
@@ -71,9 +76,12 @@ D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Ninject.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Ninject.Web.Common.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Ninject.Web.Mvc.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\NReco.PdfGenerator.dll
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Owin.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Net.Http.Formatting.dll
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Web.Cors.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Web.Helpers.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Web.Http.dll
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Web.Http.Owin.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Web.Http.WebHost.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Web.Mvc.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Web.Razor.dll
@@ -88,6 +96,11 @@ D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\FinderJobs.Domain.pdb
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\FinderJobs.Infra.Data.pdb
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Iesi.Collections.xml
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\log4net.xml
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.Owin.xml
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.Owin.Cors.xml
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.Owin.Security.xml
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.Owin.Security.OAuth.xml
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.Web.Infrastructure.xml
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Newtonsoft.Json.xml
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Ninject.xml
@@ -95,6 +108,7 @@ D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Ninject.Web.Common.xml
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Ninject.Web.Mvc.xml
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Net.Http.Formatting.xml
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Web.Http.xml
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Web.Http.Owin.xml
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Web.Http.WebHost.xml
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Web.Razor.xml
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\System.Web.Webpages.xml
@@ -108,3 +122,4 @@ D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\NHibernate.xml
 D:\Roberto\FinderJobs\FinderJobs.Presentation\obj\Debug\FinderJobs.Site.csprojResolveAssemblyReference.cache
 D:\Roberto\FinderJobs\FinderJobs.Presentation\obj\Debug\FinderJobs.Site.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\obj\Debug\FinderJobs.Site.pdb
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\EntityFramework.dll
