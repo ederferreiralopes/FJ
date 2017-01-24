@@ -19,7 +19,7 @@ namespace FinderJobs.Application
             _vagaService = vagaService;
         }
 
-        public IEnumerable<Vaga> BuscarPorEmpresa(int id)
+        public IEnumerable<Vaga> BuscarPorEmpresa(Guid id)
         {
             return _vagaService.BuscarPorEmpresa(id);
         }

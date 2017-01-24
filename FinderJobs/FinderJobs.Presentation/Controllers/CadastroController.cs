@@ -29,7 +29,7 @@ namespace FinderJobs.Site.Controllers
             _arquivoService = arquivoAppService;
             _configuracaoBoletoService = configuracaoBoletoService;
         }
-        
+
         public ActionResult GetCadastro()
         {
             var email = Thread.CurrentPrincipal.Identity.Name;
@@ -43,95 +43,51 @@ namespace FinderJobs.Site.Controllers
         }
 
         [HttpPost]
-        public ActionResult Inserir(UsuarioViewModel model)
-        {
-            var usuario = _usuarioService.ValidarAcesso(model.Login, model.Senha);
-            if (usuario != null)
-            {
-                var usuarioViewModel = new UsuarioViewModel
-                {
-                    Id = usuario.Id,
-                    CpfCnpj = usuario.CpfCnpj,
-                    Celular = usuario.Celular,
-                    Login = usuario.Login,
-                    Nome = usuario.Nome,
-                    Pago = usuario.Pago,
-                    Senha = usuario.Senha,
-                    Tipo = usuario.Tipo,
-                    Habilidades = usuario.Habilidades,
-                    EnderecoUF = usuario.EnderecoUF,
-                    EnderecoNumero = usuario.EnderecoNumero,
-                    EnderecoLogradouro = usuario.EnderecoLogradouro,
-                    EnderecoCidade = usuario.EnderecoCidade,
-                    EnderecoBairro = usuario.EnderecoBairro,
-                    EnderecoCep = usuario.EnderecoCep,
-                    Email = usuario.Email,
-                    DataCadastro = usuario.DataCadastro,
-                    Anonimo = usuario.Anonimo,
-                };
-                usuarioViewModel.Senha = string.Empty;
-                var authenticationTicket = new FormsAuthenticationTicket(usuarioViewModel.Login, false, 60);
-                string encryptTicket = FormsAuthentication.Encrypt(authenticationTicket);
-                var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptTicket);
-                Response.Cookies.Add(authCookie);
-
-                return Json(new { sucesso = true, usuario = usuarioViewModel }, JsonRequestBehavior.AllowGet);
-            }
-
-            return Json(new { sucesso = false }, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public ActionResult Cadastrar(UsuarioViewModel model)
+        public ActionResult Gravar(UsuarioViewModel model)
         {
             try
             {
                 var retorno = string.Empty;
                 var sucesso = false;
 
-                if (!string.IsNullOrWhiteSpace(model.Login) && !_usuarioService.ValidarLogin(model.Login))
-                {
-                    var habilidades = JsonConvert.DeserializeObject<List<HabilidadeJson>>(model.Habilidades);
-                    var habilidadesExistentes = habilidades.Where(x => !x.Id.Equals(x.Nome)).ToList();
+                if (!string.IsNullOrWhiteSpace(model.Nome))
+                {                    
+                    var habilidadesExistentes = (from h in model.Habilidades
+                                                 where h.Nome != h.Id
+                                                 select new Habilidade { Id = Guid.Parse(h.Id), Nome = h.Nome }).ToList();
 
                     // Grava Habilidades Novas
-                    foreach (var item in habilidades.Where(x => x.Id.Equals(x.Nome)))
+                    foreach (var item in model.Habilidades.Where(x => x.Id.Equals(x.Nome)))
                     {
-                        var id = (int)_habilidadeService.Add(new Domain.Entities.Habilidade { Nome = item.Nome });
-                        habilidadesExistentes.Add(new HabilidadeJson { Id = id.ToString(), Nome = item.Nome });
+                        var id = (Guid)_habilidadeService.Insert(new Domain.Entities.Habilidade { Nome = item.Nome });
+                        habilidadesExistentes.Add(new Habilidade { Id = id, Nome = item.Nome });
                     }
-                    
+
                     var usuario = new Domain.Entities.Usuario
                     {
                         Id = model.Id,
                         CpfCnpj = model.CpfCnpj,
                         Celular = model.Celular,
-                        Login = model.Login,
                         Nome = model.Nome,
                         Pago = model.Pago,
-                        Senha = model.Senha,
                         Tipo = model.Tipo,
-                        Habilidades = model.Habilidades,
-                        EnderecoUF = model.EnderecoUF,
-                        EnderecoNumero = model.EnderecoNumero,
-                        EnderecoLogradouro = model.EnderecoLogradouro,
-                        EnderecoCidade = model.EnderecoCidade,
-                        EnderecoBairro = model.EnderecoBairro,
-                        EnderecoCep = model.EnderecoCep,
+                        Endereco = model.Endereco, 
                         Email = model.Email,
-                        DataCadastro = model.DataCadastro,
                         Anonimo = model.Anonimo,
+                        Habilidades = habilidadesExistentes,                                           
                     };
 
-                    usuario.DataCadastro = DateTime.Now.ToString();
-                    usuario.Ativo = true;
-                    usuario.Habilidades = JsonConvert.SerializeObject(habilidadesExistentes);
-
-                    usuario.Id = (int)_usuarioService.Add(usuario);
-
-
-                    if (usuario.Id > 0)
+                    if (model.Id == new Guid())
+                    {
+                        usuario.DataCadastro = DateTime.Now.ToString();
+                        usuario.Id = (Guid)_usuarioService.Insert(usuario);
                         sucesso = true;
+                    }
+                    else
+                    {                        
+                        usuario.DataAlteracao = DateTime.Now.ToString();
+                        sucesso = _usuarioService.Update(usuario);
+                    }                       
 
                     return Json(new { usuario = usuario, sucesso = sucesso }, JsonRequestBehavior.AllowGet);
                 }
@@ -145,66 +101,11 @@ namespace FinderJobs.Site.Controllers
         }
 
         [HttpPost]
-        public ActionResult Alterar(UsuarioViewModel model)
+        public ActionResult GravarArquivo(string id, string tipo, HttpPostedFileBase fileUpload)
         {
             try
             {
-                var retorno = string.Empty;
-                var sucesso = false;
-
-                if (model.Id > 0 && !string.IsNullOrWhiteSpace(model.Login))
-                {
-                    var usuario = _usuarioService.GetById(model.Id);
-                    if (usuario != null && usuario.Login.Equals(model.Login))
-                    {
-                        var habilidades = JsonConvert.DeserializeObject<List<HabilidadeJson>>(model.Habilidades);
-                        var habilidadesExistentes = habilidades.Where(x => !x.Id.Equals(x.Nome)).ToList();
-
-                        // Grava Habilidades Novas
-                        foreach (var item in habilidades.Where(x => x.Id.Equals(x.Nome)))
-                        {
-                            var id = (int)_habilidadeService.Add(new Domain.Entities.Habilidade { Nome = item.Nome });
-                            habilidadesExistentes.Add(new HabilidadeJson { Id = id.ToString(), Nome = item.Nome });
-                        }
-
-                        usuario.Nome = model.Nome;
-                        usuario.Celular = model.Celular;
-                        usuario.CpfCnpj = model.CpfCnpj;
-                        usuario.Email = model.Email;
-                        usuario.EnderecoCep = model.EnderecoCep;
-                        usuario.EnderecoLogradouro = model.EnderecoLogradouro;
-                        usuario.EnderecoNumero = model.EnderecoNumero;
-                        usuario.EnderecoBairro = model.EnderecoBairro;
-                        usuario.EnderecoCidade = model.EnderecoCidade;
-                        usuario.EnderecoUF = model.EnderecoUF;
-                        usuario.Pago = model.Pago;
-                        usuario.Anonimo = model.Anonimo;
-                        usuario.Habilidades = JsonConvert.SerializeObject(habilidadesExistentes);
-
-                        _usuarioService.Update(usuario);
-
-                        if (usuario.Id > 0)
-                            sucesso = true;
-
-                        return Json(new { usuario = usuario, sucesso = sucesso }, JsonRequestBehavior.AllowGet);
-                    }
-                    else
-                        return Json(new { sucesso = sucesso, mensagem = "Usuário não encontrado" }, JsonRequestBehavior.AllowGet);
-                }
-                else
-                    return Json(new { sucesso = sucesso, mensagem = "Não foi possível atualizar seus dados" }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(new { sucesso = false, mensagem = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult GravarArquivo(int id, string tipo, HttpPostedFileBase fileUpload)
-        {
-            try
-            {
+                var usuarioId = Guid.Parse(id);
                 var retorno = string.Empty;
                 var sucesso = false;
 
@@ -212,29 +113,32 @@ namespace FinderJobs.Site.Controllers
 
                 switch (usuarioTipo)
                 {
-                    case UsuarioTipo.Candidato: tipo = ArquivoLocal.Curriculo.ToString();
+                    case UsuarioTipo.Candidato:
+                        tipo = ArquivoLocal.Curriculo.ToString();
                         break;
-                    case UsuarioTipo.Empresa: tipo = ArquivoLocal.Vaga.ToString();
+                    case UsuarioTipo.Empresa:
+                        tipo = ArquivoLocal.Vaga.ToString();
                         break;
-                    default: tipo = ArquivoLocal.Indefinido.ToString();
+                    default:
+                        tipo = ArquivoLocal.Indefinido.ToString();
                         break;
                 }
 
                 var caminho = string.Concat("~/Arquivo/", id, "/", tipo, "/");
                 var nome = fileUpload.FileName.Length > 50 ? fileUpload.FileName.Substring(fileUpload.FileName.Length - 50) : fileUpload.FileName;
 
-                var arquivo = new Domain.Entities.Arquivo { Usuario = new Domain.Entities.Usuario { Id = id }, Caminho = caminho, Nome = nome, Tipo = tipo, Ativo = true };
+                var arquivo = new Domain.Entities.Arquivo { Usuario = new Domain.Entities.Usuario { Id = usuarioId }, Caminho = caminho, Nome = nome, Tipo = tipo, Ativo = true };
                 if (!System.IO.Directory.Exists(Server.MapPath(caminho)))
                     System.IO.Directory.CreateDirectory(Server.MapPath(caminho));
                 fileUpload.SaveAs(Server.MapPath(caminho) + nome);
 
-                _arquivoService.Desativar(id, tipo);
-                arquivo.Id = (int)_arquivoService.Add(arquivo);
+                _arquivoService.Desativar(usuarioId, tipo);
+                var resultado = _arquivoService.Insert(arquivo);
 
-                if (arquivo.Id > 0)
+                if (resultado != null)
                     sucesso = true;
 
-                return Json(new { arquivo, sucesso = sucesso }, JsonRequestBehavior.AllowGet);
+                return Json(new { arquivo = resultado, sucesso = sucesso }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -242,14 +146,15 @@ namespace FinderJobs.Site.Controllers
             }
         }
 
-        public ActionResult CarregarArquivo(int id = 0)
+        public ActionResult CarregarArquivo(string id)
         {
             try
             {
+                var usuarioId = Guid.Parse(id);
                 var retorno = string.Empty;
                 var sucesso = false;
 
-                var arquivo = _arquivoService.GetArquivo(id, ArquivoTipo.Curriculo.ToString()).ToList();
+                var arquivo = _arquivoService.GetArquivo(usuarioId, ArquivoTipo.Curriculo.ToString()).ToList();
                 if (arquivo != null && arquivo.Count > 0)
                     sucesso = true;
 
@@ -261,14 +166,15 @@ namespace FinderJobs.Site.Controllers
             }
         }
 
-        public ActionResult CarregarTodosArquivos(int id)
+        public ActionResult CarregarTodosArquivos(string id)
         {
             try
             {
+                var usuarioId = Guid.Parse(id);
                 var retorno = string.Empty;
                 var sucesso = false;
 
-                var arquivos = _arquivoService.CarregarTodos(id).ToList();
+                var arquivos = _arquivoService.CarregarTodos(usuarioId).ToList();
                 arquivos = (from arquivo in arquivos select new Arquivo { Id = arquivo.Id, Ativo = arquivo.Ativo, Nome = arquivo.Nome, Caminho = arquivo.Caminho, Tipo = arquivo.Tipo }).ToList();
                 if (arquivos != null && arquivos.Count > 0)
                     sucesso = true;
@@ -281,11 +187,12 @@ namespace FinderJobs.Site.Controllers
             }
         }
 
-        public ActionResult ExcluirArquivo(int id)
+        public ActionResult ExcluirArquivo(string id)
         {
             try
             {
-                _arquivoService.Desativar(id);
+                var arquivoId = Guid.Parse(id);
+                _arquivoService.Desativar(arquivoId);
 
                 return Json(new { sucesso = true }, JsonRequestBehavior.AllowGet);
             }
@@ -300,7 +207,7 @@ namespace FinderJobs.Site.Controllers
         {
             var boleto = new BoletoNet.BoletoBancario();
             var model = new BoletoModel();
-            var configuracaoBoleto = _configuracaoBoletoService.GetById(1);
+            var configuracaoBoleto = _configuracaoBoletoService.GetAll().FirstOrDefault();
             model.Id = configuracaoBoleto.Id;
             model.CodigoBanco = configuracaoBoleto.CodigoBanco;
             model.CodigoCarteira = configuracaoBoleto.CodigoCarteira;
@@ -328,18 +235,18 @@ namespace FinderJobs.Site.Controllers
                 Id = usuario.Id,
                 Nome = usuario.Nome,
                 CpfCnpj = usuario.CpfCnpj,
-                Cep = usuario.EnderecoCep,
-                Endereco = usuario.EnderecoLogradouro,
-                Bairro = usuario.EnderecoBairro,
-                Cidade = usuario.EnderecoCidade,
-                Uf = usuario.EnderecoUF
+                Cep = usuario.Endereco.Cep,
+                Endereco = usuario.Endereco.Logradouro,
+                Bairro = usuario.Endereco.Bairro,
+                Cidade = usuario.Endereco.Cidade,
+                UF = usuario.Endereco.UF
             };
 
             // criar entidade Assinatura
             // migrar isso para MongoDB
             // depois de gerar o boleto gravar o html no MongoDB
 
-            if (model != null && model.Cedente.Id > 0 && model.Sacado.Id > 0)
+            if (model != null && model.Cedente.Id != new Guid() && model.Sacado.Id != null)
                 boleto = new Services.Boleto().GeraBoleto(model);
 
             var retorno = string.Empty;
@@ -366,7 +273,7 @@ namespace FinderJobs.Site.Controllers
                     Stream.Write(arquivoPDF, 0, arquivoPDF.Length);
 
                     //_arquivoService.Desativar(id);
-                    idArquivo = (int)_arquivoService.Add(arquivo);
+                    idArquivo = (int)_arquivoService.Insert(arquivo);
 
                     if (idArquivo > 0)
                         sucesso = true;

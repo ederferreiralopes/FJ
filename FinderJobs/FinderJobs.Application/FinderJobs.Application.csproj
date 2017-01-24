@@ -45,8 +45,6 @@
     <Compile Include="Interface\IConfiguracaoBoletoAppService.cs" />
     <Compile Include="Interface\IHabilidadeAppService.cs" />
     <Compile Include="HabilidadeAppService.cs" />
-    <Compile Include="Interface\IUsuarioHabilidadeAppService.cs" />
-    <Compile Include="UsuarioHabilidadeAppService.cs" />
     <Compile Include="VagaAppService.cs" />
     <Compile Include="UsuarioAppService.cs" />
     <Compile Include="AppServiceBase.cs" />

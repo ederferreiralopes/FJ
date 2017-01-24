@@ -59,21 +59,22 @@
                                     <form name="sentMessage" id="acessoForm" novalidate action="Acesso/Login" method="post">
                                         <div class="row control-group">
                                             <div class="form-group col-xs-12 floating-label-form-group controls">
-                                                <label>Usuário</label>
-                                                <input type="text" class="form-control" placeholder="Usuário" id="Login" name="Login" required data-validation-required-message="Informe o seu usuário.">
+                                                <label>Email</label>
+                                                <input type="text" class="form-control" placeholder="Email" id="Email" name="Email" required data-validation-required-message="Seu email">
                                                 <p class="help-block text-danger"></p>
                                             </div>
                                         </div>
                                         <div class="row control-group">
                                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                                 <label>Senha</label>
-                                                <input type="password" class="form-control" placeholder="Senha" id="Senha" name="Senha" required data-validation-required-message="Informe a senha.">
+                                                <input type="password" class="form-control" placeholder="Senha" id="Senha" name="Senha" required data-validation-required-message="Senha">
                                                 <p class="help-block text-danger"></p>
                                             </div>
                                         </div>
                                         <br>
                                         <div class="row pull-right">
                                             <div class="form-group col-md-12 text-right">
+                                                <a data-toggle="modal" href="#modalEsqueciSenha" style="font-size:smaller; color: #ff6a00;">esqueci a senha!</a>
                                                 <button id="btnEntrar" type="button" class="btn btn-lg" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde">Entrar</button>
                                             </div>
                                             <div class="form-group col-md-12">
@@ -247,6 +248,49 @@
         </div>
     </div>
 
+    <!-- Modal Recuperar Senha -->
+    <div class="modal fade" id="modalEsqueciSenha" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Esqueceu sua senha?</h4>
+                    <span class="modal-title">Você pode cadastrar uma nova senha</span>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="emailEsqueceuSenha" placeholder="Seu email">
+                    </div>
+                    <button type="button" id="btnEsqueceuSenha" class="btn btn-success btn-block"><span class="glyphicon glyphicon-envelope"></span> Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nova Senha -->
+    <div class="modal fade" id="modalNovaSenha" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Cadastrar Senha </h4>
+                </div>
+                <div class="modal-body">
+                    <input hidden id="NovaSenhaCode" name="NovaSenhaCode" />
+                    <input hidden id="NovaSenhaEmail" name="NovaSenhaEmail" />
+                    <div class="form-group">
+                        <label for="usrname"><span class="glyphicon glyphicon-lock"></span> Senha</label>
+                        <input type="password" class="form-control" id="NovaSenha" placeholder="Nova senha">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="NovaSenhaConfirma" placeholder="Repita a senha">
+                    </div>
+                    <button type="button" id="btnNovaSenha" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Contato -->
     <div class="portfolio-modal modal fade" id="modalContato" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
@@ -315,21 +359,6 @@
         </div>
     </div>
 
-    <!-- Modal Msg Retorno -->
-    <div id="modalRetorno" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="text-center">
-                    <br />
-                    <p id="msgRetorno"></p>
-                </div>
-                <div class="text-right" style="padding-right:7px; padding-bottom: 7px;">
-                    <button id="modalMsgClose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- jQuery -->
     <script src="jquery/jquery.min.js"></script>
     <!-- Notify JS -->
@@ -352,6 +381,22 @@
 
     <script>
 
+        $(document).ready(function () {
+            debugger;
+            localStorage.setItem('usuario', '');
+
+            $.urlParam = function (name) {
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                var retorno = results != null ? results[1] : null;
+                return retorno
+            }
+            if ($.urlParam('code') != null && $.urlParam('email') != null) {
+                $('#NovaSenhaEmail').val($.urlParam('email'));
+                $('#NovaSenhaCode').val($.urlParam('code'));
+                $('#modalNovaSenha').modal('show');
+            }
+        });
+
         function cadastro(tipo) {
             // caregar partial view cadastro.html
             $.get("../Acesso/Cadastro", function (data) {
@@ -361,16 +406,87 @@
             });
         }
 
+        $("#btnNovaSenha").click(function () {
+            $("#btnNovaSenha").button('aguarde...');
+            var novaSenha = $('#NovaSenha').val();
+            var confirmaSenha = $('#NovaSenhaConfirma').val();
+            var email = $('#NovaSenhaEmail').val();
+            var code = $('#NovaSenhaCode').val();
+
+            if (novaSenha == confirmaSenha) {
+                var dados = {
+                    email: email,
+                    code: code,
+                    password: novaSenha,
+                };
+
+                $.ajax({
+                    url: "../Acesso/NovaSenha",
+                    type: "GET",
+                    data: dados,
+                    contentType: 'application/json',
+                    success: function (data) {
+                        Notify('Ok, você já pode acessar com a nova senha', null, null, 'success');
+                        setTimeout(function () {
+                            window.location.replace("../");
+                        }, 2000);                        
+                    },
+                    error: function (result) {
+                        Notify('Ocoreu um erro, informe a equipe de suporte', null, null, 'danger');
+                    }
+                });
+            }
+            else {
+                Notify('A confirmação precisa ser igual a senha!', null, null);
+            }
+
+            setTimeout(function () {
+                $("#btnNovaSenha").button('reset');
+            }, 1000);
+        });
+
+        $("#btnEsqueceuSenha").click(function () {
+            $("#btnEsqueceuSenha").button('aguarde...');
+            var email = $('#emailEsqueceuSenha').val();
+            var regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (regexEmail.test(email)) {
+                var dados = {
+                    Email: email,
+                };
+
+                $.ajax({
+                    url: "../Acesso/EsqueceuSenha",
+                    type: "GET",
+                    data: dados,
+                    contentType: 'application/json',
+                    success: function (data) {
+                        Notify('Realizado, verifique seu email', null, null, 'success');
+                        $('#modalEsqueciSenha').modal('hide');
+                    },
+                    error: function (result) {
+                        Notify('Ocoreu um erro, informe a equipe de suporte', null, null, 'danger');
+                    }
+                });
+            }
+            else {
+                Notify('Email inválido!', null, null);
+            }
+
+            setTimeout(function () {
+                $("#btnEsqueceuSenha").button('reset');
+            }, 1000);
+        });
+
         $("#btnEntrar").click(function () {
             $("#btnEntrar").button('loading');
 
-            var login = $('#Login').val();
+            var email = $('#Email').val();
             var senha = $('#Senha').val();
-            if (login != undefined && login.length > 5 && senha != undefined && senha.length > 5) {
+            if (email != undefined && email.length > 5 && senha != undefined && senha.length > 5) {
                 var dados = {
                     grant_type: "password",
-                    username : login,
-                    password : senha
+                    username: email,
+                    password: senha
                 };
 
                 $.ajax({
@@ -378,11 +494,11 @@
                     type: "POST",
                     data: dados,
                     contentType: 'application/json',
-                    success: function (data) {                        
-                        if (data != null && data.access_token != null) {                            
+                    success: function (data) {
+                        if (data != null && data.access_token != null) {
                             localStorage.setItem('token', data.access_token);
                             localStorage.setItem('dataSetVagas', null);
-                            Notify('Autorizado!', null, null, 'success');                            
+                            Notify('Autorizado!', null, null, 'success');
 
                             GetCadastro();
                         }
@@ -390,7 +506,7 @@
                             Notify('Usuário e senha inválidos', null, null, 'danger');
                         }
                     },
-                    error: function (result) {                        
+                    error: function (result) {
                         Notify(result.responseJSON.error_description, null, null, 'danger');
                     }
                 });
@@ -408,19 +524,19 @@
         function GetCadastro() {
             $.ajax({
                 url: "../Cadastro/GetCadastro",
-                type: "GET",                
+                type: "GET",
                 contentType: 'application/json',
                 success: function (data) {
                     if (data.sucesso) {
                         Notify('Redirecionando para sua home!', null, null, 'success');
-                        localStorage.setItem('usuario', JSON.stringify(data.usuario));                        
+                        localStorage.setItem('usuario', JSON.stringify(data.usuario));
                         window.location.replace('../Home?tipo=' + data.usuario.Tipo);
                     }
                     else {
                         Notify('Erro ao recuperar cadastro', null, null, 'danger');
                     }
                 },
-                error: function (result) {                    
+                error: function (result) {
                     Notify(result.responseJSON.error_description, null, null, 'danger');
                 },
                 beforeSend: setHeader

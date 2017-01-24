@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FinderJobs.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,7 +9,7 @@ namespace FinderJobs.Site.ViewModels
     public class Vaga
     {
         public int Id { get; set; }
-        public int IdEmpresa { get; set; }
+        public Guid IdEmpresa { get; set; }
         public DateTime DataCadastro { get; set; }
         public string Empresa { get; set; }
         public string Descricao { get; set; }
@@ -16,15 +17,14 @@ namespace FinderJobs.Site.ViewModels
         public string Habilidades { get; set; }
     }
 
-    public class VagaViewModel
-    {
-        public int Id { get; set; }
-        public int IdEmpresa { get; set; }
+    public class VagaViewModel : EntityBase
+    {        
+        public Guid IdEmpresa { get; set; }
         public DateTime DataCadastro { get; set; }
         public string Empresa { get; set; }
         public string Descricao { get; set; }
         public string Cep { get; set; }
-        public string Habilidades { get; set; }
+        public List<Habilidade> Habilidades { get; set; }
         public Vaga Vaga { get; set; }
         public UsuarioViewModel Candidato { get; set; }
         public DistanciaViewModel Pesquisa { get; set; }
@@ -48,9 +48,8 @@ namespace FinderJobs.Site.ViewModels
         public List<EmpresaDistanciaViewModel> Vagas { get; set; }
     }
 
-    public class CandidatoDistanciaViewModel
-    {
-        public int Id { get; set; }
+    public class CandidatoDistanciaViewModel : EntityBase
+    {        
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Celular { get; set; }
@@ -58,14 +57,13 @@ namespace FinderJobs.Site.ViewModels
         public string Habilidades { get; set; }        
     }
 
-    public class EmpresaDistanciaViewModel
+    public class EmpresaDistanciaViewModel : EntityBase
     {
-        public int Id { get; set; }
         public string Cep { get; set; }
         public DateTime DataCadastro { get; set; }
         public string Descricao { get; set; }
-        public string Habilidades { get; set; }
-        public int UsuarioId { get; set; }
+        public List<Habilidade> Habilidades { get; set; }
+        public Guid UsuarioId { get; set; }
         public string UsuarioNome { get; set; }
         public string UsuarioCep { get; set; }
         public string Distancia { get; set; }
@@ -77,15 +75,14 @@ namespace FinderJobs.Site.ViewModels
 
     public class CalculosVaga
     {
-        public int CandidatoId { get; set; }       
+        public Guid CandidatoId { get; set; }       
         public decimal Aderencia { get; set; }
         public string Distancia { get; set; }
     }
 
-    public class VagaDistanciaViewModel
-    {
-        public int Id { get; set; }
-        public int IdEmpresa { get; set; }
+    public class VagaDistanciaViewModel : EntityBase
+    {        
+        public Guid IdEmpresa { get; set; }
         public DateTime DataCadastro { get; set; }
         public string Empresa { get; set; }
         public string Descricao { get; set; }
@@ -93,6 +90,6 @@ namespace FinderJobs.Site.ViewModels
         public string Distancia { get; set; }
         public string Porcentagem { get; set; }
         public string Unidade { get; set; }
-        public string Habilidades { get; set; }
+        public List<HabilidadeViewModel> Habilidades { get; set; }
     }
 }

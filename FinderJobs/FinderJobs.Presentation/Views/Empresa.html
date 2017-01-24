@@ -42,13 +42,13 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="">
-                        <a href="javascript: cadastro();" class="portfolio-link" data-toggle="modal">Editar Cadastro</a>
+                        <a href="javascript: Cadastro();" class="portfolio-link" data-toggle="modal">Editar Cadastro</a>
                     </li>
                     <li class="">
                         <a href="#modalCadVagas" class="portfolio-link" data-toggle="modal">Cadastrar Vaga</a>
                     </li>
                     <li class="">
-                        <a href="../Acesso/Logout" class="portfolio-link" data-toggle="modal">Sair</a>
+                        <a href="javascript: Logout();" class="portfolio-link" data-toggle="modal">Sair</a>
                     </li>
                 </ul>
                 <!-- /.navbar-collapse -->
@@ -142,11 +142,16 @@
             processarVagas(false);            
         });
 
+
+        function Logout() {
+            localStorage.setItem("usuario", '');
+            window.location.replace('/Acesso');
+        }
+
         function cadastro() {
 
             // caregar partial view cadastro.html
             var usuario = JSON.parse(localStorage.getItem("usuario"));
-
 
             // caregar partial view cadastro.html
             $.get("../Acesso/Cadastro", function (data) {
@@ -169,7 +174,7 @@
                 $("#Usuario_EnderecoUF").val(usuario.EnderecoUF);
                 $('#dvDownload a').attr('href', usuario.CaminhoArquivo);
 
-                var habilidades = JSON.parse(usuario.Habilidades)
+                var habilidades = usuario.Habilidades;
                 if (habilidades.length > 0) {
                     $.each(habilidades, function (index, value) {
                         var html = '<span id="habilidade_' + value.Id + '" style="margin: 1px; padding: 4px;" class="alert-info">'
@@ -187,20 +192,30 @@
             });
         }
 
+        function setHeader(xhr) {
+            xhr.setRequestHeader('Authorization', 'bearer ' + localStorage.getItem('token'));
+        }
+
         function processarVagas(forcar) {
 
             var dataSetVagas = JSON.parse(localStorage.getItem("dataSetVagas"));
 
             if (forcar || dataSetVagas == null || dataSetVagas == undefined) {
                 var usuario = JSON.parse(localStorage.getItem("usuario"));
-                $.get('../Vagas/PesquisaEmpresa/' + usuario.Id, function (data) {
-                    if (data.data.length > 0) {
-                        dataSetVagas = data.data;
-                        localStorage.setItem('dataSetVagas', JSON.stringify(dataSetVagas));
-                        CarregarGridVagas(dataSetVagas);
+
+                $.ajax({
+                    url: '../Vagas/PesquisaEmpresa/' + usuario.Id,
+                    type: "GET",
+                    beforeSend: setHeader,
+                    success: function (data) {
+                        if (data.data != undefined && data.data.length > 0) {
+                            dataSetVagas = data.data;
+                            localStorage.setItem('dataSetVagas', JSON.stringify(dataSetVagas));
+                            CarregarGridVagas(dataSetVagas);
+                        }
+                        else
+                            return Notify('Não foram encontradas vagas', null, null);
                     }
-                    else
-                        return Notify('Não foram encontradas vagas', null, null);
                 });
             }
             else
@@ -234,7 +249,7 @@
                                 "mRender": function (data, type, full) {
 
                                     var html = '';
-                                    $.each(JSON.parse(data), function (index, value) {
+                                    $.each(data, function (index, value) {
                                         html += '<span id="habilidade_' + value.Id + '" style="margin: 1px; padding: 4px;" class="alert-info"> ' + value.Nome + '</span>';
                                     });
                                     return html;
@@ -277,6 +292,7 @@
         }
 
         function CadastrarVaga(btn) {
+
             var usuario = JSON.parse(localStorage.getItem("usuario"));
             if (usuario == undefined) {
                 return Notify('Ocorreu um erro, usuario não encontrado!', null, null, 'danger');
@@ -297,17 +313,19 @@
             var id = $('#Vaga_Id').val();
             var empresaId = usuario.Id;
             var empresaNome = usuario.Nome;
-            var empresaCep = usuario.EnderecoCep;
+            var empresaCep = usuario.Endereco.Cep;
             var vagaDescricao = $('#Vaga_Descricao').val();
-            var vagaHabilidades = new Array();
+            var Habilidades = { itens: [] };
 
             $.each($('#Vaga_Habilidades span'), function (index, value) {
-                var habilidade = {
+                Habilidades.itens.push({
                     'Id': value.id.split('_')[1],
                     'Nome': value.innerText
-                };
-                vagaHabilidades.push(habilidade);
+                });
             });
+            
+            if (Habilidades.itens == undefined || Habilidades.itens == null || Habilidades.itens.length < 5)
+                return Notify('Adicione 5 habilidades, no mínimo', null, null);
 
             var dados =
             {
@@ -316,7 +334,7 @@
                 'Empresa': empresaNome,
                 'Descricao': vagaDescricao,
                 'Cep': empresaCep,
-                'Habilidades': JSON.stringify(vagaHabilidades)
+                'Habilidades': Habilidades.itens
             };
 
             $.ajax({
@@ -325,6 +343,7 @@
                 data: JSON.stringify(dados),
                 contentType: 'application/json',
                 dataType: 'json',
+                beforeSend: setHeader,
                 success: function (data) {
                     if (data.sucesso) {
                         Notify('Cadastrado realizado! Estamos processado a nova vaga', null, null, 'success');
@@ -351,8 +370,7 @@
         function editarVaga(id) {
             $("#Vaga_Id").val(id);
             var celulas = $("#vaga_" + id).parent().parent()[0].cells;
-            $("#Vaga_Descricao").val(celulas[1].innerText);
-            debugger;
+            $("#Vaga_Descricao").val(celulas[1].innerText);            
             var habilidades = celulas[6].children;
             var html = '';
             $.each(habilidades, function (index, value) {
@@ -387,7 +405,7 @@
                             <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                         </div>
                         <div class="form-group col-lg-6 text-center">
-                            <input class="btn btn-default" type="button" id="btnCadastrar" value="Cadastrar" />
+                            <input class="btn btn-default" type="button" id="btnCadastrar" value="Alterar" />
                         </div>
                     </div>
                 </div>
@@ -446,7 +464,7 @@
                             <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                         </div>
                         <div class="form-group col-lg-6 text-center">
-                            <button id="btnCadastroVaga" onclick="CadastrarVaga(this)" type="button" class="btn btn-default" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde">Cadastrar</button>
+                            <button id="btnCadastroVaga" onclick="CadastrarVaga(this)" type="button" class="btn btn-default" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde">Salvar</button>
                         </div>
                     </div>
                 </div>

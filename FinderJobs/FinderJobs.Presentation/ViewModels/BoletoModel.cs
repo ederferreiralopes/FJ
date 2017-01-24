@@ -1,10 +1,11 @@
 ﻿
+using FinderJobs.Domain.Entities;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace FinderJobs.Site.ViewModels
 {
-    public class BoletoModel
+    public class BoletoModel: EntityBase
     {
 
         public BoletoModel()
@@ -12,8 +13,7 @@ namespace FinderJobs.Site.ViewModels
             this.Cedente = new CedenteModel();
             this.Sacado = new SacadoModel();
         }
-
-        public int Id { get; set; }
+        
         public short CodigoBanco { get; set; }
         public DateTime Vencimento { get; set; }
         public decimal ValorBoleto { get; set; }
@@ -29,7 +29,7 @@ namespace FinderJobs.Site.ViewModels
 
     public class CedenteModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Codigo { get; set; }
         public string NossoNumero { get; set; }
         public string CpfCnpj { get; set; }
@@ -39,15 +39,14 @@ namespace FinderJobs.Site.ViewModels
         public string DigitoConta { get; set; }
     }
 
-    public class SacadoModel
+    public class SacadoModel : EntityBase
     {
-        public int Id { get; set; }
         public string Nome { get; set; }
         public string CpfCnpj { get; set; }        
         public string Endereco { get; set; }
         public string Bairro { get; set; }
         public string Cidade { get; set; }
         public string Cep { get; set; }
-        public string Uf { get; set; }
+        public string UF { get; set; }
     }
 }

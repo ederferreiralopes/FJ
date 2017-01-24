@@ -30,7 +30,7 @@ namespace FinderJobs.Site.Controllers
                 else                
                     habilidades = _habilidadeService.BuscarPorNome(parametro);
 
-                var lista = (from h in habilidades select new ViewModels.HabilidadeViewModel { Id = h.Id, Nome = h.Nome }).ToList();
+                var lista = (from h in habilidades select new ViewModels.HabilidadeViewModel { Id = h.Id.ToString(), Nome = h.Nome }).ToList();
 
                 return Json(lista, JsonRequestBehavior.AllowGet);
             }

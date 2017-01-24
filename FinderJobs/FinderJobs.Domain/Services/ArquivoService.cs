@@ -19,24 +19,26 @@ namespace FinderJobs.Domain.Services
             _arquivoRepository = arquivoRepository;
         }
 
-        public void Desativar(int id)
+        public void Desativar(Guid id)
         {
             _arquivoRepository.Desativar(id);
         }
 
-        public void Desativar(int id, string tipo)
+        public void Desativar(Guid id, string tipo)
         {
             _arquivoRepository.Desativar(id, tipo);
         }
 
-        public IEnumerable<Arquivo> GetArquivo(int usuarioId, string tipo)
+        public IEnumerable<Arquivo> GetArquivo(Guid usuarioId, string tipo)
         {
-            return _arquivoRepository.GetAll().Where(u => u.Usuario.Id == usuarioId && u.Tipo.Equals(tipo) && u.Ativo);
+            //return _arquivoRepository.GetAll().Where(u => u.Usuario.Id == usuarioId && u.Tipo.Equals(tipo) && u.Ativo);
+            return _arquivoRepository.SearchFor(x => x.Usuario.Id == usuarioId && x.Tipo == tipo && x.Ativo);
         }
 
-        public IEnumerable<Arquivo> CarregarTodos(int usuarioId)
+        public IEnumerable<Arquivo> CarregarTodos(Guid usuarioId)
         {
-            return _arquivoRepository.GetAll().Where(u => u.Usuario.Id == usuarioId && u.Ativo);
+            //return _arquivoRepository.GetAll().Where(u => u.Usuario.Id == usuarioId && u.Ativo);
+            return _arquivoRepository.SearchFor(x => x.Usuario.Id == usuarioId && x.Ativo);
         }
     }
 }

@@ -9,6 +9,6 @@ namespace FinderJobs.Application.Interface
 {
     public interface IVagaAppService : IAppServiceBase<Vaga>
     {
-        IEnumerable<Vaga> BuscarPorEmpresa(int id);
+        IEnumerable<Vaga> BuscarPorEmpresa(Guid Id);
     }
 }

@@ -45,7 +45,7 @@
                         <a href="javascript: cadastro();" class="portfolio-link" data-toggle="modal">Editar Cadastro</a>
                     </li>
                     <li class="">
-                        <a href="../Acesso/Logout" class="portfolio-link" data-toggle="modal">Sair</a>
+                        <a href="javascript: Logout();" class="portfolio-link" data-toggle="modal">Sair</a>
                     </li>
                 </ul>
                 <!-- /.navbar-collapse -->
@@ -141,6 +141,11 @@
             processarVagas(false);            
         });
 
+        function Logout() {
+            localStorage.setItem("usuario", '');
+            window.location.replace('/Acesso');
+        }
+
         function cadastro() {
 
             var usuario = JSON.parse(localStorage.getItem("usuario"));
@@ -153,20 +158,19 @@
                 //carrega usuario
                 $("#Usuario_Id").val(usuario.Id);
                 $("#Usuario_Tipo").val(usuario.Tipo);
-                $("#Usuario_Nome").val(usuario.Nome);
-                $("#Usuario_Login").val(usuario.Login);
+                $("#Usuario_Nome").val(usuario.Nome);                
                 $("#Usuario_Email").val(usuario.Email);
                 $("#Usuario_Celular").val(usuario.Celular);
                 $("#Usuario_CpfCnpj").val(usuario.CpfCnpj);
-                $("#Usuario_EnderecoCep").val(usuario.EnderecoCep);
-                $("#Usuario_EnderecoLogradouro").val(usuario.EnderecoLogradouro);
-                $("#Usuario_EnderecoNumero").val(usuario.EnderecoNumero);
-                $("#Usuario_EnderecoBairro").val(usuario.EnderecoBairro);
-                $("#Usuario_EnderecoCidade").val(usuario.EnderecoCidade);
-                $("#Usuario_EnderecoUF").val(usuario.EnderecoUF);
-
-                var habilidades = JSON.parse(usuario.Habilidades)
-                if (habilidades.length > 0) {
+                $("#Usuario_EnderecoCep").val(usuario.Endereco.Cep);
+                $("#Usuario_EnderecoLogradouro").val(usuario.Endereco.Logradouro);
+                $("#Usuario_EnderecoNumero").val(usuario.Endereco.Numero);
+                $("#Usuario_EnderecoBairro").val(usuario.Endereco.Bairro);
+                $("#Usuario_EnderecoCidade").val(usuario.Endereco.Cidade);
+                $("#Usuario_EnderecoUF").val(usuario.Endereco.UF);
+                debugger;
+                var habilidades = usuario.Habilidades;
+                if (habilidades != null && habilidades.length > 0) {
                     $.each(habilidades, function (index, value) {
                         var html = '<span id="habilidade_' + value.Id + '" style="margin: 1px; padding: 4px;" class="alert-info">'
                                 + value.Nome + '<a style="color:red" href="#" id="'
@@ -183,20 +187,30 @@
             });
         }
 
+        function setHeader(xhr) {
+            xhr.setRequestHeader('Authorization', 'bearer ' + localStorage.getItem('token'));
+        }
+
         function processarVagas(forcar) {
 
             var dataSetVagas = JSON.parse(localStorage.getItem("dataSetVagas"));
 
             if (forcar || dataSetVagas == null || dataSetVagas == undefined) {
                 var usuario = JSON.parse(localStorage.getItem("usuario"));
-                $.get('../Vagas/PesquisaCandidato/' + usuario.Id, function (data) {
-                    if (data.data.length > 0) {
-                        dataSetVagas = data.data;
-                        localStorage.setItem('dataSetVagas', JSON.stringify(dataSetVagas));
-                        CarregarGridVagas(dataSetVagas);
+
+                $.ajax({
+                    url: '../Vagas/PesquisaCandidato/' + usuario.Id,                    
+                    type: "GET",
+                    beforeSend: setHeader,
+                    success: function (data) {
+                        if (data.data != undefined && data.data.length > 0) {
+                            dataSetVagas = data.data;
+                            localStorage.setItem('dataSetVagas', JSON.stringify(dataSetVagas));
+                            CarregarGridVagas(dataSetVagas);
+                        }
+                        else
+                            return Notify('Não foram encontradas vagas', null, null);
                     }
-                    else
-                        return Notify('Não foram encontradas vagas', null, null);
                 });
             }
             else
@@ -291,7 +305,7 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                     </div>
                     <div class="form-group col-lg-6 text-center">
-                        <input class="btn btn-default" type="button" id="btnCadastrar" value="Cadastrar" />
+                        <input class="btn btn-default" type="button" id="btnCadastrar" value="Alterar" />
                     </div>
                 </div>
             </div>

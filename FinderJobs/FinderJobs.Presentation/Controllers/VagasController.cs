@@ -37,38 +37,40 @@ namespace FinderJobs.Site.Controllers
         [HttpPost]
         public ActionResult CadastrarVaga(VagaViewModel model)
         {
-            if (!string.IsNullOrWhiteSpace(model.Descricao) && model.Habilidades != null && model.Habilidades.Length > 0)
+            if (!string.IsNullOrWhiteSpace(model.Descricao) && model.Habilidades != null && model.Habilidades.Count > 0)
             {
                 try
                 {
                     var vaga = new Domain.Entities.Vaga();
-                    if (model.Id > 0)
+                    if (model.Id != new Guid())
                         vaga = _vagaService.GetById(model.Id);
 
                     vaga.Descricao = model.Descricao;
-
-                    var habilidades = JsonConvert.DeserializeObject<List<HabilidadeJson>>(model.Habilidades);
-                    var habilidadesExistentes = habilidades.Where(x => !x.Id.Equals(x.Nome)).ToList();
+                    var habilidadesExistentes = model.Habilidades.Where(x => !x.Id.Equals(x.Nome)).ToList();
 
                     // Grava Habilidades Novas
-                    foreach (var item in habilidades.Where(x => x.Id.Equals(x.Nome)))
+                    foreach (var item in model.Habilidades.Where(x => x.Id.Equals(x.Nome)))
                     {
-                        var id = (int)_habilidadeService.Add(new Domain.Entities.Habilidade { Nome = item.Nome });
-                        habilidadesExistentes.Add(new HabilidadeJson { Id = id.ToString(), Nome = item.Nome });
+                        var habilidadeNova = new Domain.Entities.Habilidade { Nome = item.Nome };
+                        habilidadeNova.Id = (Guid)_habilidadeService.Insert(habilidadeNova);
+                        habilidadesExistentes.Add(habilidadeNova);
                     }
 
-                    vaga.Habilidades = JsonConvert.SerializeObject(habilidadesExistentes);
+                    vaga.Habilidades = habilidadesExistentes;
 
-                    if (model.Id == 0)
+                    if (model.Id == new Guid())
                     {
                         vaga.Empresa = new Domain.Entities.Usuario { Id = model.IdEmpresa };
                         vaga.Cep = model.Cep;
                         vaga.DataCadastro = DateTime.Now;
                         vaga.Ativo = true;
-                        model.Id = (int)_vagaService.Add(vaga);
+                        var resultado = _vagaService.Insert(vaga);
                     }
                     else
+                    {
+                        vaga.DataAlteracao = DateTime.Now;
                         _vagaService.Update(vaga);
+                    }
 
                     return Json(new { sucesso = true }, JsonRequestBehavior.AllowGet);
                 }
@@ -78,69 +80,78 @@ namespace FinderJobs.Site.Controllers
                 }
             }
             return Json(new { sucesso = false, mensagem = "Preencha todos os campos" }, JsonRequestBehavior.AllowGet);
-        }     
-
-        public ActionResult PesquisaEmpresa(int id)
-        {
-            var vagas = _vagaService.BuscarPorEmpresa(id).ToList();
-            var empresaVagaViewModel = new EmpresaVagaViewModel
-            {
-                Vagas = new List<EmpresaDistanciaViewModel>(),
-                Candidatos = new List<CandidatoDistanciaViewModel>()
-            };
-
-            empresaVagaViewModel.Vagas = (from vaga in vagas
-                                          select new EmpresaDistanciaViewModel
-                                          {
-                                              Id = vaga.Id,
-                                              DataCadastro = vaga.DataCadastro,
-                                              Cep = vaga.Cep,
-                                              Descricao = vaga.Descricao,
-                                              Habilidades = vaga.Habilidades,
-                                          }).ToList();
-            var usuarios = _usuarioService.BuscarPorTipo(UsuarioTipo.Candidato.ToString()).ToList();
-
-            empresaVagaViewModel.Candidatos = (from usuario in usuarios
-                                               select new ViewModels.CandidatoDistanciaViewModel
-                                               {
-                                                   Id = usuario.Id,
-                                                   Celular = usuario.Celular,
-                                                   Nome = usuario.Nome,
-                                                   Habilidades = usuario.Habilidades,
-                                                   EnderecoCep = usuario.EnderecoCep,
-                                                   Email = usuario.Email,
-                                               }).ToList();
-
-            empresaVagaViewModel = CalcularDistancia(empresaVagaViewModel);
-            empresaVagaViewModel = CalcularAderencia(empresaVagaViewModel);
-            empresaVagaViewModel = EscolherCandidatoVaga(empresaVagaViewModel);
-
-            var data = new List<object>();
-
-            empresaVagaViewModel.Vagas = empresaVagaViewModel.Vagas.OrderBy(x => x.DataCadastro).ToList();
-
-            foreach (var x in empresaVagaViewModel.Vagas)
-            {
-                data.Add(new
-                {
-                    IdVaga = x.Id,
-                    DataCadastro = x.DataCadastro.ToShortDateString() + " " + x.DataCadastro.ToShortTimeString(),
-                    Descricao = x.Descricao,
-                    Cep = x.Cep,
-                    Habilidades = x.Habilidades,
-                    IdCandidato = x.UsuarioId,
-                    Candidato = x.UsuarioNome,
-                    Distancia = !string.IsNullOrWhiteSpace(x.Distancia) ? x.Distancia + " " + x.Unidade : "",
-                    Aderencia = !string.IsNullOrWhiteSpace(x.Porcentagem) ? x.Porcentagem + " %" : ""
-                });
-            }
-
-            return Json(new { data }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult PesquisaCandidato(int id)
+        public ActionResult PesquisaEmpresa(string id)
         {
-            var usuario = _usuarioService.GetById(id);
+            var empresaId = Guid.Parse(id);
+            var vagas = _vagaService.BuscarPorEmpresa(empresaId).ToList();
+            if (vagas != null && vagas.Count > 0)
+            {
+
+
+                var empresaVagaViewModel = new EmpresaVagaViewModel
+                {
+                    Vagas = new List<EmpresaDistanciaViewModel>(),
+                    Candidatos = new List<CandidatoDistanciaViewModel>()
+                };
+
+                empresaVagaViewModel.Vagas = (from vaga in vagas
+                                              select new EmpresaDistanciaViewModel
+                                              {
+                                                  Id = vaga.Id,
+                                                  DataCadastro = vaga.DataCadastro,
+                                                  Cep = vaga.Cep,
+                                                  Descricao = vaga.Descricao,
+                                                  Habilidades = vaga.Habilidades,
+                                              }).ToList();
+                var usuarios = _usuarioService.BuscarPorTipo(UsuarioTipo.Candidato.ToString()).ToList();
+
+                empresaVagaViewModel.Candidatos = (from usuario in usuarios
+                                                   select new ViewModels.CandidatoDistanciaViewModel
+                                                   {
+                                                       Id = usuario.Id,
+                                                       Celular = usuario.Celular,
+                                                       Nome = usuario.Nome,
+                                                       Habilidades = JsonConvert.SerializeObject(usuario.Habilidades),
+                                                       EnderecoCep = usuario.Endereco.Cep,
+                                                       Email = usuario.Email,
+                                                   }).ToList();
+
+                empresaVagaViewModel = CalcularDistancia(empresaVagaViewModel);
+                empresaVagaViewModel = CalcularAderencia(empresaVagaViewModel);
+                empresaVagaViewModel = EscolherCandidatoVaga(empresaVagaViewModel);
+
+                var data = new List<object>();
+
+                empresaVagaViewModel.Vagas = empresaVagaViewModel.Vagas.OrderBy(x => x.DataCadastro).ToList();
+
+                foreach (var x in empresaVagaViewModel.Vagas)
+                {
+                    data.Add(new
+                    {
+                        IdVaga = x.Id,
+                        DataCadastro = x.DataCadastro.ToShortDateString() + " " + x.DataCadastro.ToShortTimeString(),
+                        Descricao = x.Descricao,
+                        Cep = x.Cep,
+                        Habilidades = x.Habilidades,
+                        IdCandidato = x.UsuarioId,
+                        Candidato = x.UsuarioNome,
+                        Distancia = !string.IsNullOrWhiteSpace(x.Distancia) ? x.Distancia + " " + x.Unidade : "",
+                        Aderencia = !string.IsNullOrWhiteSpace(x.Porcentagem) ? x.Porcentagem + " %" : ""
+                    });
+                }
+
+                return Json(new { data }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { sucesso = false }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult PesquisaCandidato(string id)
+        {
+            var usuarioId = Guid.Parse(id);
+            var usuario = _usuarioService.GetById(usuarioId);
             var viewModel = new CandidatoVagaViewModel
             {
                 Origem = new UsuarioViewModel
@@ -148,18 +159,11 @@ namespace FinderJobs.Site.Controllers
                     Id = usuario.Id,
                     CpfCnpj = usuario.CpfCnpj,
                     Celular = usuario.Celular,
-                    Login = usuario.Login,
                     Nome = usuario.Nome,
                     Pago = usuario.Pago,
-                    Senha = usuario.Senha,
                     Tipo = usuario.Tipo,
-                    Habilidades = usuario.Habilidades,
-                    EnderecoUF = usuario.EnderecoUF,
-                    EnderecoNumero = usuario.EnderecoNumero,
-                    EnderecoLogradouro = usuario.EnderecoLogradouro,
-                    EnderecoCidade = usuario.EnderecoCidade,
-                    EnderecoBairro = usuario.EnderecoBairro,
-                    EnderecoCep = usuario.EnderecoCep,
+                    Habilidades = (from h in usuario.Habilidades select new HabilidadeViewModel { Id = h.Id.ToString(), Nome = h.Nome}).ToList(),
+                    Endereco = usuario.Endereco,
                     Email = usuario.Email,
                     DataCadastro = usuario.DataCadastro,
                     Anonimo = usuario.Anonimo,
@@ -167,7 +171,7 @@ namespace FinderJobs.Site.Controllers
             };
 
             var vagas = _vagaService.GetAll().ToList();
-            if (vagas != null)
+            if (vagas != null && vagas.Count > 0)
             {
                 var vagasViewModel = new List<VagaDistanciaViewModel>();
                 foreach (var item in vagas)
@@ -180,36 +184,38 @@ namespace FinderJobs.Site.Controllers
                             Empresa = item.Empresa.Nome,
                             Cep = item.Cep,
                             DataCadastro = item.DataCadastro,
-                            Descricao = item.Descricao,
-                            Habilidades = item.Habilidades,
+                            Descricao = item.Descricao,                            
+                            Habilidades = (from h in item.Habilidades select new HabilidadeViewModel { Id = h.Id.ToString(), Nome = h.Nome }).ToList(),
                         });
                 }
                 viewModel.Destinos = vagasViewModel;
                 viewModel = CalcularDistancia(viewModel);
                 viewModel = CalcularAderencia(viewModel);
-            }
 
-            var data = new List<object>();
+                var data = new List<object>();
 
-            viewModel.Destinos = viewModel.Destinos.OrderBy(x => x.DataCadastro).ToList();
+                viewModel.Destinos = viewModel.Destinos.OrderBy(x => x.DataCadastro).ToList();
 
-            foreach (var x in viewModel.Destinos)
-            {
-                data.Add(new
+                foreach (var x in viewModel.Destinos)
                 {
-                    IdVaga = x.Id,
-                    DataCadastro = x.DataCadastro.ToShortDateString() + " " + x.DataCadastro.ToShortTimeString(),
-                    Descricao = x.Descricao,
-                    Cep = x.Cep,
-                    Habilidades = x.Habilidades,
-                    IdEmpresa = x.IdEmpresa,
-                    Empresa = x.Empresa,
-                    Distancia = !string.IsNullOrWhiteSpace(x.Distancia) ? x.Distancia + " " + x.Unidade : "",
-                    Aderencia = !string.IsNullOrWhiteSpace(x.Porcentagem) ? x.Porcentagem + " %" : ""
-                });
+                    data.Add(new
+                    {
+                        IdVaga = x.Id,
+                        DataCadastro = x.DataCadastro.ToShortDateString() + " " + x.DataCadastro.ToShortTimeString(),
+                        Descricao = x.Descricao,
+                        Cep = x.Cep,
+                        Habilidades = x.Habilidades,
+                        IdEmpresa = x.IdEmpresa,
+                        Empresa = x.Empresa,
+                        Distancia = !string.IsNullOrWhiteSpace(x.Distancia) ? x.Distancia + " " + x.Unidade : "",
+                        Aderencia = !string.IsNullOrWhiteSpace(x.Porcentagem) ? x.Porcentagem + " %" : ""
+                    });
+                }
+
+                return Json(new { data }, JsonRequestBehavior.AllowGet);
             }
 
-            return Json(new { data }, JsonRequestBehavior.AllowGet);
+            return Json(new { sucesso = false }, JsonRequestBehavior.AllowGet);
         }
 
         private CandidatoVagaViewModel CalcularDistancia(CandidatoVagaViewModel viewModel)
@@ -222,7 +228,7 @@ namespace FinderJobs.Site.Controllers
             }
             destinos = destinos.Substring(0, destinos.Length - 1);
 
-            var queryString = "?origins=" + viewModel.Origem.EnderecoCep + "&destinations=" + destinos + "&mode=driving" + "&key=AIzaSyCycG73VSX4N6sFxieKuCpYBnAKCJrG3XI";
+            var queryString = "?origins=" + viewModel.Origem.Endereco.Cep + "&destinations=" + destinos + "&mode=driving" + "&key=AIzaSyCycG73VSX4N6sFxieKuCpYBnAKCJrG3XI";
             try
             {
                 var distancia = string.Empty;
@@ -285,7 +291,7 @@ namespace FinderJobs.Site.Controllers
                     respostaJson = JsonConvert.DeserializeObject<RespostaViewDistancia>(distancia);
                 }
 
-                int indiceVaga = 0;                                
+                int indiceVaga = 0;
                 foreach (var row in respostaJson.rows)
                 {
                     var calculosVaga = new List<CalculosVaga>();
@@ -309,20 +315,17 @@ namespace FinderJobs.Site.Controllers
         }
 
         private CandidatoVagaViewModel CalcularAderencia(CandidatoVagaViewModel viewModel)
-        {
-            var HabilidadesOrigem = JsonConvert.DeserializeObject<List<HabilidadeJson>>(viewModel.Origem.Habilidades);
-
+        {           
             foreach (var item in viewModel.Destinos)
             {
-                if (!string.IsNullOrEmpty(item.Habilidades))
-                {
-                    var habilidadeJson = JsonConvert.DeserializeObject<List<HabilidadeJson>>(item.Habilidades);
+                if (item.Habilidades != null && item.Habilidades.Count > 0)
+                {                    
                     decimal porcentagem = 0;
-                    var indice = 100 / habilidadeJson.Where(x => x != null).ToArray().Length;
+                    var indice = 100 / item.Habilidades.Where(x => x != null).ToArray().Length;
 
-                    foreach (var habilidade in HabilidadesOrigem)
+                    foreach (var habilidade in viewModel.Origem.Habilidades)
                     {
-                        if (habilidadeJson.Exists(x => x.Nome.Contains(habilidade.Nome)))
+                        if (item.Habilidades.Exists(x => x.Nome.Contains(habilidade.Nome)))
                             porcentagem += indice;
                     }
 
@@ -337,17 +340,16 @@ namespace FinderJobs.Site.Controllers
         {
             foreach (var vaga in viewModel.Vagas)
             {
-                var HabilidadesVaga = JsonConvert.DeserializeObject<List<HabilidadeJson>>(vaga.Habilidades);
                 int indiceCandidato = 0;
                 foreach (var candidato in viewModel.Candidatos)
-                {                    
+                {
                     if (!string.IsNullOrEmpty(candidato.Habilidades))
                     {
-                        var habilidadesCandidato = JsonConvert.DeserializeObject<List<HabilidadeJson>>(candidato.Habilidades);
+                        var habilidadesCandidato = JsonConvert.DeserializeObject<List<HabilidadeViewModel>>(candidato.Habilidades);
                         decimal porcentagem = 0;
-                        var taxa = 100 / HabilidadesVaga.Where(x => x != null).ToArray().Length;
+                        var taxa = 100 / vaga.Habilidades.Where(x => x != null).ToArray().Length;
 
-                        foreach (var habilidade in HabilidadesVaga)
+                        foreach (var habilidade in vaga.Habilidades)
                         {
                             if (habilidadesCandidato.Exists(x => x.Nome.Contains(habilidade.Nome)))
                                 porcentagem += taxa;
@@ -368,7 +370,7 @@ namespace FinderJobs.Site.Controllers
             {
                 foreach (var calculo in vaga.CalculosVaga)
                 {
-                    if (campeao.CandidatoId == 0)
+                    if (campeao.CandidatoId == new Guid())
                         campeao = calculo;
                     else if (calculo.Aderencia > campeao.Aderencia)
                         campeao = calculo;
@@ -376,7 +378,7 @@ namespace FinderJobs.Site.Controllers
 
                 vaga.UsuarioId = campeao.CandidatoId;
                 vaga.UsuarioNome = viewModel.Candidatos.Where(x => x.Id == campeao.CandidatoId).FirstOrDefault().Nome;
-                vaga.UsuarioCep = viewModel.Candidatos.Where(x => x.Id == campeao.CandidatoId).FirstOrDefault().EnderecoCep;                
+                vaga.UsuarioCep = viewModel.Candidatos.Where(x => x.Id == campeao.CandidatoId).FirstOrDefault().EnderecoCep;
                 vaga.Porcentagem = campeao.Aderencia.ToString();
                 vaga.Distancia = campeao.Distancia;
             }

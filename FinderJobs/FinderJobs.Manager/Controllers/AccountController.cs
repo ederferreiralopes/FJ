@@ -163,6 +163,16 @@ namespace FinderJobs.Manager.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public async Task<ActionResult> UsuarioDisponivelApi(string Email)
+        {
+            var user = await UserManager.FindByNameAsync(Email);
+            if (user == null)                            
+                return Json(new { sucesso = true }, JsonRequestBehavior.AllowGet);                        
+            else
+                return Json(new { sucesso = false }, JsonRequestBehavior.AllowGet);
+        }
+
         //
         // POST: /Account/Register
         [HttpPost]
@@ -191,15 +201,22 @@ namespace FinderJobs.Manager.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> RegisterApi(string Email, string Password)
+        public async Task<ActionResult> RegisterApi(string Email, string Password, string Url)
         {
 
             var user = new ApplicationUser { UserName = Email, Email = Email };
             var result = await UserManager.CreateAsync(user, Password);
             if (result.Succeeded)
             {
-                var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);                
+                var callbackUrl = string.Concat(Url, "?email=", Email, "&code=", code, "&date=", DateTime.Now.ToString("ddMMyyyyHHmmss"));
+
+                var emailTitulo = "Recuperação de Senha";
+                var emailConteudo = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/> <title>FindeJobs</title> <style type=\"text/css\"> body{margin: 0; padding: 0; min-width: 100%!important;}.content{width: 100%; max-width: 600px;}@media only screen and (min-device-width: 601px){.content{width: 600px !important;}}.header{padding: 40px 30px 20px 30px;}.col425{width: 425px!important;}.subhead{font-size: 15px; color: #ffffff; font-family: sans-serif; letter-spacing: 10px;}.h1{font-size: 33px; line-height: 38px; font-weight: bold;}.h1, .h2, .bodycopy{color: #153643; font-family: sans-serif;}.innerpadding{padding: 30px 30px 30px 30px;}.borderbottom{border-bottom: 1px solid #f2eeed;}.h2{padding: 0 0 15px 0; font-size: 24px; line-height: 28px; font-weight: bold;}.bodycopy{font-size: 16px; line-height: 22px;}.button{text-align: center; font-size: 18px; font-family: sans-serif; font-weight: bold; padding: 0 30px 0 30px;}.button a{color: #ffffff; text-decoration: none;}@media only screen and (min-device-width: 601px){.content{width: 600px !important;}.col425{width: 425px!important;}.col380{width: 380px!important;}}img{height: auto;}.footer{padding: 20px 30px 15px 30px;}.footercopy{font-family: sans-serif; font-size: 14px; color: #ffffff;}.footercopy a{color: #ffffff; text-decoration: underline;}@media only screen and (max-width: 550px), screen and (max-device-width: 550px){body[yahoo] .buttonwrapper{background-color: transparent!important;}body[yahoo] .button a{background-color: #e05443; padding: 15px 15px 13px!important; display: block!important;}}body[yahoo] .unsubscribe{display: block; margin-top: 20px; padding: 10px 50px; background: #b5c5dd; border-radius: 5px; text-decoration: none!important; font-weight: bold;}body[yahoo] .hide{display: none!important;}</style> </head> <body yahoo bgcolor=\"#bce8f1\"><!--[if (gte mso 9)|(IE)]><table width=\"600\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td><![endif]--><table class=\"content\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td class=\"header\" bgcolor=\"#b5c5dd\"><table width=\"70\" align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td height=\"70\" style=\"padding: 0 20px 20px 0;\"><img src=\"http://finderjobs.com.br/content/img/profile.png\" width=\"70\" height=\"70\" border=\"0\" alt=\"\" / ></td></tr></table><!--[if (gte mso 9)|(IE)]><table width=\"425\" align=\"left\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td><![endif]--><table class=\"col425\" align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; max-width: 425px;\"><tr><td height=\"70\"><table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"subhead\" style=\"padding: 0 0 0 3px;\">FinderJobs</td></tr><tr><td class=\"h1\" style=\"padding: 5px 0 0 0;\">Controle de Acesso</td></tr></table></td></tr></table><!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]--></td></tr><tr> <td class=\"innerpadding borderbottom\"><table width=\"115\" align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"> <tr><td height=\"115\" style=\"padding: 0 20px 20px 0;\"> <img src=\"http://finderjobs.com.br/images/icone-acesso.png\" width=\"115\" height=\"115\" border=\"0\" alt=\"\"/></td></tr></table><!--[if (gte mso 9)|(IE)]> <table width=\"380\" align=\"left\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr> <td><![endif]--><table class=\"col380\" align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; max-width: 380px;\"> <tr><td> <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr> <td class=\"bodycopy\">#mensagemTexto </td></tr><tr> <td style=\"padding: 20px 0 0 0;\"><table class=\"buttonwrapper\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"> <tr><td> <a href=\"#link\" class=\"unsubscribe\"> <font color=\"#000\">Clique aqui</font> </a></td></tr></table> </td></tr></table></td></tr></table><!--[if (gte mso 9)|(IE)]> </td></tr></table><![endif]--> </td></tr></table><!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]--> </body></html>";
+                emailConteudo = emailConteudo.Replace("#mensagemTexto", "Por favor, cadastre uma nova senha clicando no botão abaixo");
+                emailConteudo = emailConteudo.Replace("#link", callbackUrl);
+                await UserManager.SendEmailAsync(user.Id, emailTitulo, emailConteudo);
+
                 await UserManager.SendEmailAsync(user.Id, "Confirmação de cadastro", "Por favor, confirme seu cadastro clicando neste link: <a href=\"" + callbackUrl + "\">link</a>");
                 return Json(new { sucesso = true, mensagem = "Foi enviado um email de confirmação para " + Email }, JsonRequestBehavior.AllowGet);
             }
@@ -260,11 +277,9 @@ namespace FinderJobs.Manager.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
-        // POST: /Account/ForgotPassword
-        [HttpPost]
+                
         [AllowAnonymous]
-        public async Task<ActionResult> ForgotPasswordApi(string Email)
+        public async Task<ActionResult> ForgotPasswordApi(string Email, string Url)
         {
             var user = await UserManager.FindByNameAsync(Email);
             if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
@@ -273,9 +288,14 @@ namespace FinderJobs.Manager.Controllers
                 return Json(new { sucesso = true, mensagem = "Enviado email de recuperação de senha" }, JsonRequestBehavior.AllowGet);
             }
 
-            var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);            
-            var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-            await UserManager.SendEmailAsync(user.Id, "Recuperação de Senha", "Por favor, cadastre uma nova senha clicando aqui: <a href=\"" + callbackUrl + "\">link</a>");
+            var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);                        
+            var callbackUrl = string.Concat(Url, "?email=", Email, "&code=", code, "&date=", DateTime.Now.ToString("ddMMyyyyHHmmss"));
+
+            var emailTitulo = "Recuperação de Senha";
+            var emailConteudo = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/> <title>FindeJobs</title> <style type=\"text/css\"> body{margin: 0; padding: 0; min-width: 100%!important;}.content{width: 100%; max-width: 600px;}@media only screen and (min-device-width: 601px){.content{width: 600px !important;}}.header{padding: 40px 30px 20px 30px;}.col425{width: 425px!important;}.subhead{font-size: 15px; color: #ffffff; font-family: sans-serif; letter-spacing: 10px;}.h1{font-size: 33px; line-height: 38px; font-weight: bold;}.h1, .h2, .bodycopy{color: #153643; font-family: sans-serif;}.innerpadding{padding: 30px 30px 30px 30px;}.borderbottom{border-bottom: 1px solid #f2eeed;}.h2{padding: 0 0 15px 0; font-size: 24px; line-height: 28px; font-weight: bold;}.bodycopy{font-size: 16px; line-height: 22px;}.button{text-align: center; font-size: 18px; font-family: sans-serif; font-weight: bold; padding: 0 30px 0 30px;}.button a{color: #ffffff; text-decoration: none;}@media only screen and (min-device-width: 601px){.content{width: 600px !important;}.col425{width: 425px!important;}.col380{width: 380px!important;}}img{height: auto;}.footer{padding: 20px 30px 15px 30px;}.footercopy{font-family: sans-serif; font-size: 14px; color: #ffffff;}.footercopy a{color: #ffffff; text-decoration: underline;}@media only screen and (max-width: 550px), screen and (max-device-width: 550px){body[yahoo] .buttonwrapper{background-color: transparent!important;}body[yahoo] .button a{background-color: #e05443; padding: 15px 15px 13px!important; display: block!important;}}body[yahoo] .unsubscribe{display: block; margin-top: 20px; padding: 10px 50px; background: #b5c5dd; border-radius: 5px; text-decoration: none!important; font-weight: bold;}body[yahoo] .hide{display: none!important;}</style> </head> <body yahoo bgcolor=\"#bce8f1\"><!--[if (gte mso 9)|(IE)]><table width=\"600\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td><![endif]--><table class=\"content\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td class=\"header\" bgcolor=\"#b5c5dd\"><table width=\"70\" align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td height=\"70\" style=\"padding: 0 20px 20px 0;\"><img src=\"http://finderjobs.com.br/content/img/profile.png\" width=\"70\" height=\"70\" border=\"0\" alt=\"\" / ></td></tr></table><!--[if (gte mso 9)|(IE)]><table width=\"425\" align=\"left\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td><![endif]--><table class=\"col425\" align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; max-width: 425px;\"><tr><td height=\"70\"><table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"subhead\" style=\"padding: 0 0 0 3px;\">FinderJobs</td></tr><tr><td class=\"h1\" style=\"padding: 5px 0 0 0;\">Controle de Acesso</td></tr></table></td></tr></table><!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]--></td></tr><tr> <td class=\"innerpadding borderbottom\"><table width=\"115\" align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"> <tr><td height=\"115\" style=\"padding: 0 20px 20px 0;\"> <img src=\"http://finderjobs.com.br/images/icone-acesso.png\" width=\"115\" height=\"115\" border=\"0\" alt=\"\"/></td></tr></table><!--[if (gte mso 9)|(IE)]> <table width=\"380\" align=\"left\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr> <td><![endif]--><table class=\"col380\" align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; max-width: 380px;\"> <tr><td> <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr> <td class=\"bodycopy\">#mensagemTexto </td></tr><tr> <td style=\"padding: 20px 0 0 0;\"><table class=\"buttonwrapper\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"> <tr><td> <a href=\"#link\" class=\"unsubscribe\"> <font color=\"#000\">Clique aqui</font> </a></td></tr></table> </td></tr></table></td></tr></table><!--[if (gte mso 9)|(IE)]> </td></tr></table><![endif]--> </td></tr></table><!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]--> </body></html>";
+            emailConteudo = emailConteudo.Replace("#mensagemTexto", "Por favor, cadastre uma nova senha clicando no botão abaixo");
+            emailConteudo = emailConteudo.Replace("#link", callbackUrl);            
+            await UserManager.SendEmailAsync(user.Id, emailTitulo, emailConteudo);
             ViewBag.Link = callbackUrl;
 
             return Json(new { sucesso = true, mensagem = "Enviado email de recuperação de senha" }, JsonRequestBehavior.AllowGet);
@@ -322,7 +342,6 @@ namespace FinderJobs.Manager.Controllers
             AddErrors(result);
             return View();
         }
-
 
         [HttpPost]
         [AllowAnonymous]

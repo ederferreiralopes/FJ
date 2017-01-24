@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using FinderJobs.Domain.Interfaces.Services;
 using FinderJobs.Domain.Interfaces.Repositories;
+using System.Linq.Expressions;
 
 namespace FinderJobs.Domain.Services
 {
-    public class ServiceBase<TEntity> : IDisposable, IServiceBase<TEntity> where TEntity : class
+    public class ServiceBase<TEntity> : IServiceBase<TEntity> where TEntity : class
     {
 
         private readonly IRepositoryBase<TEntity> _repository;
@@ -16,34 +17,34 @@ namespace FinderJobs.Domain.Services
             _repository = repository;
         }
 
-        public object Add(TEntity obj)
+        public object Insert(TEntity obj)
         {
-            return _repository.Add(obj);
+            return _repository.Insert(obj);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        IList<TEntity> IServiceBase<TEntity>.GetAll()
         {
             return _repository.GetAll();
         }
 
-        public TEntity GetById(int id)
+        public TEntity GetById(Guid id)
         {
             return _repository.GetById(id);
         }
 
-        public void Update(TEntity obj)
+        public bool Update(TEntity obj)
         {
-            _repository.Update(obj);
+            return _repository.Update(obj);
         }
 
-        public void Remove(TEntity obj)
+        public bool Delete(TEntity obj)
         {
-            _repository.Remove(obj);
+            return _repository.Delete(obj);
         }
 
-        public void Dispose()
+        public IList<TEntity> SearchFor(Expression<Func<TEntity, bool>> predicate)
         {
-            _repository.Dispose();
+            throw new NotImplementedException();
         }
     }
 }

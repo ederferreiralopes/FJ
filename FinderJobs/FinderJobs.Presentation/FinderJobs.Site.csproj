@@ -211,6 +211,7 @@
     <Content Include="dataTables\jquery.dataTables_themeroller.css" />
     <Content Include="Global.asax" />
     <Content Include="images\favicon.ico" />
+    <Content Include="images\icone-acesso.png" />
     <Content Include="images\icone-boleto.png" />
     <Content Include="images\icone-cartao.png" />
     <Content Include="images\icone-usuario.png" />
@@ -272,7 +273,6 @@
     <Compile Include="AuthorizationServerProvider.cs" />
     <Compile Include="Controllers\CadastroController.cs" />
     <Compile Include="Controllers\AcessoController.cs" />
-    <Compile Include="Controllers\AssinaturaController.cs" />
     <Compile Include="Controllers\HabilidadeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\VagasController.cs" />
@@ -347,7 +347,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\Sorting icons.psd" />

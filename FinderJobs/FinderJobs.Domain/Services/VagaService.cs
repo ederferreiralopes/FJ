@@ -19,7 +19,7 @@ namespace FinderJobs.Domain.Services
             _vagaRepository = vagaRepository;
         }
 
-        public IEnumerable<Vaga> BuscarPorEmpresa(int id)
+        public IEnumerable<Vaga> BuscarPorEmpresa(Guid id)
         {
             return _vagaRepository.GetAll().Where(v => v.Empresa.Id == id);
         }

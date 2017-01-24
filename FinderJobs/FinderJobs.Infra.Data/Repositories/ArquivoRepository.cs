@@ -1,46 +1,31 @@
 ﻿
 using System.Collections.Generic;
 using System.Linq;
-using NHibernate.Linq;
 using FinderJobs.Domain.Entities;
 using FinderJobs.Domain.Interfaces.Repositories;
 using FinderJobs.Infra.Data.Context;
-using System.Text;
+using System;
+using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace FinderJobs.Infra.Data.Repositories
 {
-    public class ArquivoRepository : RepositoryBase<Arquivo>, IArquivoRepository
+    public class ArquivoRepository : RepositoryBaseMongoDb<Arquivo>, IArquivoRepository
     {
-        public void Desativar(int id)
+        public void Desativar(Guid id)
         {
-            using (var session = SessionFactory.AbrirSession())
-            {
-                try
-                {
-                    var query = string.Concat("update arquivo set Ativo = 0 where id = ", id);
-                    session.CreateSQLQuery(query)
-                    .ExecuteUpdate();
-                }
-                catch (System.Exception ex)
-                {
-                }
-            }
+            //var context = MongoDbContext.Create();
+            //var filter = Builders<Arquivo>.Filter.Eq("_i", id);
+            //var update = Builders<Arquivo>.Update.Set("Ativo", false); //.CurrentDate("lastModified");
+            //context.Arquivo.UpdateMany(filter, update);
         }
 
-        public void Desativar(int usuarioId, string tipo)
+        public void Desativar(Guid usuarioId, string tipo)
         {
-            using (var session = SessionFactory.AbrirSession())
-            {
-                try
-                {
-                    var query = string.Concat("update arquivo set Ativo = 0 where usuarioId = ", usuarioId, " and tipo = '", tipo, "'");
-                    session.CreateSQLQuery(query)
-                    .ExecuteUpdate();
-                }
-                catch (System.Exception ex)
-                {
-                }
-            }
-        }
+            //var context = MongoDbContext.Create();
+            //var filter = Builders<Arquivo>.Filter.Eq("UsuarioId", usuarioId) & Builders<Arquivo>.Filter.Eq("Tipo", tipo);
+            //var update = Builders<Arquivo>.Update.Set("Ativo", false); //.CurrentDate("lastModified");
+            //context.Arquivo.UpdateMany(filter, update);
+        }        
     }
 }

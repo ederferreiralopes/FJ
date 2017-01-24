@@ -38,7 +38,7 @@ namespace FinderJobs.Site
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/api/security/token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(12),
+                AccessTokenExpireTimeSpan = TimeSpan.FromHours(2),
                 Provider = new AuthorizationServerProvider()
             };
 

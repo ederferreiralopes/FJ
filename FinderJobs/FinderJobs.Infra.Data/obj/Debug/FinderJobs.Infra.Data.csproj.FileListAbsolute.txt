@@ -61,3 +61,10 @@ D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\NHibernate.xml
 D:\Roberto\FinderJobs\FinderJobs.Infra.Data\obj\Debug\FinderJobs.Infra.Data.csprojResolveAssemblyReference.cache
 D:\Roberto\FinderJobs\FinderJobs.Infra.Data\obj\Debug\FinderJobs.Infra.Data.dll
 D:\Roberto\FinderJobs\FinderJobs.Infra.Data\obj\Debug\FinderJobs.Infra.Data.pdb
+D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\MongoDB.Bson.dll
+D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\MongoDB.Driver.dll
+D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\MongoDB.Driver.Core.dll
+D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\MongoDB.Bson.xml
+D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\MongoDB.Driver.xml
+D:\Roberto\FinderJobs\FinderJobs.Infra.Data\bin\Debug\MongoDB.Driver.Core.xml

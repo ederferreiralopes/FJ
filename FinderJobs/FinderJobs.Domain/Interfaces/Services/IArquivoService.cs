@@ -9,12 +9,12 @@ namespace FinderJobs.Domain.Interfaces.Services
 {
     public interface IArquivoService : IServiceBase<Arquivo>
     {
-        void Desativar(int id);
+        void Desativar(Guid id);
 
-        void Desativar(int id, string tipo);
+        void Desativar(Guid id, string tipo);
 
-        IEnumerable<Arquivo> GetArquivo(int usuarioId, string tipo);
+        IEnumerable<Arquivo> GetArquivo(Guid usuarioId, string tipo);
 
-        IEnumerable<Arquivo> CarregarTodos(int usuarioId);
+        IEnumerable<Arquivo> CarregarTodos(Guid usuarioId);
     }
 }

@@ -146,8 +146,15 @@ namespace FinderJobs.Manager.Models
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential("eder.zoe@gmail.com", "eder7710");
+            var mailMessage = new MailMessage();
+            
+            mailMessage.To.Add(message.Destination);
+            mailMessage.Subject = message.Subject;
+            mailMessage.Body = message.Body;
+            mailMessage.IsBodyHtml = true;
+            mailMessage.From = new MailAddress("contato@finderJobs.com.br");
 
-            return client.SendMailAsync("contato@finderjobs.com.br", message.Destination, message.Subject, message.Body);            
+            return client.SendMailAsync(mailMessage);            
         }
     }
 
@@ -155,7 +162,7 @@ namespace FinderJobs.Manager.Models
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your sms service here to send a text message.
+            // Plug in your sms service here to send a text message.            
             return Task.FromResult(0);
         }
     }

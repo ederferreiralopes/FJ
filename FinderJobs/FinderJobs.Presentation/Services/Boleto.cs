@@ -8,22 +8,6 @@ using System.Web;
 
 namespace FinderJobs.Site.Services
 {
-
-    public class Acesso
-    {
-
-        private readonly IUsuarioAppService _usuarioService;
-
-        public Acesso(IUsuarioAppService usuarioService)
-        {
-            _usuarioService = usuarioService;
-        }
-
-        public Usuario ValidarAcesso(string usuario, string senha)
-        {
-            return _usuarioService.ValidarAcesso(usuario, senha);
-        }
-    }
     public class Boleto
     {
         public BoletoNet.BoletoBancario GeraBoleto(BoletoModel model)
@@ -53,7 +37,7 @@ namespace FinderJobs.Site.Services
             boleto.Sacado.Endereco.Bairro = model.Sacado.Bairro;
             boleto.Sacado.Endereco.Cidade = model.Sacado.Cidade;
             boleto.Sacado.Endereco.CEP = model.Sacado.Cep;
-            boleto.Sacado.Endereco.UF = model.Sacado.Uf;
+            boleto.Sacado.Endereco.UF = model.Sacado.UF;
 
             var instrucaoItau = new BoletoNet.Instrucao_Itau();
             instrucaoItau.Descricao = model.Descricao;

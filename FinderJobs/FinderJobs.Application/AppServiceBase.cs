@@ -5,46 +5,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace FinderJobs.Application
 {
-    public class AppServiceBase<TEntity> : IDisposable, IAppServiceBase<TEntity> where TEntity : class
+    public class AppServiceBase<TEntity> : IAppServiceBase<TEntity> where TEntity : class
     {
         private readonly IServiceBase<TEntity> _serviceBase;
 
-        public AppServiceBase(IServiceBase<TEntity> appServiceBase)            
+        public AppServiceBase(IServiceBase<TEntity> appServiceBase)
         {
             _serviceBase = appServiceBase;
         }
 
-        public object Add(TEntity obj)
+        public object Insert(TEntity obj)
         {
-            return _serviceBase.Add(obj);
+            return _serviceBase.Insert(obj);
         }
 
-        public IEnumerable<TEntity> GetAll()
-        {
-            return _serviceBase.GetAll();
-        }
-
-        public TEntity GetById(int id)
+        public TEntity GetById(Guid id)
         {
             return _serviceBase.GetById(id);
         }
 
-        public void Update(TEntity obj)
+        public bool Update(TEntity obj)
         {
-            _serviceBase.Update(obj);
+            return _serviceBase.Update(obj);
         }
 
-        public void Remove(TEntity obj)
+        public bool Delete(TEntity obj)
         {
-            _serviceBase.Remove(obj);
+            return _serviceBase.Delete(obj);
         }
 
-        public void Dispose()
+        public IList<TEntity> SearchFor(Expression<Func<TEntity, bool>> predicate)
         {
-            _serviceBase.Dispose();
+            throw new NotImplementedException();
+        }
+
+        public IList<TEntity> GetAll()
+        {
+            return _serviceBase.GetAll();
         }
     }
 }

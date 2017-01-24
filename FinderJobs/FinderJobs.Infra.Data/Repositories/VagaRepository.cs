@@ -9,7 +9,7 @@ using FinderJobs.Domain.Interfaces.Repositories;
 
 namespace FinderJobs.Infra.Data
 {
-    public class VagaRepository : RepositoryBase<Vaga>, IVagaRepository
+    public class VagaRepository : RepositoryBaseMongoDb<Vaga>, IVagaRepository
     {
         public List<Vaga> BuscarVagas()
         {

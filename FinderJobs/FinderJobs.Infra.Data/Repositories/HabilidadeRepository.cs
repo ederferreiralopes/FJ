@@ -6,17 +6,12 @@ using FinderJobs.Domain.Entities;
 using FinderJobs.Infra.Data.Repositories;
 using FinderJobs.Infra.Data.Context;
 using FinderJobs.Domain.Interfaces.Repositories;
+using System;
+using System.Linq.Expressions;
 
 namespace FinderJobs.Infra.Data
 {
-    public class HabilidadeRepository : RepositoryBase<Habilidade>, IHabilidadeRepository
+    public class HabilidadeRepository : RepositoryBaseMongoDb<Habilidade>, IHabilidadeRepository
     {
-        public List<Habilidade> BuscarPorNome(string nome)
-        {
-            using (var session = SessionFactory.AbrirSession())
-            {
-                return (from e in session.Query<Habilidade>() where e.Nome.Contains(nome) select e).ToList();
-            }
-        }
     }
 }

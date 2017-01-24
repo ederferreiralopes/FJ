@@ -3,6 +3,7 @@ using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using FinderJobs.Domain.Entities;
+using FinderJobs.Domain.Mapping;
 
 namespace FinderJobs.Infra.Data.Context
 {

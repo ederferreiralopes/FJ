@@ -9,11 +9,11 @@ namespace FinderJobs.Application.Interface
 {
     public interface IArquivoAppService : IAppServiceBase<Arquivo>
     {
-        void Desativar(int id);
+        void Desativar(Guid id);
 
-        void Desativar(int id, string tipo);
+        void Desativar(Guid id, string tipo);
 
-        IEnumerable<Arquivo> GetArquivo(int UsuarioId, string tipo);
-        IEnumerable<Arquivo> CarregarTodos(int UsuarioId);
+        IEnumerable<Arquivo> GetArquivo(Guid UsuarioId, string tipo);
+        IEnumerable<Arquivo> CarregarTodos(Guid UsuarioId);
     }
 }

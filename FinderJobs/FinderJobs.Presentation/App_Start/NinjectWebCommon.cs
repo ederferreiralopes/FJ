@@ -70,24 +70,22 @@ namespace FinderJobs.Site.App_Start
         {
             kernel.Bind(typeof(IAppServiceBase<>)).To(typeof(AppServiceBase<>));
             kernel.Bind<IUsuarioAppService>().To<UsuarioAppService>();
-            kernel.Bind<IHabilidadeAppService>().To<HabilidadeAppService>();
-            kernel.Bind<IUsuarioHabilidadeAppService>().To<UsuarioHabilidadeAppService>();
+            kernel.Bind<IHabilidadeAppService>().To<HabilidadeAppService>();            
             kernel.Bind<IVagaAppService>().To<VagaAppService>();
             kernel.Bind<IConfiguracaoBoletoAppService>().To<ConfiguracaoBoletoAppService>();
             kernel.Bind<IArquivoAppService>().To<ArquivoAppService>();
 
             kernel.Bind(typeof(IServiceBase<>)).To(typeof(ServiceBase<>));            
             kernel.Bind<IUsuarioService>().To<UsuarioService>();
-            kernel.Bind<IHabilidadeService>().To<HabilidadeService>();
-            kernel.Bind<IUsuarioHabilidadeService>().To<UsuarioHabilidadeService>();
+            kernel.Bind<IHabilidadeService>().To<HabilidadeService>();            
             kernel.Bind<IVagaService>().To<VagaService>();
             kernel.Bind<IConfiguracaoBoletoService>().To<ConfiguracaoBoletoService>();
             kernel.Bind<IArquivoService>().To<ArquivoService>();
 
-            kernel.Bind(typeof(IRepositoryBase<>)).To(typeof(RepositoryBase<>));
+            kernel.Bind(typeof(IRepositoryBase<>)).To(typeof(RepositoryBaseMongoDb<>));
+            kernel.Bind(typeof(IRepositoryBase<>)).To(typeof(RepositoryBaseNhibernate<>));
             kernel.Bind<IUsuarioRepository>().To<UsuarioRepository>();
-            kernel.Bind<IHabilidadeRepository>().To<HabilidadeRepository>();
-            kernel.Bind<IUsuarioHabilidadeRepository>().To<UsuarioHabilidadeRepository>();
+            kernel.Bind<IHabilidadeRepository>().To<HabilidadeRepository>();            
             kernel.Bind<IVagaRepository>().To<VagaRepository>();
             kernel.Bind<IConfiguracaoBoletoRepository>().To<ConfiguracaoBoletoRepository>();
             kernel.Bind<IArquivoRepository>().To<ArquivoRepository>();

@@ -11,10 +11,6 @@ namespace FinderJobs.Application.Interface
     {
         IEnumerable<Usuario> BuscarPorTipo(string tipo);
 
-        bool ValidarLogin(string login);
-
-        Usuario ValidarAcesso(string login, string senha);
-
         Usuario GetByEmail(string email);
     }
 }

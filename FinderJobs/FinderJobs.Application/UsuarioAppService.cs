@@ -24,19 +24,9 @@ namespace FinderJobs.Application
             return _usuarioService.BuscarPorTipo(tipo);
         }
 
-        public Usuario ValidarAcesso(string login, string senha)
-        {
-            return _usuarioService.ValidarAcesso(login, senha);
-        }
-
         public Usuario GetByEmail(string email)
         {
             return _usuarioService.GetByEmail(email);
-        }
-
-        public bool ValidarLogin(string login)
-        {
-            return _usuarioService.ValidarLogin(login);
-        }        
+        }       
     }
 }
