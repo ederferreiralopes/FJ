@@ -60,7 +60,7 @@ namespace FinderJobs.Site.Controllers
 
                     if (model.Id == new Guid())
                     {
-                        vaga.Empresa = new Domain.Entities.Usuario { Id = model.IdEmpresa };
+                        vaga.EmpresaId = model.IdEmpresa;
                         vaga.Cep = model.Cep;
                         vaga.DataCadastro = DateTime.Now;
                         vaga.Ativo = true;
@@ -180,8 +180,7 @@ namespace FinderJobs.Site.Controllers
                         new VagaDistanciaViewModel
                         {
                             Id = item.Id,
-                            IdEmpresa = item.Empresa.Id,
-                            Empresa = item.Empresa.Nome,
+                            IdEmpresa = item.EmpresaId,                            
                             Cep = item.Cep,
                             DataCadastro = item.DataCadastro,
                             Descricao = item.Descricao,                            

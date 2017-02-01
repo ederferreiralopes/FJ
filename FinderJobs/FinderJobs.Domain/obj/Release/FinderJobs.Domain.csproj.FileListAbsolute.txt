@@ -21,3 +21,10 @@ D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\Iesi.Collections.xml
 D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\NHibernate.xml
 D:\Roberto\FinderJobs\FinderJobs.Domain\obj\Release\FinderJobs.Domain.dll
 D:\Roberto\FinderJobs\FinderJobs.Domain\obj\Release\FinderJobs.Domain.pdb
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\MongoDB.Bson.dll
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\MongoDB.Driver.Core.dll
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\MongoDB.Driver.dll
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\System.Runtime.InteropServices.RuntimeInformation.dll
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\MongoDB.Bson.xml
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\MongoDB.Driver.xml
+D:\Roberto\FinderJobs\FinderJobs.Domain\bin\Release\MongoDB.Driver.Core.xml

@@ -54,4 +54,3 @@ D:\Roberto\FinderJobs\FinderJobs.Manager\bin\System.Web.WebPages.Deployment.xml
 D:\Roberto\FinderJobs\FinderJobs.Manager\bin\System.Web.WebPages.Razor.xml
 D:\Roberto\FinderJobs\FinderJobs.Manager\obj\Debug\FinderJobs.Manager.dll
 D:\Roberto\FinderJobs\FinderJobs.Manager\obj\Debug\FinderJobs.Manager.pdb
-D:\Roberto\FinderJobs\FinderJobs.Manager\obj\Debug\FinderJobs.Manager.csprojResolveAssemblyReference.cache

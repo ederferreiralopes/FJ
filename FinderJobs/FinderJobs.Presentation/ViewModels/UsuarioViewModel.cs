@@ -18,6 +18,6 @@ namespace FinderJobs.Site.ViewModels
         public Endereco Endereco { get; set; }        
         public List<HabilidadeViewModel> Habilidades { get; set; }
         public string CaminhoArquivo { get; set; }
-        public string DataCadastro { get; set; }
+        public DateTime? DataCadastro { get; set; }
     }
 }

@@ -14,3 +14,5 @@ D:\Roberto\FinderJobs\FinderJobs.Application\bin\Release\FluentNHibernate.pdb
 D:\Roberto\FinderJobs\FinderJobs.Application\bin\Release\FluentNHibernate.xml
 D:\Roberto\FinderJobs\FinderJobs.Application\obj\Release\FinderJobs.Application.dll
 D:\Roberto\FinderJobs\FinderJobs.Application\obj\Release\FinderJobs.Application.pdb
+D:\Roberto\FinderJobs\FinderJobs.Application\bin\Release\MongoDB.Bson.dll
+D:\Roberto\FinderJobs\FinderJobs.Application\bin\Release\MongoDB.Bson.xml

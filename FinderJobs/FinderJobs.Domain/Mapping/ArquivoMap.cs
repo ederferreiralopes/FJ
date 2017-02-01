@@ -16,7 +16,7 @@ namespace FinderJobs.Domain.Mapping
 
             LazyLoad();
             Id(x => x.Id).GeneratedBy.Identity().Column("Id");
-            References(x => x.Usuario).Not.Nullable().Column("UsuarioId");
+            Map(x => x.UsuarioId).Not.Nullable().Column("UsuarioId");
             Map(x => x.Caminho).Not.Nullable().Column("Caminho");
             Map(x => x.Tipo).Not.Nullable().Column("Tipo");
             Map(x => x.Nome).Not.Nullable().Column("Nome");

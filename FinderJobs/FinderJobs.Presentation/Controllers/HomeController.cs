@@ -20,12 +20,12 @@ namespace FinderJobs.Site.Controllers
     public class HomeController : Controller
     {
         private readonly IUsuarioAppService _usuarioService;
-        private readonly IVagaAppService _vagaAppService;        
+        private readonly IVagaAppService _vagaAppService;
 
         public HomeController(IUsuarioAppService usuarioService, IVagaAppService vagaAppService)
         {
             _vagaAppService = vagaAppService;
-            _usuarioService = usuarioService;            
+            _usuarioService = usuarioService;
         }
 
         public ActionResult Index(string tipo)
@@ -39,6 +39,11 @@ namespace FinderJobs.Site.Controllers
             }
             else
                 return File("~/views/Index.html", "text/html");
-        }        
+        }
+
+        public ActionResult Cadastro()
+        {
+            return File("~/views/CadastroEditar.html", "text/html");
+        }
     }
 }

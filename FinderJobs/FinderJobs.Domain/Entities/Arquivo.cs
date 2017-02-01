@@ -10,7 +10,7 @@ namespace FinderJobs.Domain.Entities
 {
     public class Arquivo : EntityBase
     {        
-        public virtual Usuario Usuario { get; set; }
+        public virtual Guid UsuarioId { get; set; }
         public virtual string Caminho { get; set; }
         public virtual string Tipo { get; set; }
         public virtual string Nome { get; set; }               

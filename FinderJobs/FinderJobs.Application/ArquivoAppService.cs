@@ -19,16 +19,6 @@ namespace FinderJobs.Application
             _arquivoService = arquivoService;
         }
 
-        public void Desativar(Guid id)
-        {
-            _arquivoService.Desativar(id);
-        }
-
-        public void Desativar(Guid id, string tipo)
-        {
-            _arquivoService.Desativar(id, tipo);
-        }
-
         public IEnumerable<Arquivo> GetArquivo(Guid UsuarioId, string tipo)            
         {
             return _arquivoService.GetArquivo(UsuarioId, tipo);

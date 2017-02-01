@@ -1,0 +1,5 @@
+D:\Roberto\FinderJobs\Uol.PagSeguro\bin\Release\Uol.PagSeguro.dll
+D:\Roberto\FinderJobs\Uol.PagSeguro\bin\Release\Uol.PagSeguro.pdb
+D:\Roberto\FinderJobs\Uol.PagSeguro\obj\Release\Uol.PagSeguro.csprojResolveAssemblyReference.cache
+D:\Roberto\FinderJobs\Uol.PagSeguro\obj\Release\Uol.PagSeguro.dll
+D:\Roberto\FinderJobs\Uol.PagSeguro\obj\Release\Uol.PagSeguro.pdb

@@ -9,10 +9,6 @@ namespace FinderJobs.Domain.Interfaces.Services
 {
     public interface IArquivoService : IServiceBase<Arquivo>
     {
-        void Desativar(Guid id);
-
-        void Desativar(Guid id, string tipo);
-
         IEnumerable<Arquivo> GetArquivo(Guid usuarioId, string tipo);
 
         IEnumerable<Arquivo> CarregarTodos(Guid usuarioId);

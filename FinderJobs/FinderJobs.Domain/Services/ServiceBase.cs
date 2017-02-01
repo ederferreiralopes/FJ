@@ -37,6 +37,11 @@ namespace FinderJobs.Domain.Services
             return _repository.Update(obj);
         }
 
+        public bool Disable(Guid id)
+        {
+            return _repository.Disable(id);
+        }
+
         public bool Delete(TEntity obj)
         {
             return _repository.Delete(obj);

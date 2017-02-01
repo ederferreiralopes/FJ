@@ -33,6 +33,11 @@ namespace FinderJobs.Application
             return _serviceBase.Update(obj);
         }
 
+        public bool Disable(Guid id)
+        {
+            return _serviceBase.Disable(id);
+        }
+
         public bool Delete(TEntity obj)
         {
             return _serviceBase.Delete(obj);

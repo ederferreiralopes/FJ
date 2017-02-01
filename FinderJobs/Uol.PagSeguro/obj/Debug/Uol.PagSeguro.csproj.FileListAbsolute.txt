@@ -1,0 +1,5 @@
+D:\Roberto\FinderJobs\Uol.PagSeguro\bin\Debug\Uol.PagSeguro.XML
+D:\Roberto\FinderJobs\Uol.PagSeguro\bin\Debug\Uol.PagSeguro.dll
+D:\Roberto\FinderJobs\Uol.PagSeguro\bin\Debug\Uol.PagSeguro.pdb
+D:\Roberto\FinderJobs\Uol.PagSeguro\obj\Debug\Uol.PagSeguro.dll
+D:\Roberto\FinderJobs\Uol.PagSeguro\obj\Debug\Uol.PagSeguro.pdb

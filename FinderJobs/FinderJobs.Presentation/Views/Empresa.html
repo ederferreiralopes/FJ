@@ -42,7 +42,7 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="">
-                        <a href="javascript: Cadastro();" class="portfolio-link" data-toggle="modal">Editar Cadastro</a>
+                        <a onclick="EditarCadastro()" class="portfolio-link" data-toggle="modal">Editar Cadastro</a>
                     </li>
                     <li class="">
                         <a href="#modalCadVagas" class="portfolio-link" data-toggle="modal">Cadastrar Vaga</a>
@@ -139,7 +139,7 @@
     <script>
 
         $(document).ready(function () {
-            processarVagas(false);            
+            processarVagas(false);
         });
 
 
@@ -148,13 +148,15 @@
             window.location.replace('/Acesso');
         }
 
-        function cadastro() {
+        function EditarCadastro() {
+
+            if (localStorage.getItem("usuario") == '' || localStorage.getItem("usuario") == null)
+                window.location.replace('/Acesso');
+            else
+                var usuario = JSON.parse(localStorage.getItem("usuario"));
 
             // caregar partial view cadastro.html
-            var usuario = JSON.parse(localStorage.getItem("usuario"));
-
-            // caregar partial view cadastro.html
-            $.get("../Acesso/Cadastro", function (data) {
+            $.get("../Home/Cadastro", function (data) {
                 $('#modalCadastroBody').html('');
                 $('#modalCadastroBody').html(data);
 
@@ -259,7 +261,7 @@
                                 "data": null,
                                 "bSortable": false,
                                 "mRender": function (data, type, full) {
-                                    return '<a id="vaga_' + full['IdVaga'] + '" class="btn btn-sm" href="javascript: editarVaga(' + full['IdVaga'] + ');"><span class="glyphicon glyphicon-edit"><span></a>'
+                                    return '<a id="vaga_' + full['IdVaga'] + '" class="btn btn-sm" href="javascript: editarVaga(\'' + full['IdVaga'] + '\');"><span class="glyphicon glyphicon-edit"><span></a>'
                                            + '<a class="btn btn-sm" href="javascript: enviarEmail(' + full['IdCandidato'] + ');"><span class="glyphicon glyphicon-envelope"><span></a>';
                                 }
                             }
@@ -307,9 +309,6 @@
                 return Notify('Informe as habilidades', null, null);
             }
 
-            var $this = $(btn);
-            $this.button('loading');
-
             var id = $('#Vaga_Id').val();
             var empresaId = usuario.Id;
             var empresaNome = usuario.Nome;
@@ -323,7 +322,7 @@
                     'Nome': value.innerText
                 });
             });
-            
+
             if (Habilidades.itens == undefined || Habilidades.itens == null || Habilidades.itens.length < 5)
                 return Notify('Adicione 5 habilidades, no mínimo', null, null);
 
@@ -336,6 +335,9 @@
                 'Cep': empresaCep,
                 'Habilidades': Habilidades.itens
             };
+
+            var $this = $(btn);
+            $this.button('loading');
 
             $.ajax({
                 url: "../Vagas/CadastrarVaga",
@@ -370,7 +372,7 @@
         function editarVaga(id) {
             $("#Vaga_Id").val(id);
             var celulas = $("#vaga_" + id).parent().parent()[0].cells;
-            $("#Vaga_Descricao").val(celulas[1].innerText);            
+            $("#Vaga_Descricao").val(celulas[1].innerText);
             var habilidades = celulas[6].children;
             var html = '';
             $.each(habilidades, function (index, value) {

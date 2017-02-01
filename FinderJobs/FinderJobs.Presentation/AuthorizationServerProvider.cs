@@ -30,7 +30,7 @@ namespace FinderJobs.Site
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
             try
             {
-                var url = "http://localhost:53432/Account/LoginApi?";
+                var url = "http://localhost:1111/Account/LoginApi?";
                 var parametros = string.Concat("Email=", context.UserName, "&Password=", context.Password);
                 var respostaJson = string.Empty;
                 var request = (HttpWebRequest)WebRequest.Create(url + parametros);

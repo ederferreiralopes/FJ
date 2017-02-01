@@ -1,4 +1,0 @@
-D:\Roberto\FinderJobs\FinderJobs.Infra.CrossCutting\Services\bin\Debug\FinderJobs.Infra.CrossCutting.dll
-D:\Roberto\FinderJobs\FinderJobs.Infra.CrossCutting\Services\bin\Debug\FinderJobs.Infra.CrossCutting.pdb
-D:\Roberto\FinderJobs\FinderJobs.Infra.CrossCutting\Services\obj\Debug\FinderJobs.Infra.CrossCutting.dll
-D:\Roberto\FinderJobs\FinderJobs.Infra.CrossCutting\Services\obj\Debug\FinderJobs.Infra.CrossCutting.pdb

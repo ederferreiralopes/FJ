@@ -11,6 +11,7 @@ namespace FinderJobs.Domain.Interfaces.Services
     {
         object Insert(TEntity entity);
         bool Update(TEntity entity);
+        bool Disable(Guid id);
         bool Delete(TEntity entity);
         IList<TEntity> SearchFor(Expression<Func<TEntity, bool>> predicate);
         IList<TEntity> GetAll();

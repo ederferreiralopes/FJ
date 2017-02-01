@@ -15,6 +15,7 @@ namespace FinderJobs.Domain.Entities
 
     public enum ArquivoLocal
     {
+        Avatar,
         Boleto,
         Curriculo,
         Vaga,

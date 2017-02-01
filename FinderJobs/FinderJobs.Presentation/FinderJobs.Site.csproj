@@ -175,6 +175,7 @@
     <Content Include="bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="bootstrap\css\bootstrap.css" />
     <Content Include="bootstrap\css\bootstrap.min.css" />
+    <Content Include="bootstrap\css\bootstrapValidator.min.css" />
     <Content Include="bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="bootstrap\js\bootstrap-confirmation.min.js" />
     <Content Include="bootstrap\js\bootstrap-filestyle.min.js" />
@@ -182,6 +183,8 @@
     <Content Include="bootstrap\js\bootstrap-switch.min.js" />
     <Content Include="bootstrap\js\bootstrap.js" />
     <Content Include="bootstrap\js\bootstrap.min.js" />
+    <Content Include="bootstrap\js\bootstrapValidator.min.js" />
+    <Content Include="Config\PagSeguroConfig.xml" />
     <Content Include="content\css\finderjobs.css" />
     <Content Include="content\css\finderjobs.min.css" />
     <Content Include="content\fonts\font-awesome\css\font-awesome.css" />
@@ -212,6 +215,7 @@
     <Content Include="Global.asax" />
     <Content Include="images\favicon.ico" />
     <Content Include="images\icone-acesso.png" />
+    <Content Include="images\icone-add-foto.png" />
     <Content Include="images\icone-boleto.png" />
     <Content Include="images\icone-cartao.png" />
     <Content Include="images\icone-usuario.png" />
@@ -243,6 +247,7 @@
     <Content Include="jquery\jquery-ui.min.js" />
     <Content Include="jquery\jquery.easing.min.js" />
     <Content Include="jquery\jquery.js" />
+    <Content Include="jquery\jquery.mask.min.js" />
     <Content Include="jquery\jquery.min.js" />
     <Content Include="magicsuggest\magicsuggest-min.css" />
     <Content Include="magicsuggest\magicsuggest-min.js" />
@@ -255,7 +260,8 @@
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
-    <Content Include="Views\Cadastro.html" />
+    <Content Include="Views\CadastroNovo.html" />
+    <Content Include="Views\CadastroEditar.html" />
     <Content Include="Views\Candidato.html" />
     <Content Include="Views\Empresa.html" />
     <Content Include="Views\Index.html" />
@@ -363,9 +369,13 @@
       <Project>{50243246-22db-420d-ac8c-831405f84468}</Project>
       <Name>FinderJobs.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FinderJobs.Infra.Data\FinderJobs.Infra.Data.csproj">
+    <ProjectReference Include="..\FinderJobs.Infra\FinderJobs.Infra.Data\FinderJobs.Infra.Data.csproj">
       <Project>{46073d1b-02bb-4b71-af5d-50f8711c5179}</Project>
       <Name>FinderJobs.Infra.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Uol.PagSeguro\Uol.PagSeguro.csproj">
+      <Project>{babc5658-6afd-4f8e-81f1-434553663d99}</Project>
+      <Name>Uol.PagSeguro</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -383,7 +393,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2175</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2175/</IISUrl>
+          <IISUrl>http://localhost:2222/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

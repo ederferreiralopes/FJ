@@ -16,6 +16,7 @@
     <link href="notify/notify.css" rel="stylesheet" />
     <!-- Custom Fonts -->
     <link href="content/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
     <style>
         .corFinderJobs {
             color: #2C3E50;
@@ -79,8 +80,8 @@
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <span style="font-size:smaller; color: black;">cadastre-se:</span>
-                                                <a data-toggle="modal" href="javascript: cadastro('Candidato');" style="font-size:smaller; color: #0b8711;">Candidato</a>
-                                                <a data-toggle="modal" href="javascript: cadastro('Empresa');" style="font-size:smaller; color: #3498db;"> Empresa</a>
+                                                <a data-toggle="modal" onclick="Cadastro('Candidato')" style="font-size:smaller; color: #0b8711;">Candidato</a>
+                                                <a data-toggle="modal" onclick="Cadastro('Empresa')" style="font-size:smaller; color: #3498db;"> Empresa</a>
                                             </div>
                                         </div>
                                     </form>
@@ -98,12 +99,97 @@
     <header class="alert-info">
         <div class="container">
             <div class="row">
-                <div class="col-lg-11">
-                    <img class="img-responsive" src="content/img/profile.png" alt="">
-                    <div class="intro-text">
-                        <span class="name corFinderJobs">Finder Jobs</span>
-                    </div>
+                <div class="col-lg-12 text-center">
+                    <img class="img-responsive" width="140" src="content/img/profile.png" alt="">
                 </div>
+            </div>
+            <div class="row" style="background-color: white;">
+                <div class="col-lg-12 panel-title text-center">
+                    <h3>Regras de Negócio</h3>
+                </div>
+                <div class="col-lg-12">
+                    <div class="col-lg-12" style="background-color: #ed7c31; color: black">
+                        <h4>Plano : Pessoa Física (CANDIDATOS)</h4>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="background-color: skyblue; color: black">Standart</th>
+                                <th class="text-center" style="background-color: silver; color: black">Advanced</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>                                
+                                <td>Uma candidatura por vaga publicada</td>
+                                <td>re-candidatura as vagas (segunda vez)</td>                                
+                            </tr>
+                            <tr>
+                                <td>Perfil visível</td>
+                                <td>Perfil anônimo</td>
+                            </tr>
+                            <tr>
+                                <td>50 palavras-chave</td>
+                                <td>permitido "copiar-colar"</td>
+                            </tr>
+                            <tr>
+                                <td>sem re-candidatura</td>
+                                <td>envio de anexos (somente .PDF) até 1.1MB</td>
+                            </tr>
+                            <tr>
+                                <td>sem limite de candidaturas às vagas</td>
+                                <td>chat on-line</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">R$ 0,00 (gratuito)</td>
+                                <td style="font-weight: bold">R$ 100,00/ano</td>
+                            </tr>                                
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-12">
+                    <div class="col-lg-12" style="background-color: #ed7c31; color: black">
+                        <h4>Plano: Pessoa Jurídica (EMPRESAS)</h4>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="background-color: silver; color: black">Silver</th>
+                                <th class="text-center" style="background-color: gold; color: black">Gold</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>                                
+                                <td>Anuncio: 10 (dez) dias de publicação</td>
+                                <td>Anúncio: 21 (vinte e um) dias de publicação</td>          
+                            </tr>
+                            <tr>
+                                <td>sem re-publicação</td>
+                                <td>re-publicar vaga (segunda vez)</td>
+                            </tr>
+                            <tr>
+                                <td>50 palavras-chave</td>
+                                <td>Perfil anônimo</td>
+                            </tr>
+                            <tr>
+                                <td>Perfil visível</td>
+                                <td>permitido "copy-paste"</td>
+                            </tr>
+                            <tr>
+                                <td>Até 10 (dez) anúncios por mês</td>
+                                <td>um formulário com cinco perguntas adicionais</td>
+                            </tr>
+                            <tr>
+                                <td>sem limite de número de vagas</td>
+                                <td>chat on-line</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">R$ 100,00/ano</td>
+                                <td style="font-weight: bold">R$ 1.000,00/mês</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+               
             </div>
         </div>
     </header>
@@ -248,6 +334,21 @@
         </div>
     </div>
 
+    <!-- Modal Pagamento -->
+    <div class="modal fade" id="modalPagamento" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Assinatura</h4>
+                </div>
+                <div class="modal-body" id="modalPagamentoBody">
+                    Aguarde...
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Recuperar Senha -->
     <div class="modal fade" id="modalEsqueciSenha" role="dialog">
         <div class="modal-dialog modal-sm">
@@ -368,12 +469,12 @@
     <script src="bootstrap/js/bootstrap-switch.min.js"></script>
     <script src="bootstrap/js/bootstrap-filestyle.min.js"></script>
     <!-- Plugin JavaScript -->
-    <script src="jquery/jquery.easing.min.js"></script>
+    <script src="jquery/jquery.easing.min.js"></script>    
     <!-- Contact Form JavaScript -->
     <script src="content/js/jqBootstrapValidation.js"></script>
     <script src="content/js/contact_me.js"></script>
     <!-- Theme JavaScript -->
-    <script src="content/js/finderjobs.min.js"></script>
+    <script src="content/js/finderjobs.min.js"></script>   
 
     <script src="../bootstrap/js/bootstrap-confirmation.min.js"></script>
 
@@ -381,8 +482,7 @@
 
     <script>
 
-        $(document).ready(function () {
-            debugger;
+        $(document).ready(function () {            
             localStorage.setItem('usuario', '');
 
             $.urlParam = function (name) {
@@ -397,8 +497,7 @@
             }
         });
 
-        function cadastro(tipo) {
-            // caregar partial view cadastro.html
+        function Cadastro(tipo) {            
             $.get("../Acesso/Cadastro", function (data) {
                 $('#modalCadastroBody').html('');
                 $('#modalCadastroBody').html(data);
@@ -507,6 +606,7 @@
                         }
                     },
                     error: function (result) {
+                        console.log(result);
                         Notify(result.responseJSON.error_description, null, null, 'danger');
                     }
                 });
@@ -537,6 +637,7 @@
                     }
                 },
                 error: function (result) {
+                    console.log(result);
                     Notify(result.responseJSON.error_description, null, null, 'danger');
                 },
                 beforeSend: setHeader

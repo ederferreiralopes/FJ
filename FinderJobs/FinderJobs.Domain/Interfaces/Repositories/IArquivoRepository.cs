@@ -9,8 +9,5 @@ namespace FinderJobs.Domain.Interfaces.Repositories
 {
     public interface IArquivoRepository : IRepositoryBase<Arquivo>
     {
-        void Desativar(Guid id);
-
-        void Desativar(Guid id, string tipo);
     }
 }

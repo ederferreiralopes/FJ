@@ -10,6 +10,11 @@ using FinderJobs.Application.Interface;
 using System.IO;
 using FinderJobs.Domain.Entities;
 using System.Threading;
+using Uol.PagSeguro;
+using Uol.PagSeguro.Exception;
+using Uol.PagSeguro.Domain;
+using Uol.PagSeguro.Constants;
+using Uol.PagSeguro.Resources;
 
 namespace FinderJobs.Site.Controllers
 {
@@ -74,18 +79,19 @@ namespace FinderJobs.Site.Controllers
                         Endereco = model.Endereco, 
                         Email = model.Email,
                         Anonimo = model.Anonimo,
-                        Habilidades = habilidadesExistentes,                                           
+                        Habilidades = habilidadesExistentes,
+                        Ativo = true,
                     };
 
                     if (model.Id == new Guid())
                     {
-                        usuario.DataCadastro = DateTime.Now.ToString();
+                        usuario.DataCadastro = DateTime.Now;
                         usuario.Id = (Guid)_usuarioService.Insert(usuario);
                         sucesso = true;
                     }
                     else
                     {                        
-                        usuario.DataAlteracao = DateTime.Now.ToString();
+                        usuario.DataAlteracao = DateTime.Now;
                         sucesso = _usuarioService.Update(usuario);
                     }                       
 
@@ -109,36 +115,40 @@ namespace FinderJobs.Site.Controllers
                 var retorno = string.Empty;
                 var sucesso = false;
 
-                var usuarioTipo = (UsuarioTipo)Enum.Parse(typeof(UsuarioTipo), tipo, true);
-
-                switch (usuarioTipo)
+                if (tipo == ArquivoLocal.Avatar.ToString())                
+                    tipo = ArquivoLocal.Avatar.ToString();                
+                else
                 {
-                    case UsuarioTipo.Candidato:
-                        tipo = ArquivoLocal.Curriculo.ToString();
-                        break;
-                    case UsuarioTipo.Empresa:
-                        tipo = ArquivoLocal.Vaga.ToString();
-                        break;
-                    default:
-                        tipo = ArquivoLocal.Indefinido.ToString();
-                        break;
-                }
+                    var usuarioTipo = (UsuarioTipo)Enum.Parse(typeof(UsuarioTipo), tipo, true);
 
+                    switch (usuarioTipo)
+                    {
+                        case UsuarioTipo.Candidato:
+                            tipo = ArquivoLocal.Curriculo.ToString();
+                            break;
+                        case UsuarioTipo.Empresa:
+                            tipo = ArquivoLocal.Vaga.ToString();
+                            break;
+                        default:
+                            tipo = ArquivoLocal.Indefinido.ToString();
+                            break;
+                    }
+                }
+                
                 var caminho = string.Concat("~/Arquivo/", id, "/", tipo, "/");
                 var nome = fileUpload.FileName.Length > 50 ? fileUpload.FileName.Substring(fileUpload.FileName.Length - 50) : fileUpload.FileName;
 
-                var arquivo = new Domain.Entities.Arquivo { Usuario = new Domain.Entities.Usuario { Id = usuarioId }, Caminho = caminho, Nome = nome, Tipo = tipo, Ativo = true };
+                var arquivo = new Domain.Entities.Arquivo { UsuarioId = usuarioId, Caminho = caminho, Nome = nome, Tipo = tipo, Ativo = true };
                 if (!System.IO.Directory.Exists(Server.MapPath(caminho)))
                     System.IO.Directory.CreateDirectory(Server.MapPath(caminho));
                 fileUpload.SaveAs(Server.MapPath(caminho) + nome);
+                
+                arquivo.Id = (Guid)_arquivoService.Insert(arquivo);
 
-                _arquivoService.Desativar(usuarioId, tipo);
-                var resultado = _arquivoService.Insert(arquivo);
-
-                if (resultado != null)
+                if (arquivo.Id != new Guid())
                     sucesso = true;
 
-                return Json(new { arquivo = resultado, sucesso = sucesso }, JsonRequestBehavior.AllowGet);
+                return Json(new { arquivo = arquivo, sucesso = sucesso }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -192,7 +202,7 @@ namespace FinderJobs.Site.Controllers
             try
             {
                 var arquivoId = Guid.Parse(id);
-                _arquivoService.Desativar(arquivoId);
+                _arquivoService.Disable(arquivoId);
 
                 return Json(new { sucesso = true }, JsonRequestBehavior.AllowGet);
             }
@@ -263,7 +273,7 @@ namespace FinderJobs.Site.Controllers
                     caminho = "~/Arquivo/" + usuario.Id + "/Boleto/";
                     nome = boleto.Boleto.NumeroDocumento + ".pdf";
                     byte[] arquivoPDF = boleto.MontaBytesPDF();
-                    var arquivo = new Domain.Entities.Arquivo { Usuario = new Domain.Entities.Usuario { Id = usuario.Id }, Caminho = caminho, Nome = nome, Tipo = "Boleto", Ativo = true };
+                    var arquivo = new Domain.Entities.Arquivo { UsuarioId = usuario.Id , Caminho = caminho, Nome = nome, Tipo = "Boleto", Ativo = true };
 
                     if (!System.IO.Directory.Exists(Server.MapPath(caminho)))
                         System.IO.Directory.CreateDirectory(Server.MapPath(caminho));
@@ -287,12 +297,54 @@ namespace FinderJobs.Site.Controllers
             return Json(new { id = idArquivo, url = caminho + "/" + nome, sucesso = sucesso }, JsonRequestBehavior.AllowGet);
         }
 
-        public RedirectToRouteResult Logout()
+        [AllowAnonymous]
+        public ActionResult Pagamento(string meio)
         {
-            Session.Clear();
-            FormsAuthentication.SignOut();
+            bool isSandbox = true;
 
-            return RedirectToAction("Index");
+            EnvironmentConfiguration.ChangeEnvironment(isSandbox);
+
+            try
+            {
+                AccountCredentials credentials = PagSeguroConfiguration.Credentials(isSandbox);
+
+                // Instantiate a new payment request
+                PaymentRequest payment = new PaymentRequest();
+
+                // Sets the currency
+                payment.Currency = Currency.Brl;
+
+                // Add an item for this payment request
+                payment.Items.Add(new Item("0001", "Assinatura FinderJobs", 1, 100.00m));
+
+                // Sets a reference code for this payment request, it is useful to identify this payment in future notifications.
+                payment.Reference = "REFteste1234";
+
+                // Sets your customer information.
+                payment.Sender = new Sender(
+                    "Fulano Comprador",
+                    "comprador@teste.com.br",
+                    new Phone("12", "81389219")
+                );
+
+                var senderCPF = new SenderDocument(Documents.GetDocumentByType("CPF"), "12345678909");
+                payment.Sender.Documents.Add(senderCPF);
+
+                var paymentRedirectUri = payment.Register(credentials);
+
+                return Json(new { sucesso = true, mensagem = paymentRedirectUri }, JsonRequestBehavior.AllowGet);
+            }
+            catch (PagSeguroServiceException exception)
+            {
+                var errorMsg = exception.Message + "\n";
+
+                foreach (ServiceError element in exception.Errors)
+                {
+                    errorMsg += element + "\n";
+                }
+
+                return Json(new { sucesso = false, mensagem = errorMsg }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

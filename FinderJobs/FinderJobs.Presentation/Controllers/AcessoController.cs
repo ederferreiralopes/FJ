@@ -11,12 +11,14 @@ using System.IO;
 using FinderJobs.Domain.Entities;
 using System.Net;
 using System.Text;
+using System.Threading;
 
 namespace FinderJobs.Site.Controllers
 {
     public class AcessoController : Controller
     {
-
+        private readonly string _apiManager = "http://localhost:1111";
+        private readonly string _urlRetorno = "http://localhost:2222";
         private readonly IUsuarioAppService _usuarioService;
         private readonly IHabilidadeAppService _habilidadeService;
         private readonly IArquivoAppService _arquivoService;
@@ -38,13 +40,12 @@ namespace FinderJobs.Site.Controllers
 
         public ActionResult Cadastro()
         {
-            return File("~/views/Cadastro.html", "text/html");
+                return File("~/views/CadastroNovo.html", "text/html");
         }
 
         public ActionResult UsuarioDisponivel(string email)
         {
-            var disponivel = false;
-            var url = "http://localhost:53432/Account/UsuarioDisponivelApi?";            
+            var url = _apiManager + "/Account/UsuarioDisponivelApi?";
             var parametros = string.Concat("Email=", email);
             var respostaJson = string.Empty;
 
@@ -63,10 +64,10 @@ namespace FinderJobs.Site.Controllers
         }
 
         public ActionResult Registrar(string email, string senha)
-        {            
-            var url = "http://localhost:53432/Account/RegisterApi";
-            var urlRetorno = "http://localhost:2175";            
-            var respostaJson = string.Empty;            
+        {
+            var url = _apiManager + "/Account/RegisterApi";
+            var urlRetorno = _urlRetorno;
+            var respostaJson = string.Empty;
 
             ASCIIEncoding encoder = new ASCIIEncoding();
             var dados = JsonConvert.SerializeObject(new { Email = email, Password = senha, Url = urlRetorno });
@@ -95,12 +96,12 @@ namespace FinderJobs.Site.Controllers
 
         public ActionResult EsqueceuSenha(string email)
         {
-            var url = "http://localhost:53432/Account/ForgotPasswordApi?";
-            var urlRetorno = "http://localhost:2175";
+            var url = _apiManager + "Account/ForgotPasswordApi?";
+            var urlRetorno = _urlRetorno;
             var parametros = string.Concat("Email=", email, "&Url=", urlRetorno);
             var respostaJson = string.Empty;
 
-            var request = (HttpWebRequest)WebRequest.Create(url + parametros);            
+            var request = (HttpWebRequest)WebRequest.Create(url + parametros);
             var response = request.GetResponse();
 
             using (var stream = response.GetResponseStream())
@@ -117,11 +118,11 @@ namespace FinderJobs.Site.Controllers
         public ActionResult NovaSenha(string email, string password, string code)
         {
             var respostaJson = string.Empty;
-            var url = "http://localhost:53432/Account/ResetPasswordApi";
+            var url = _apiManager + "/Account/ResetPasswordApi";
 
             ASCIIEncoding encoder = new ASCIIEncoding();
             var dados = JsonConvert.SerializeObject(new { Email = email, Password = password, Code = code });
-            byte[] data = encoder.GetBytes(dados); 
+            byte[] data = encoder.GetBytes(dados);
 
             HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
             request.Method = "POST";
