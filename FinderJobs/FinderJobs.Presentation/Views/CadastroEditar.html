@@ -38,7 +38,7 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <label for="btnAdicionarAvatar">
-                            <img id="avatar" src="../images/icone-add-foto.png" width="120" height="120" style="pointer-events: none" />
+                            <img id="Usuario_Avatar" src="../images/icone-add-foto.png" width="120" height="120" style="pointer-events: none" />
                         </label>
                         <input id="btnAdicionarAvatar" type="file" style="visibility:hidden; width: 0; height: 0;" />
                     </div>
@@ -159,7 +159,6 @@
             $('#Usuario_CpfCnpj').removeClass('cpf').addClass('cnpj');
         }
 
-        debugger;
         $('.cep').mask('00000-000');
         $('.phone_with_ddd').mask('(00) 00000-0000');
         $('.cpf').mask('000.000.000-00', { reverse: true });
@@ -466,8 +465,7 @@
                     beforeSend: setHeader,
                     success: function (data) {
                         if (data.sucesso) {
-                            $("#Usuario_Id").val(data.usuario.Id);
-                            debugger;
+                            $("#Usuario_Id").val(data.usuario.Id);                            
                             localStorage.setItem("usuario", JSON.stringify(data.usuario))
                             Notify("Alterado com sucesso", null, null, 'success');
                         }
@@ -526,7 +524,11 @@
                     if (data.arquivo.Tipo == 'Curriculo')
                         data.arquivo.Tipo = 'Currículo';
                     if (data.arquivo.Tipo == 'Avatar') {
-                        $('img#avatar').attr('src', data.arquivo.Caminho.replace('~', '') + data.arquivo.Nome);
+
+                        var usuario = JSON.parse(localStorage.getItem("usuario"));
+                        usuario.UrlAvatar = data.arquivo.Caminho + data.arquivo.Nome;
+                        localStorage.setItem("usuario", JSON.stringify(usuario));
+                        $('#Usuario_Avatar').attr('src', data.arquivo.Caminho.replace('~', '') + data.arquivo.Nome);
                     }
                     else {
                         var html = '<div class="form-group col-sm-6" id="arquivo_' + data.arquivo.Id + '">' + data.arquivo.Tipo + ': <br />' +
@@ -559,21 +561,16 @@
 
                     var html = '';
                     $.each(data.arquivos, function (index, arquivo) {
-                        if (arquivo.Tipo == 'Avatar')
-                            $('img#avatar').attr('src', arquivo.Caminho.replace('~', '') + arquivo.Nome);
-                        else {
-                            if (arquivo.Tipo == 'Curriculo')
-                                arquivo.Tipo = 'Currículo';
+                        if (arquivo.Tipo == 'Curriculo')
+                            arquivo.Tipo = 'Currículo';
 
-                            html += '<div class="form-group col-sm-6" id="arquivo_' + arquivo.Id + '">' + arquivo.Tipo + ': <br />' +
-                                       '<a id="btnArquivo" href="' + arquivo.Caminho.replace('~', '') + arquivo.Nome + '" download><i class="fa fa-download fa-2x" aria-hidden="true"></i> </a>';
-                            if (arquivo.Tipo != 'Boleto')
-                                html += '<a id="btnExcluir" href="javascript: ExcluirArquivo(\'' + arquivo.Id + '\')"><i class="fa fa-trash fa-2x" aria-hidden="true"></i> </a> ';
+                        html += '<div class="form-group col-sm-6" id="arquivo_' + arquivo.Id + '">' + arquivo.Tipo + ': <br />' +
+                                   '<a id="btnArquivo" href="' + arquivo.Caminho.replace('~', '') + arquivo.Nome + '" download><i class="fa fa-download fa-2x" aria-hidden="true"></i> </a>';
+                        if (arquivo.Tipo != 'Boleto')
+                            html += '<a id="btnExcluir" href="javascript: ExcluirArquivo(\'' + arquivo.Id + '\')"><i class="fa fa-trash fa-2x" aria-hidden="true"></i> </a> ';
 
-                            html += '</div>';
-                            $('#dvDownload').html(html);
-                        }
-
+                        html += '</div>';
+                        $('#dvDownload').html(html);
                     });
                     $('#dvUpload').hide();
                 }

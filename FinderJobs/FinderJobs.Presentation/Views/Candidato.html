@@ -15,9 +15,7 @@
     <!-- Notify CSS -->
     <link href="../notify/notify.css" rel="stylesheet" />
     <!-- Custom Fonts -->
-    <link href="../content/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <!-- DataTables -->
-    <link href="../dataTables/jquery.dataTables.css" rel="stylesheet" />
+    <link href="../content/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">    
     <style>
         .corFinderJobs {
             color: #2C3E50;
@@ -53,32 +51,25 @@
             <!-- /.container-fluid -->
     </nav>
 
-    <!-- Header -->
-    <header class="alert-info">
+    <!-- Section -->
+    <section class="alert-info">
         <div class="container">
             <div class="row">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h4>Vagas</h4></div>
-                    <div class="panel-body">                       
-                        <table id="myTable" class="display table-striped compact" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Descrição</th>
-                                    <th>Cep</th>
-                                    <th>Empresa</th>
-                                    <th>Distância</th>
-                                    <th>Acertividade</th>
-                                    <th>Habilidades</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
+                <div class="col-lg-9">
+                    <div class="panel-title"><h4>Vagas</h4></div>
+                </div>
+                <div class="col-lg-3">
+                    <ul class="pager">
+                        <li><a onclick="PaginaAnterior()">Anterior</a></li>
+                        <li><a id="paginaAtual" href="#">1</a></li>
+                        <li><a onclick="ProximaPagina()">Próxima</a></li>
+                    </ul>
+                </div>  
+                <div id="listaVagas" class="col-lg-12">
                 </div>
             </div>
         </div>
-    </header>
+    </section>
 
     <!-- Footer -->
     <footer class="text-center">
@@ -128,22 +119,32 @@
     <!-- Theme JavaScript -->
     <script src="../content/js/finderjobs.min.js"></script>
     <!-- google maps -->
-    <script language="javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCycG73VSX4N6sFxieKuCpYBnAKCJrG3XI"></script>
-    <!-- DataTables -->
-    <script src="../dataTables/jquery.dataTables.js"></script>
-    <script src="../dataTables/dataTables.bootstrap.min.js"></script>   
+    <script language="javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCycG73VSX4N6sFxieKuCpYBnAKCJrG3XI"></script>      
 
     <script src="../bootstrap/js/bootstrap-confirmation.min.js"></script>
 
     <script>        
 
         $(document).ready(function () {
-            processarVagas(false);            
+            processarVagas(false, $('#paginaAtual').html());
         });
 
         function Logout() {
             localStorage.setItem("usuario", '');
             window.location.replace('/Acesso');
+        }
+
+        function ProximaPagina() {
+            var pagina = parseInt($('#paginaAtual').html()) + 1;
+            processarVagas(true, pagina);
+        }
+
+        function PaginaAnterior() {
+            var pagina = parseInt($('#paginaAtual').html()) - 1;
+            if (pagina > 0)
+                processarVagas(true, pagina);
+            else
+                Notify('Você está na primeira página', null, null);
         }
 
         function Cadastro() {
@@ -161,7 +162,9 @@
                 //carrega usuario
                 $("#Usuario_Id").val(usuario.Id);
                 $("#Usuario_Tipo").val(usuario.Tipo);
-                $("#Usuario_Nome").val(usuario.Nome);                
+                $("#Usuario_Nome").val(usuario.Nome);
+                if (usuario.UrlAvatar != null)
+                $("#Usuario_Avatar").attr('src', usuario.UrlAvatar.replace('~', ''));
                 $("#Usuario_Email").val(usuario.Email);
                 $("#Usuario_Celular").val(usuario.Celular);
                 $("#Usuario_CpfCnpj").val(usuario.CpfCnpj);
@@ -174,10 +177,10 @@
 
                 var habilidades = usuario.Habilidades;
                 if (habilidades != null && habilidades.length > 0) {
-                    $.each(habilidades, function (index, value) {
-                        var html = '<span id="habilidade_' + value.Id + '" style="margin: 1px; padding: 4px;" class="alert-info">'
-                                + value.Nome + '<a style="color:red" href="#" id="'
-                                + value.Nome + '" onclick="RemoverHabilidade(this);return false;"><i class="fa fa-times"> </i></a></span>';
+                    $.each(habilidades, function (index, habilidade) {
+                        var html = '<span id="habilidade_1' + habilidade + '" style="margin: 1px; padding: 4px;" class="alert-info">'
+                                + habilidade + '<a style="color:red" href="#" id="'
+                                + habilidade + '" onclick="RemoverHabilidade(this);return false;"><i class="fa fa-times"> </i></a></span>';
                         $('#dvHabilidadesLista').append(html);
                     });
                 }
@@ -195,7 +198,7 @@
             xhr.setRequestHeader('Authorization', 'bearer ' + localStorage.getItem('token'));
         }
 
-        function processarVagas(forcar) {
+        function processarVagas(forcar, pagina) {
 
             var dataSetVagas = JSON.parse(localStorage.getItem("dataSetVagas"));
 
@@ -203,7 +206,7 @@
                 var usuario = JSON.parse(localStorage.getItem("usuario"));
 
                 $.ajax({
-                    url: '../Vagas/PesquisaCandidato/' + usuario.Id,                    
+                    url: '../Vagas/PesquisaCandidato?id=' + usuario.Id + "&pagina=" + pagina,                    
                     type: "GET",
                     beforeSend: setHeader,
                     success: function (data) {
@@ -211,6 +214,7 @@
                             dataSetVagas = data.data;
                             localStorage.setItem('dataSetVagas', JSON.stringify(dataSetVagas));
                             CarregarGridVagas(dataSetVagas);
+                            $('#paginaAtual').html(pagina)
                         }
                         else
                             return Notify('Não foram encontradas vagas', null, null);
@@ -222,72 +226,28 @@
         }
 
         function CarregarGridVagas(dataSetVagas) {
-            $('#myTable').DataTable().destroy();
-            $('#myTable').dataTable({
-                "data": dataSetVagas,
-                "scrollX": true,
-                "autoWidth": false,
-                "columnDefs": [
-                    { "width": "12%", "targets": 0 },
-                    { "width": "8%", "targets": 2 },
-                    { "width": "8%", "targets": 4 },
-                    { "width": "8%", "targets": 5 },
-                    { "width": "7%", "targets": 7 },
 
-                ],
-                "columns": [
-                            { "data": "DataCadastro" },
-                            { "data": "Descricao" },
-                            { "data": "Cep" },
-                            { "data": "Empresa" },
-                            { "data": "Distancia" },
-                            { "data": "Aderencia" },
-                            {
-                                "data": "Habilidades",
-                                "bSortable": false,
-                                "mRender": function (data, type, full) {
+            var html = '';
+            $.each(dataSetVagas, function (index, vaga) {
+                
+                var urlAvatar = vaga.EmpresaUrlAvatar == null || vaga.EmpresaUrlAvatar == "" ? '../images/icone-usuario.png' : vaga.EmpresaUrlAvatar.replace('~', '');
+                var empresaNome = vaga.EmpresaNome == null || vaga.EmpresaNome == "" ? "Anônimo" : vaga.EmpresaNome;
+                var btnEnviarEmail = '<a class="btn btn-sm" href="javascript: enviarEmail(' + vaga.IdVaga + ');"><span class="glyphicon glyphicon-envelope"><span></a>';                
+                var habilidades = '';
+                $.each(vaga.Habilidades, function (index, habilidade) {
+                    habilidades += '<span style="margin: 1px; padding: 1px;" class="alert-info"> ' + habilidade + '</span>';
+                });
 
-                                    var html = '';
-                                    $.each(data, function (index, value) {
-                                        html += '<span id="habilidade_' + value.Id + '" style="margin: 1px; padding: 4px;" class="alert-info"> ' + value.Nome + '</span>';
-                                    });
-                                    return html;
-                                }
-                            },
-                            {
-                                "data": null,
-                                "bSortable": false,
-                                "mRender": function (data, type, full) {
-                                    return '<a class="btn btn-sm" href="javascript: enviarEmail(' + full['IdEmpresa'] + ');"><span class="glyphicon glyphicon-envelope"><span></a>';
-                                }
-                            }
-                ],
-                "language": {
-                    "emptyTable": "Não existem registros disponiveis",
-                    "info": "Exibindo _START_ a _END_ de _TOTAL_ registros",
-                    "infoEmpty": "Nenhum registro encontrado",
-                    "infoFiltered": "(filtrado de _MAX_ registros)",
-                    "infoPostFix": "",
-                    "thousands": ",",
-                    "lengthMenu": " _MENU_ ",
-                    "loadingRecords": "Carregando...",
-                    "processing": "Processando...",
-                    "search": "",
-                    "zeroRecords": "Nenhum resultado encontrado",
-                    "searchPlaceholder": "Pesquisar",
-                    "paginate": {
-                        "first": "Primeiro",
-                        "last": "Ultimo",
-                        "next": '<i class="fa fa-chevron-circle-right" aria-hidden="true"></i>',
-                        "previous": '<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>'
-                    },
-                    "aria": {
-                        "sortAscending": ":Ativar ordenação ascendente",
-                        "sortDescending": ":Ativar ordenação descendente"
-                    }
-                }
+                html += '<div class="row"><div class="col-lg-12 panel"><br /><div class="col-lg-1">' +
+                        '<img src="' + urlAvatar + '" height="44" /> ' + empresaNome + ' </div>' +
+                        '<div class="col-lg-10"><div class="col-lg-6"> <span style="font-weight: bold">' + vaga.Descricao + '</span>, Cep ' + vaga.Cep + '<br /> você está há ' + vaga.Distancia +
+                        ', assertividade de ' + vaga.Aderencia + ' </div>' +
+                        '<div class="col-lg-3">' + habilidades + ' </div>' +
+                        '<div class="col-lg-3"> Cadastrada em ' + vaga.DataCadastro + '<br /> Disponível até ' + vaga.DataExpiracao + ' </div></div><div class="col-lg-1">' + btnEnviarEmail + '</div></div></div> ';
             });
-        }
+            $('#listaVagas').html(html);
+
+        }        
     </script>
 </body>
 
@@ -309,7 +269,7 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                     </div>
                     <div class="form-group col-lg-6 text-center">
-                        <input class="btn btn-default" type="button" id="btnCadastrar" value="Alterar" />
+                        <input class="btn btn-success" type="button" id="btnCadastrar" value="Alterar" />
                     </div>
                 </div>
             </div>

@@ -11,12 +11,26 @@ namespace FinderJobs.Infra.Data
 {
     public class UsuarioRepository : RepositoryBaseMongoDb<Usuario>, IUsuarioRepository
     {
-        public List<Usuario> BuscarPorTipo(string tipo)
-        {
-            using (var session = SessionFactory.AbrirSession())
-            {
-                return (from e in session.Query<Usuario>() where e.Tipo.Equals(tipo) select e).ToList();
-            }
-        }
+        //public IList<Usuario> BuscarPorTipo(string tipo)
+        //{
+        //    return Find("{ Tipo : '" + tipo + "'}");
+        //}
+
+        //public IList<Usuario> BuscarPorTipo(string tipo, List<Habilidade> habilidades)
+        //{
+        //    var query = "{ Tipo : '" + tipo + "'}";
+        //    if (habilidades != null && habilidades.Count > 0)
+        //    {
+        //        query = "{ Tipo : '" + tipo + "', 'Habilidades' : { $elemMatch: {";
+        //        foreach (var item in habilidades)
+        //        {
+        //            query += "Nome : '" + item.Nome + "'";
+        //        }
+
+        //        query += query + "'}}}";
+        //    }
+
+        //    return Find(query);
+        //}
     }
 }

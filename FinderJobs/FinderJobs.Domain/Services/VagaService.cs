@@ -23,5 +23,23 @@ namespace FinderJobs.Domain.Services
         {
             return _vagaRepository.GetAll().Where(v => v.EmpresaId == id);
         }
+
+        public IEnumerable<Vaga> BuscarPaginadaPorEmpresa(Guid id, int pagina)
+        {
+            return _vagaRepository.GetAll().Where(v => v.EmpresaId == id).Skip((pagina - 1) * 10).Take(10);
+        }
+
+        public IEnumerable<Vaga> BuscarVagas(List<string> habilidades, int pagina)
+        {
+            var query = "{ 'Habilidades' : {  $in : [";
+            foreach (var item in habilidades)
+            {
+                query += "'" + item + "',";
+            }
+
+            query = query + "]}}";
+
+            return _vagaRepository.Find(query, pagina - 1);
+        }
     }
 }

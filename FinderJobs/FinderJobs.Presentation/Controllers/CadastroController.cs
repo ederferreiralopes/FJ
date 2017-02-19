@@ -56,19 +56,18 @@ namespace FinderJobs.Site.Controllers
                 var sucesso = false;
 
                 if (!string.IsNullOrWhiteSpace(model.Nome))
-                {                    
-                    var habilidadesExistentes = (from h in model.Habilidades
-                                                 where h.Nome != h.Id
-                                                 select new Habilidade { Id = Guid.Parse(h.Id), Nome = h.Nome }).ToList();
+                {
 
-                    // Grava Habilidades Novas
-                    foreach (var item in model.Habilidades.Where(x => x.Id.Equals(x.Nome)))
+                    var habilidadesModel = (from h in model.Habilidades where h.Id.Equals(h.Nome) select h.Nome).ToList();
+
+                    foreach (var item in habilidadesModel)
                     {
-                        var id = (Guid)_habilidadeService.Insert(new Domain.Entities.Habilidade { Nome = item.Nome });
-                        habilidadesExistentes.Add(new Habilidade { Id = id, Nome = item.Nome });
+                        var hab = _habilidadeService.BuscarPorNome(item);
+                        if (hab == null || hab.Count() == 0)
+                            _habilidadeService.Insert(new Habilidade { Nome = item });
                     }
 
-                    var usuario = new Domain.Entities.Usuario
+                    var usuario = new Usuario
                     {
                         Id = model.Id,
                         CpfCnpj = model.CpfCnpj,
@@ -76,10 +75,10 @@ namespace FinderJobs.Site.Controllers
                         Nome = model.Nome,
                         Pago = model.Pago,
                         Tipo = model.Tipo,
-                        Endereco = model.Endereco, 
+                        Endereco = model.Endereco,
                         Email = model.Email,
                         Anonimo = model.Anonimo,
-                        Habilidades = habilidadesExistentes,
+                        Habilidades = (from h in model.Habilidades select h.Nome).ToList(),                        
                         Ativo = true,
                     };
 
@@ -90,10 +89,10 @@ namespace FinderJobs.Site.Controllers
                         sucesso = true;
                     }
                     else
-                    {                        
+                    {
                         usuario.DataAlteracao = DateTime.Now;
                         sucesso = _usuarioService.Update(usuario);
-                    }                       
+                    }
 
                     return Json(new { usuario = usuario, sucesso = sucesso }, JsonRequestBehavior.AllowGet);
                 }
@@ -115,9 +114,7 @@ namespace FinderJobs.Site.Controllers
                 var retorno = string.Empty;
                 var sucesso = false;
 
-                if (tipo == ArquivoLocal.Avatar.ToString())                
-                    tipo = ArquivoLocal.Avatar.ToString();                
-                else
+                if (tipo != ArquivoLocal.Avatar.ToString())
                 {
                     var usuarioTipo = (UsuarioTipo)Enum.Parse(typeof(UsuarioTipo), tipo, true);
 
@@ -134,19 +131,24 @@ namespace FinderJobs.Site.Controllers
                             break;
                     }
                 }
-                
-                var caminho = string.Concat("~/Arquivo/", id, "/", tipo, "/");
+
+                var caminho = string.Concat("~/Arquivo/", usuarioId, "/", tipo, "/");
                 var nome = fileUpload.FileName.Length > 50 ? fileUpload.FileName.Substring(fileUpload.FileName.Length - 50) : fileUpload.FileName;
 
-                var arquivo = new Domain.Entities.Arquivo { UsuarioId = usuarioId, Caminho = caminho, Nome = nome, Tipo = tipo, Ativo = true };
-                if (!System.IO.Directory.Exists(Server.MapPath(caminho)))
-                    System.IO.Directory.CreateDirectory(Server.MapPath(caminho));
+                var arquivo = new Arquivo { UsuarioId = usuarioId, Caminho = caminho, Nome = nome, Tipo = tipo, Ativo = true };
+                if (!Directory.Exists(Server.MapPath(caminho)))
+                    Directory.CreateDirectory(Server.MapPath(caminho));
                 fileUpload.SaveAs(Server.MapPath(caminho) + nome);
-                
-                arquivo.Id = (Guid)_arquivoService.Insert(arquivo);
 
-                if (arquivo.Id != new Guid())
-                    sucesso = true;
+                if (tipo == ArquivoLocal.Avatar.ToString())
+                    sucesso = _usuarioService.UpdateByField(usuarioId, "UrlAvatar", caminho + nome);
+                else
+                {
+                    arquivo.Id = (Guid)_arquivoService.Insert(arquivo);
+
+                    if (arquivo.Id != new Guid())
+                        sucesso = true;
+                }
 
                 return Json(new { arquivo = arquivo, sucesso = sucesso }, JsonRequestBehavior.AllowGet);
             }
@@ -273,7 +275,7 @@ namespace FinderJobs.Site.Controllers
                     caminho = "~/Arquivo/" + usuario.Id + "/Boleto/";
                     nome = boleto.Boleto.NumeroDocumento + ".pdf";
                     byte[] arquivoPDF = boleto.MontaBytesPDF();
-                    var arquivo = new Domain.Entities.Arquivo { UsuarioId = usuario.Id , Caminho = caminho, Nome = nome, Tipo = "Boleto", Ativo = true };
+                    var arquivo = new Domain.Entities.Arquivo { UsuarioId = usuario.Id, Caminho = caminho, Nome = nome, Tipo = "Boleto", Ativo = true };
 
                     if (!System.IO.Directory.Exists(Server.MapPath(caminho)))
                         System.IO.Directory.CreateDirectory(Server.MapPath(caminho));

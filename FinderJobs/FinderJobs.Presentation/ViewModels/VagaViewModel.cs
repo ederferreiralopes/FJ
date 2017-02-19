@@ -19,12 +19,13 @@ namespace FinderJobs.Site.ViewModels
 
     public class VagaViewModel : EntityBase
     {        
-        public Guid IdEmpresa { get; set; }
+        public Guid EmpresaId { get; set; }
         public DateTime DataCadastro { get; set; }
-        public string Empresa { get; set; }
+        public string EmpresaNome { get; set; }
+        public string EmpresaUrlAvatar { get; set; }
         public string Descricao { get; set; }
         public string Cep { get; set; }
-        public List<Habilidade> Habilidades { get; set; }
+        public List<HabilidadeViewModel> Habilidades { get; set; }
         public Vaga Vaga { get; set; }
         public UsuarioViewModel Candidato { get; set; }
         public DistanciaViewModel Pesquisa { get; set; }
@@ -51,6 +52,7 @@ namespace FinderJobs.Site.ViewModels
     public class CandidatoDistanciaViewModel : EntityBase
     {        
         public string Nome { get; set; }
+        public string UrlAvatar { get; set; }       
         public string Email { get; set; }
         public string Celular { get; set; }
         public string EnderecoCep { get; set; }
@@ -61,11 +63,13 @@ namespace FinderJobs.Site.ViewModels
     {
         public string Cep { get; set; }
         public DateTime DataCadastro { get; set; }
+        public DateTime DataExpiracao { get; set; }        
         public string Descricao { get; set; }
-        public List<Habilidade> Habilidades { get; set; }
-        public Guid UsuarioId { get; set; }
-        public string UsuarioNome { get; set; }
-        public string UsuarioCep { get; set; }
+        public List<string> Habilidades { get; set; }
+        public Guid CandidatoId { get; set; }
+        public string CandidatoNome { get; set; }
+        public string CandidatoUrlAvatar { get; set; }
+        public string CandidatoCep { get; set; }
         public string Distancia { get; set; }
         public string Porcentagem { get; set; }
         public string Unidade { get; set; }
@@ -75,21 +79,25 @@ namespace FinderJobs.Site.ViewModels
 
     public class CalculosVaga
     {
-        public Guid CandidatoId { get; set; }       
+        public Guid CandidatoId { get; set; }
+        public string CandidatoCep { get; set; }
         public decimal Aderencia { get; set; }
         public string Distancia { get; set; }
+        public string UrlAvatar { get; set; }
     }
 
     public class VagaDistanciaViewModel : EntityBase
     {        
-        public Guid IdEmpresa { get; set; }
+        public Guid EmpresaId { get; set; }
         public DateTime DataCadastro { get; set; }
-        public string Empresa { get; set; }
+        public DateTime DataExpiracao { get; set; }
+        public string EmpresaNome { get; set; }
+        public string EmpresaUrlAvatar { get; set; }
         public string Descricao { get; set; }
         public string Cep { get; set; }
         public string Distancia { get; set; }
         public string Porcentagem { get; set; }
         public string Unidade { get; set; }
-        public List<HabilidadeViewModel> Habilidades { get; set; }
+        public List<string> Habilidades { get; set; }
     }
 }

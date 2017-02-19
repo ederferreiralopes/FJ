@@ -24,9 +24,25 @@ namespace FinderJobs.Domain.Services
             return _usuarioRepository.GetAll().Where(u => u.Tipo.Equals(tipo));
         }
 
-        public Usuario GetByEmail(string email)
+        public IEnumerable<Usuario> BuscarPorTipo(string tipo, List<string> habilidades)
         {
-            //return _usuarioRepository.GetAll().Where(u => u.Email.Equals(email)).FirstOrDefault();
+            var query = "{ 'Tipo' : '" + tipo + "'}";
+            if (habilidades != null && habilidades.Count > 0)
+            {
+                query = "{ 'Tipo' : '" + tipo + "', 'Habilidades' : {  $in : [";
+                foreach (var item in habilidades)
+                {
+                    query += "'" + item + "',";
+                }
+
+                query = query + "]}}";
+            }
+
+            return _usuarioRepository.Find(query, 0);
+        }
+
+        public Usuario GetByEmail(string email)
+        {            
             return _usuarioRepository.SearchFor(u => u.Email == email).FirstOrDefault();
         }
     }

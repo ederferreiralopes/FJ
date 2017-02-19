@@ -12,10 +12,12 @@ namespace FinderJobs.Domain.Interfaces.Repositories
     {
         object Insert(TEntity entity);
         bool Update(TEntity entity);
+        bool UpdateByField(Guid id, string campo, string valor);
         bool Disable(Guid id);
         bool Delete(TEntity entity);
         IList<TEntity> SearchFor(Expression<Func<TEntity, bool>> predicate);
         IList<TEntity> GetAll();
+        IList<TEntity> Find(string query, int pagina);
         TEntity GetById(Guid id);
     }
 

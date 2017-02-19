@@ -218,6 +218,7 @@
     <Content Include="images\icone-add-foto.png" />
     <Content Include="images\icone-boleto.png" />
     <Content Include="images\icone-cartao.png" />
+    <Content Include="images\icone-empresa.png" />
     <Content Include="images\icone-usuario.png" />
     <Content Include="images\sort_asc.png" />
     <Content Include="images\sort_asc_disabled.png" />

@@ -13,8 +13,8 @@ namespace FinderJobs.Application
     {
         private readonly IUsuarioService _usuarioService;
 
-        public UsuarioAppService(IUsuarioService usuarioService)     
-            : base(usuarioService)       
+        public UsuarioAppService(IUsuarioService usuarioService)
+            : base(usuarioService)
         {
             _usuarioService = usuarioService;
         }
@@ -24,9 +24,14 @@ namespace FinderJobs.Application
             return _usuarioService.BuscarPorTipo(tipo);
         }
 
+        public IEnumerable<Usuario> BuscarPorTipo(string tipo, List<string> habilidades)
+        {
+            return _usuarioService.BuscarPorTipo(tipo, habilidades);
+        }
+
         public Usuario GetByEmail(string email)
         {
             return _usuarioService.GetByEmail(email);
-        }       
+        }
     }
 }

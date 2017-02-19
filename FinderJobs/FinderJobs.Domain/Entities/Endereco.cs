@@ -8,11 +8,11 @@ namespace FinderJobs.Domain.Entities
 {
     public class Endereco : EntityBase
     {
-        public virtual string Cep { get; set; }        
-        public virtual string Logradouro { get; set; }
-        public virtual string Numero { get; set; }
-        public virtual string Bairro { get; set; }
-        public virtual string Cidade { get; set; }
-        public virtual string UF { get; set; }        
+        public string Cep { get; set; }        
+        public string Logradouro { get; set; }
+        public string Numero { get; set; }
+        public string Bairro { get; set; }
+        public string Cidade { get; set; }
+        public string UF { get; set; }        
     }
 }

@@ -33,6 +33,11 @@ namespace FinderJobs.Application
             return _serviceBase.Update(obj);
         }
 
+        public bool UpdateByField(Guid id, string campo, string valor)
+        {
+            return _serviceBase.UpdateByField(id, campo, valor);
+        }
+
         public bool Disable(Guid id)
         {
             return _serviceBase.Disable(id);
@@ -45,7 +50,7 @@ namespace FinderJobs.Application
 
         public IList<TEntity> SearchFor(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _serviceBase.SearchFor(predicate);
         }
 
         public IList<TEntity> GetAll()

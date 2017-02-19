@@ -8,13 +8,13 @@ namespace FinderJobs.Domain.Entities
 {
     public class Sacado
     {
-        public virtual int Id { get; set; }
-        public virtual string Nome { get; set; }
-        public virtual string CpfCnpj { get; set; }
-        public virtual string Endereco { get; set; }
-        public virtual string Bairro { get; set; }
-        public virtual string Cidade { get; set; }
-        public virtual string Cep { get; set; }
-        public virtual string UF { get; set; }
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public string CpfCnpj { get; set; }
+        public string Endereco { get; set; }
+        public string Bairro { get; set; }
+        public string Cidade { get; set; }
+        public string Cep { get; set; }
+        public string UF { get; set; }
     }
 }

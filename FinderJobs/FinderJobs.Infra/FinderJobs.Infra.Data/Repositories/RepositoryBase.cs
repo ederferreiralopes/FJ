@@ -38,6 +38,12 @@ namespace FinderJobs.Infra.Data.Repositories
             return collection.ReplaceOne(Builders<TEntity>.Filter.Eq("_id", entity.Id), entity).ModifiedCount > 0;
         }
 
+        public bool UpdateByField(Guid id, string campo, string valor)
+        {
+            var resultado = collection.UpdateOne(Builders<TEntity>.Filter.Eq("_id", id), Builders<TEntity>.Update.Set(campo, valor));
+            return resultado.ModifiedCount > 0;
+        }
+
         public bool Disable(Guid id)
         {
             return collection.UpdateOne(Builders<TEntity>.Filter.Eq("_id", id), Builders<TEntity>.Update.Set("Ativo", false)).ModifiedCount > 0;
@@ -56,6 +62,11 @@ namespace FinderJobs.Infra.Data.Repositories
         public IList<TEntity> GetAll()
         {
             return collection.Find<TEntity>(_ => true).ToList();
+        }
+
+        public IList<TEntity> Find(string query, int pagina)
+        {
+            return collection.Find<TEntity>(query).Skip(pagina * 10).Limit(10).ToList();
         }
 
         public TEntity GetById(Guid id)

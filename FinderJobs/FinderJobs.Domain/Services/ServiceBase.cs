@@ -37,6 +37,11 @@ namespace FinderJobs.Domain.Services
             return _repository.Update(obj);
         }
 
+        public bool UpdateByField(Guid id, string campo, string valor)
+        {
+            return _repository.UpdateByField(id, campo, valor);
+        }
+
         public bool Disable(Guid id)
         {
             return _repository.Disable(id);
@@ -49,7 +54,12 @@ namespace FinderJobs.Domain.Services
 
         public IList<TEntity> SearchFor(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _repository.SearchFor(predicate);
+        }
+
+        public IList<TEntity> Find(string query, int pagina)
+        {
+            return _repository.Find(query, pagina);
         }
     }
 }

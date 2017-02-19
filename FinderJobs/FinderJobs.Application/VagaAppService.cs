@@ -23,5 +23,15 @@ namespace FinderJobs.Application
         {
             return _vagaService.BuscarPorEmpresa(id);
         }
+
+        public IEnumerable<Vaga> BuscarPaginadaPorEmpresa(Guid id, int pagina)
+        {
+            return _vagaService.BuscarPaginadaPorEmpresa(id, pagina);
+        }
+
+        public IEnumerable<Vaga> BuscarVagas(List<string> habilidades, int pagina)
+        {
+            return _vagaService.BuscarVagas(habilidades, pagina);
+        }
     }
 }

@@ -9,6 +9,6 @@ namespace FinderJobs.Domain.Entities
 {
     public class Habilidade : EntityBase
     {        
-        public virtual string Nome { get; set; }
+        public string Nome { get; set; }
     }
 }

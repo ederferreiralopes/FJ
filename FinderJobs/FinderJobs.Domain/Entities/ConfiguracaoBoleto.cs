@@ -15,15 +15,15 @@ namespace FinderJobs.Domain.Entities
             this.Cedente = new Cedente();
         }
         
-        public virtual short CodigoBanco { get; set; }
-        public virtual DateTime Vencimento { get; set; }
-        public virtual decimal ValorBoleto { get; set; }
-        public virtual string NumeroDocumento { get; set; }
-        public virtual string Descricao { get; set; }
-        public virtual string CodigoCarteira { get; set; }
-        public virtual string CodigoEspecieDocumento { get; set; }
-        public virtual bool MostrarCodigoCarteira { get; set; }
-        public virtual bool MostrarComprovanteEntrega { get; set; }
-        public virtual Cedente Cedente { get; set; }        
+        public short CodigoBanco { get; set; }
+        public DateTime Vencimento { get; set; }
+        public decimal ValorBoleto { get; set; }
+        public string NumeroDocumento { get; set; }
+        public string Descricao { get; set; }
+        public string CodigoCarteira { get; set; }
+        public string CodigoEspecieDocumento { get; set; }
+        public bool MostrarCodigoCarteira { get; set; }
+        public bool MostrarComprovanteEntrega { get; set; }
+        public Cedente Cedente { get; set; }        
     }   
 }
