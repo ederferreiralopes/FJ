@@ -44,7 +44,7 @@ namespace FinderJobs.Site.Controllers
                     var vaga = new Domain.Entities.Vaga();
                     if (model.Id != new Guid())
                         vaga = _vagaService.GetById(model.Id);
-                    
+
                     var habilidadesModel = (from h in model.Habilidades where h.Id.Equals(h.Nome) select h.Nome).ToList();
 
                     foreach (var item in habilidadesModel)
@@ -82,6 +82,37 @@ namespace FinderJobs.Site.Controllers
                 }
             }
             return Json(new { sucesso = false, mensagem = "Preencha todos os campos" }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Carregar()
+        {
+            var cadastro = _usuarioService.GetByEmail(User.Identity.Name);            
+            var vagas = _vagaService.BuscarPorEmpresa(cadastro.Id).ToList();
+
+            if (vagas != null && vagas.Count > 0)
+            {
+                var dados = new List<object>();
+
+                vagas = vagas.OrderBy(x => x.DataCadastro).ToList();
+
+                foreach (var x in vagas)
+                {
+                    dados.Add(new
+                    {
+                        IdVaga = x.Id,                        
+                        DataCadastro = x.DataCadastro.ToShortDateString(),
+                        DataExpiracao = x.DataExpiracao.ToShortDateString(),
+                        Descricao = x.Descricao,
+                        Cep = x.Cep,
+                        Habilidades = x.Habilidades,
+                        Ativo = x.Ativo
+                    });
+                }
+
+                return Json(new { dados }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { sucesso = false }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult PesquisaEmpresa(string id, int pagina = 1)
@@ -123,10 +154,10 @@ namespace FinderJobs.Site.Controllers
                 empresaVagaViewModel.Candidatos = (from usuario in candidatos
                                                    select new ViewModels.CandidatoDistanciaViewModel
                                                    {
-                                                       Id = usuario.Id,                                                       
+                                                       Id = usuario.Id,
                                                        Nome = usuario.Anonimo ? "" : usuario.Nome,
                                                        Habilidades = JsonConvert.SerializeObject(usuario.Habilidades),
-                                                       EnderecoCep = usuario.Endereco.Cep,                                                       
+                                                       EnderecoCep = usuario.Endereco.Cep,
                                                        UrlAvatar = usuario.Anonimo ? "" : usuario.UrlAvatar,
                                                    }).ToList();
 
@@ -152,7 +183,7 @@ namespace FinderJobs.Site.Controllers
                         DataExpiracao = x.DataExpiracao.ToShortDateString(),
                         Descricao = x.Descricao,
                         Cep = x.Cep,
-                        Habilidades = x.Habilidades,                        
+                        Habilidades = x.Habilidades,
                         Distancia = !string.IsNullOrWhiteSpace(x.Distancia) ? x.Distancia + " " + x.Unidade : "",
                         Aderencia = !string.IsNullOrWhiteSpace(x.Porcentagem) ? x.Porcentagem + " %" : ""
                     });
@@ -175,7 +206,7 @@ namespace FinderJobs.Site.Controllers
                     Id = usuario.Id,
                     Nome = usuario.Nome,
                     Habilidades = (from h in usuario.Habilidades select new HabilidadeViewModel { Id = "", Nome = h }).ToList(),
-                    Endereco = usuario.Endereco,                                                            
+                    Endereco = usuario.Endereco,
                 }
             };
 
@@ -189,9 +220,9 @@ namespace FinderJobs.Site.Controllers
                         new VagaDistanciaViewModel
                         {
                             Id = item.Id,
-                            EmpresaId = item.EmpresaId,    
-                            EmpresaNome =  item.EmpresaNome,
-                            EmpresaUrlAvatar = item.EmpresaUrlAvatar,                                                    
+                            EmpresaId = item.EmpresaId,
+                            EmpresaNome = item.EmpresaNome,
+                            EmpresaUrlAvatar = item.EmpresaUrlAvatar,
                             Cep = item.Cep,
                             DataCadastro = item.DataCadastro,
                             DataExpiracao = item.DataExpiracao,
@@ -222,7 +253,7 @@ namespace FinderJobs.Site.Controllers
                         DataExpiracao = x.DataExpiracao.ToShortDateString(),
                         Descricao = x.Descricao,
                         Cep = x.Cep,
-                        Habilidades = x.Habilidades,                        
+                        Habilidades = x.Habilidades,
                         Distancia = !string.IsNullOrWhiteSpace(x.Distancia) ? x.Distancia + " " + x.Unidade : "",
                         Aderencia = !string.IsNullOrWhiteSpace(x.Porcentagem) ? x.Porcentagem + " %" : ""
                     });
@@ -271,11 +302,10 @@ namespace FinderJobs.Site.Controllers
             }
             catch (Exception erro)
             {
-                TempData["mensagem"] = "Ocorreu um erro!";
                 throw erro;
             }
         }
-        
+
         private EmpresaVagaViewModel CalcularDistancia(EmpresaVagaViewModel viewModel)
         {
             if (viewModel.Vagas.Count > 0 && viewModel.Candidatos.Count > 0)
@@ -321,7 +351,7 @@ namespace FinderJobs.Site.Controllers
                             }
 
                         }
-                    }                    
+                    }
                 }
                 catch (Exception erro)
                 {
@@ -386,7 +416,7 @@ namespace FinderJobs.Site.Controllers
         }
 
         private EmpresaVagaViewModel EscolherCandidatoVaga(EmpresaVagaViewModel viewModel)
-        {            
+        {
             foreach (var vaga in viewModel.Vagas)
             {
                 var campeao = new CalculosVaga();

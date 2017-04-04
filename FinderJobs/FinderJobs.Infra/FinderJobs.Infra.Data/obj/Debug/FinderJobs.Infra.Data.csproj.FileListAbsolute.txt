@@ -76,3 +76,4 @@ D:\Roberto\FinderJobs\FinderJobs.Infra\FinderJobs.Infra.Data\bin\Debug\FinderJob
 D:\Roberto\FinderJobs\FinderJobs.Infra\FinderJobs.Infra.Data\obj\Debug\FinderJobs.Infra.Data.csprojResolveAssemblyReference.cache
 D:\Roberto\FinderJobs\FinderJobs.Infra\FinderJobs.Infra.Data\obj\Debug\FinderJobs.Infra.Data.dll
 D:\Roberto\FinderJobs\FinderJobs.Infra\FinderJobs.Infra.Data\obj\Debug\FinderJobs.Infra.Data.pdb
+D:\Roberto\FinderJobs\FinderJobs.Infra\FinderJobs.Infra.Data\bin\Debug\FinderJobs.Domain.dll.config

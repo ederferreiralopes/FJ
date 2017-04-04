@@ -42,3 +42,4 @@ D:\Roberto\FinderJobs\FinderJobs.Application\obj\Debug\FinderJobs.Application.dl
 D:\Roberto\FinderJobs\FinderJobs.Application\obj\Debug\FinderJobs.Application.pdb
 D:\Roberto\FinderJobs\FinderJobs.Application\bin\Debug\MongoDB.Bson.dll
 D:\Roberto\FinderJobs\FinderJobs.Application\bin\Debug\MongoDB.Bson.xml
+D:\Roberto\FinderJobs\FinderJobs.Application\bin\Debug\FinderJobs.Domain.dll.config

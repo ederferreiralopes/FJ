@@ -130,3 +130,6 @@ D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Uol.PagSeguro.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Uol.PagSeguro.pdb
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Uol.PagSeguro.xml
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\EntityFramework.dll
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\FinderJobs.Application.dll.config
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\FinderJobs.Domain.dll.config
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\FinderJobs.Infra.Data.dll.config

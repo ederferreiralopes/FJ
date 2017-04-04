@@ -206,12 +206,6 @@
     <Content Include="content\js\ScriptVagaCadastro.js" />
     <Content Include="content\js\validarCadastroCandidato.js" />
     <Content Include="content\js\validarCadastroHabilidade.js" />
-    <Content Include="dataTables\dataTables.bootstrap.min.js" />
-    <Content Include="dataTables\jquery.dataTables.css" />
-    <Content Include="dataTables\jquery.dataTables.js" />
-    <Content Include="dataTables\jquery.dataTables.min.css" />
-    <Content Include="dataTables\jquery.dataTables.min.js" />
-    <Content Include="dataTables\jquery.dataTables_themeroller.css" />
     <Content Include="Global.asax" />
     <Content Include="images\favicon.ico" />
     <Content Include="images\icone-acesso.png" />
@@ -219,7 +213,9 @@
     <Content Include="images\icone-boleto.png" />
     <Content Include="images\icone-cartao.png" />
     <Content Include="images\icone-empresa.png" />
+    <Content Include="images\icone-portal-transparencia.jpg" />
     <Content Include="images\icone-usuario.png" />
+    <Content Include="images\logo-fj.jpg" />
     <Content Include="images\sort_asc.png" />
     <Content Include="images\sort_asc_disabled.png" />
     <Content Include="images\sort_both.png" />
@@ -250,8 +246,6 @@
     <Content Include="jquery\jquery.js" />
     <Content Include="jquery\jquery.mask.min.js" />
     <Content Include="jquery\jquery.min.js" />
-    <Content Include="magicsuggest\magicsuggest-min.css" />
-    <Content Include="magicsuggest\magicsuggest-min.js" />
     <Content Include="notify\notify.css" />
     <Content Include="notify\notify.js" />
     <Content Include="NuGet.exe" />

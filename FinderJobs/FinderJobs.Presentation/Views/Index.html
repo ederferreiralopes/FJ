@@ -24,85 +24,97 @@
     </style>
 </head>
 <body id="page-top" class="index">
-    <!-- Navigation -->
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand" href="#page-top">Finder Jobs</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#modalComoFunciona" class="portfolio-link" data-toggle="modal">Como Funciona</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#modalQuemSomos" class="portfolio-link" data-toggle="modal">Quem Somos</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#modalPortalTransparencia" class="portfolio-link" data-toggle="modal">Portal da Transparência</a>
-                    </li>
-                    <li class="">
+    <!-- Navigation -->    
+    <div class="col-lg-12" style="background-color: #2C3E50;">
+        <br />
+        <div class="col-lg-7">
+            <nav id="mainNav" class="navbar">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span><i class="fa fa-bars" style="font-size:x-large; color:white;"></i>
+                    </button>
+                    <img src="../images/logo-fj.jpg" height="90" style="border-radius: 4px;" />
+                </div>
 
-                    </li>
-                    <li>
-                        <div class="dropdown" style="width:300px;">
-                            <button href="#" class="btn btn-lg dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Acesso  <span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <div class="col-lg-12">
-                                    <form name="sentMessage" id="acessoForm" novalidate action="Acesso/Login" method="post">
-                                        <div class="row control-group">
-                                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                                <label>Email</label>
-                                                <input type="text" class="form-control" placeholder="Email" id="Email" name="Email" required data-validation-required-message="Seu email">
-                                                <p class="help-block text-danger"></p>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="hidden">
+                            <a href="#page-top"></a>
+                        </li>
+                        <li class="page-scroll">
+                            <a href="#modalComoFunciona" class="portfolio-link" data-toggle="modal">Como Funciona</a>
+                        </li>
+                        <li class="page-scroll">
+                            <a href="#modalQuemSomos" class="portfolio-link" data-toggle="modal">Quem Somos</a>
+                        </li>
+                        <!--<li class="page-scroll">
+                            <a href="#modalPortalTransparencia" class="portfolio-link" data-toggle="modal">Portal da Transparência</a>
+                        </li>-->
+                        <li>
+                            <div class="dropdown" style="width:300px; top: 7px;">
+                                <button href="#" class="btn btn-link dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Acesso  <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <div class="col-lg-12">
+                                        <form name="sentMessage" id="acessoForm" novalidate action="Acesso/Login" method="post">
+                                            <div class="row control-group">
+                                                <div class="form-group col-xs-12 floating-label-form-group controls">
+                                                    <label>Email</label>
+                                                    <input type="text" class="form-control" placeholder="Email" id="Email" name="Email" required data-validation-required-message="Seu email">
+                                                    <p class="help-block text-danger"></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row control-group">
-                                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                                <label>Senha</label>
-                                                <input type="password" class="form-control" placeholder="Senha" id="Senha" name="Senha" required data-validation-required-message="Senha">
-                                                <p class="help-block text-danger"></p>
+                                            <div class="row control-group">
+                                                <div class="form-group col-xs-12 floating-label-form-group controls">
+                                                    <label>Senha</label>
+                                                    <input type="password" class="form-control" placeholder="Senha" id="Senha" name="Senha" required data-validation-required-message="Senha">
+                                                    <p class="help-block text-danger"></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <br>
-                                        <div class="row pull-right">
-                                            <div class="form-group col-md-12 text-right">
-                                                <a data-toggle="modal" href="#modalEsqueciSenha" style="font-size:smaller; color: #ff6a00;">esqueci a senha!</a>
-                                                <button id="btnEntrar" type="button" class="btn btn-lg" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde">Entrar</button>
+                                            <br>
+                                            <div class="row pull-right">
+                                                <div class="form-group col-md-12 text-right">
+                                                    <a data-toggle="modal" href="#modalEsqueciSenha" style="font-size:smaller; color: #ff6a00;">esqueci a senha!</a>
+                                                    <button id="btnEntrar" type="button" class="btn btn-lg" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde">Entrar</button>
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <span style="font-size:smaller; color: black;">cadastre-se:</span>
+                                                    <a data-toggle="modal" onclick="Cadastro('Candidato')" style="font-size:smaller; color: #0b8711;">Candidato</a>
+                                                    <a data-toggle="modal" onclick="Cadastro('Empresa')" style="font-size:smaller; color: #3498db;"> Empresa</a>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-12">
-                                                <span style="font-size:smaller; color: black;">cadastre-se:</span>
-                                                <a data-toggle="modal" onclick="Cadastro('Candidato')" style="font-size:smaller; color: #0b8711;">Candidato</a>
-                                                <a data-toggle="modal" onclick="Cadastro('Empresa')" style="font-size:smaller; color: #3498db;"> Empresa</a>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-                <!-- /.navbar-collapse -->
-            </div>
-            <!-- /.container-fluid -->
-    </nav>
+                                        </form>
+                                    </div>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.container-fluid -->
 
-    <!-- Section -->
+            </nav>
+        </div>
+        <div class="col-lg-5">
+            <div class="col-lg-6">
+                <img src="../images/icone-portal-transparencia.jpg" height="90" style="border-radius: 4px;" />
+            </div>
+            <div class="col-lg-6" style="color:white;">                
+                    <span>Currículos Únicos : 0012</span><br />
+                    <span>Empresas Únicas : 0004</span><br />
+                    <span>SLA Mensal (uptime) = 99.87%</span>                
+            </div>
+        </div>
+    </div>
+    <!-- Section --><br />
     <section class="alert-info">
-        <div class="row">
+        <!--<div class="row">
             <div class="col-lg-12 text-center">
                 <img style="padding: 12px;" width="174" src="content/img/profile.png" alt="">
             </div>
-        </div>
-        <div class="container">            
+        </div>-->
+        <div class="container">
             <div class="row" style="background-color: white;">
                 <br />
                 <div class="col-lg-12 text-center">
@@ -117,9 +129,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>                                
+                            <tr>
                                 <td>Uma candidatura por vaga publicada</td>
-                                <td>re-candidatura as vagas (segunda vez)</td>                                
+                                <td>re-candidatura as vagas (segunda vez)</td>
                             </tr>
                             <tr>
                                 <td>Perfil visível</td>
@@ -140,7 +152,7 @@
                             <tr>
                                 <td style="font-weight: bold">R$ 0,00 (gratuito)</td>
                                 <td style="font-weight: bold">R$ 100,00/ano</td>
-                            </tr>                                
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -156,9 +168,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>                                
+                            <tr>
                                 <td>Anuncio: 10 (dez) dias de publicação</td>
-                                <td>Anúncio: 21 (vinte e um) dias de publicação</td>          
+                                <td>Anúncio: 21 (vinte e um) dias de publicação</td>
                             </tr>
                             <tr>
                                 <td>sem re-publicação</td>
@@ -187,7 +199,7 @@
                         </tbody>
                     </table>
                 </div>
-               
+
             </div>
         </div>
     </section>
@@ -467,12 +479,12 @@
     <script src="bootstrap/js/bootstrap-switch.min.js"></script>
     <script src="bootstrap/js/bootstrap-filestyle.min.js"></script>
     <!-- Plugin JavaScript -->
-    <script src="jquery/jquery.easing.min.js"></script>    
+    <script src="jquery/jquery.easing.min.js"></script>
     <!-- Contact Form JavaScript -->
     <script src="content/js/jqBootstrapValidation.js"></script>
     <script src="content/js/contact_me.js"></script>
     <!-- Theme JavaScript -->
-    <script src="content/js/finderjobs.min.js"></script>   
+    <script src="content/js/finderjobs.min.js"></script>
 
     <script src="../bootstrap/js/bootstrap-confirmation.min.js"></script>
 
@@ -480,9 +492,8 @@
 
     <script>
 
-        $(document).ready(function () {            
+        $(document).ready(function () {
             localStorage.setItem('usuario', '');
-
             $.urlParam = function (name) {
                 var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
                 var retorno = results != null ? results[1] : null;
@@ -495,7 +506,7 @@
             }
         });
 
-        function Cadastro(tipo) {            
+        function Cadastro(tipo) {
             $.get("../Acesso/Cadastro", function (data) {
                 $('#modalCadastroBody').html('');
                 $('#modalCadastroBody').html(data);
@@ -526,7 +537,7 @@
                         Notify('Ok, você já pode acessar com a nova senha', null, null, 'success');
                         setTimeout(function () {
                             window.location.replace("../");
-                        }, 2000);                        
+                        }, 2000);
                     },
                     error: function (result) {
                         Notify('Ocoreu um erro, informe a equipe de suporte', null, null, 'danger');

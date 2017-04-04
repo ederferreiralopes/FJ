@@ -1,5 +1,4 @@
-﻿
-<div class="row">
+﻿<div class="row">
     <form name="sentMessage" id="formCadastro" novalidate action="Acesso/Cadastrar" method="post">
         <div class="row">
             <div class="col-md-10">
@@ -38,7 +37,7 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <label for="btnAdicionarAvatar">
-                            <img id="Usuario_Avatar" src="../images/icone-add-foto.png" width="120" height="120" style="pointer-events: none" />
+                            <img id="Usuario_Avatar" src="../images/icone-add-foto.png" width="auto" height="120" style="pointer-events: none" />
                         </label>
                         <input id="btnAdicionarAvatar" type="file" style="visibility:hidden; width: 0; height: 0;" />
                     </div>
@@ -91,7 +90,7 @@
                 </div>
                 <div class="form-group col-sm-2" style="display: none" id="dvAnonimo">
                     Anônimo: <br />
-                    <input id="btnAnonimo" type="checkbox" name="Usuario.Anonimo" value="Usuario.Anonimo" data-off-text="Não" data-on-text="Sim" checked="checked" class="BSswitch">
+                    <input id="btnAnonimo" type="checkbox" name="Usuario.Anonimo" value="Usuario.Anonimo" data-off-text="Não" data-on-text="Sim" class="BSswitch">
                 </div>
                 <div class="form-group col-sm-3" style="display: none" id="dvUpload">
                     <br />
@@ -102,38 +101,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="col-lg-4">
-                    <br />
-                    <div class="input-group">
-                        <input id="txtHabilidadeCadastro" autocomplete="false" type="text" class="form-control" placeholder="Habilidade...">
-                        <span class="input-group-btn">
-                            <button id="btnAddHabilidade" class="btn btn-secondary" type="button">Add</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="form-group col-lg-4">
-                    <div class="dropdown">
-                        <button id="dropdownCadastro" style="display:none" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                            Habilidades Lista
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" id="HabilidadesSugestoes"></ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="col-lg-12" id="dvHabilidadesLista">
-                </div>
-            </div>
+        <div class="row" id="dvHabilidadesCadastro" style="margin: 0px;">
         </div>
     </form>
 </div>
@@ -141,6 +109,7 @@
 <script src="../jquery/jquery.mask.min.js"></script>
 
 <script>
+    var habilidadeQuant = 30;
     $(document).ready(function () {
         $("input[name=tipo]:radio").change(function () {
             $('#Usuario_CpfCnpj').removeClass('cpf').removeClass('cnpj');
@@ -175,7 +144,7 @@
     }
 
     function EditarEmail() {
-        Notify('Editar email', null, null);
+        Notify('Em breve você poderá editar seu email, aguarde.', null, null);
     }
 
     function CarregaTipo(tipo) {
@@ -185,11 +154,10 @@
         if (tipo == 'Candidato') {
             $('#dvCelular').fadeIn();
             EsconderExtras();
-
             $('#dvUpload').prepend('Adicionar Currículo:');
         }
 
-            //empresa
+        //empresa
         else {
             $('#dvCelular').hide();
             EsconderExtras();
@@ -198,8 +166,8 @@
 
         if ($('#Usuario_Id').val() != null && $('#Usuario_Id').val() != '') {
             $('#Usuario_Email').prop('disabled', true);
-            CarregarTodosArquivos($('#Usuario_Id').val());
         }
+
         $("#modalCadastro").modal();
     }
 
@@ -273,6 +241,40 @@
         }
     }
 
+    function carregarHabilidades() {
+        var html = '<br />';
+        for (var i = 1; i <= habilidadeQuant; i++) {
+            html += '<div class="col-lg-2 form-group">' +
+                '<input id="habilidade' + i + '" autocomplete="false" type="text" class="form-control" placeholder="Habilidade..." >' +
+                '<div class="col-lg-12">' +
+                '<div class="dropdown">' +
+                '<button id="habilidade' + i + 'dropdown" style="display:none" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"></button>' +
+                '<ul class="dropdown-menu" id="habilidade' + i + 'sugestoes"></ul>' +
+                '</div></div></div>';
+        }
+
+        $("#dvHabilidadesCadastro").html(html);
+
+        $("input").keyup(function () {
+            var parametro = $(this).val();
+            var inputId = this.id;
+            console.log(inputId);
+            if (parametro != undefined && parametro != '') {
+                $.get("../Habilidade/Index?parametro=" + parametro, function (data) {
+                    if (data.length > 0) {
+                        var html = '';
+                        $.each(data, function (index, value) {
+                            html += "<li><a href=\"javascript: SelecionarDDL(\'" + value.Id + "_" + value.Nome + "\', \'" + inputId + "\');\">" + value.Nome + "</a></li>";
+                        });
+                        $('#' + inputId + 'sugestoes').html(html);
+                        $('#' + inputId + 'dropdown').dropdown('toggle');
+                        $('#' + inputId).focus();
+                    }
+                });
+            }
+        });
+    }
+
     $("#txtHabilidadeCadastro").keyup(function () {
         var parametro = $('#txtHabilidadeCadastro').val();
         if (parametro != undefined && parametro != '') {
@@ -290,68 +292,65 @@
         }
     });
 
-    SelecionarDDL = function (selecionado) {
+    SelecionarDDL = function (selecionado, inputId) {
         var id = selecionado.split('_')[0];
         var habilidade = selecionado.split('_')[1];
         if (!HabilidadeExiste(habilidade)) {
-            var html = '<span id="habilidade_' + id + '" style="margin: 1px; padding: 4px;" class="alert-info">'
-                           + habilidade + '<a data-toggle="confirmation2" style="color:red" href="#" id="'
-                           + habilidade + '" onclick="RemoverHabilidade(this);return false;"><i class="fa fa-times"> </i></a></span>';
-            $('#dvHabilidadesLista').append(html);
-            $('#txtHabilidadeCadastro').val('');
+            $('#' + inputId).val(habilidade);
         }
-        else
+        else {
+            $('#' + inputId).val('');
             Notify('Você já adicionou esta habilidade', null, null);
+        }
     }
 
     function HabilidadeExiste(habilidade) {
         var existe = false;
-        var lista = $('#dvHabilidadesLista span');
-        $.each(lista, function (index, value) {
-            if (value.innerText.toLowerCase() == habilidade.toLowerCase())
-                existe = true;
-        });
-
+        for (var i = 1; i <= habilidadeQuant; i++) {
+            if ($('#habilidade' + i).val().toLowerCase() == habilidade.toLowerCase()) {
+                return true;
+            }
+        }
         return existe;
     }
 
-    $("#btnAddHabilidade").click(function () {
-        if (PodeAdicionarHabilidade()) {
-            var habilidade = $('#txtHabilidadeCadastro').val();
-            if (habilidade.length > 0) {
-                if (!HabilidadeExiste(habilidade)) {
-                    var html = '<span id="habilidade_' + habilidade + '" style="margin: 1px; padding: 4px;" class="alert-info">' + habilidade
-                        + '<a style="color:red" href="#" id="' + habilidade + '" onclick="RemoverHabilidade(this);return false;"><i class="fa fa-times"> </i></a></span>';
-                    $('#dvHabilidadesLista').append(html);
-                }
-                else
-                    Notify('Você já adicionou esta habilidade', null, null);
+    //$("#btnAddHabilidade").click(function () {
+    //    if (PodeAdicionarHabilidade()) {
+    //        var habilidade = $('#txtHabilidadeCadastro').val();
+    //        if (habilidade.length > 0) {
+    //            if (!HabilidadeExiste(habilidade)) {
+    //                var html = '<span id="habilidade_' + habilidade + '" style="margin: 1px; padding: 4px;" class="alert-info">' + habilidade
+    //                    + '<a style="color:red" href="#" id="' + habilidade + '" onclick="RemoverHabilidade(this);return false;"><i class="fa fa-times"> </i></a></span>';
+    //                $('#dvHabilidadesLista').append(html);
+    //            }
+    //            else
+    //                Notify('Você já adicionou esta habilidade', null, null);
 
-                $('#txtHabilidadeCadastro').val('');
-            }
-            else
-                Notify('Digite uma habilidade, por favor', null, null);
-        }
-        else
-            Notify('Você atingiu o limite para adicionar habilidades', null, null);
+    //            $('#txtHabilidadeCadastro').val('');
+    //        }
+    //        else
+    //            Notify('Digite uma habilidade, por favor', null, null);
+    //    }
+    //    else
+    //        Notify('Você atingiu o limite para adicionar habilidades', null, null);
 
-    });
+    //});
 
-    function RemoverHabilidade(habilidade) {
-        $(habilidade).parent().remove();
-    }
+    //function RemoverHabilidade(habilidade) {
+    //    $(habilidade).parent().remove();
+    //}
 
-    function PodeAdicionarHabilidade() {
-        var pago = $("#btnPago").bootstrapSwitch('state');
-        var quantidadeAtual = $('#dvHabilidadesLista span').length;
-        if (pago && quantidadeAtual < 50) {
-            return true;
-        }
-        if (quantidadeAtual < 20) {
-            return true;
-        }
-        return false;
-    }
+    //function PodeAdicionarHabilidade() {
+    //    var pago = $("#btnPago").bootstrapSwitch('state');
+    //    var quantidadeAtual = $('#dvHabilidadesLista span').length;
+    //    if (pago && quantidadeAtual < 50) {
+    //        return true;
+    //    }
+    //    if (quantidadeAtual < 20) {
+    //        return true;
+    //    }
+    //    return false;
+    //}
 
     function EsconderExtras() {
         $('#dvPagarAgora').hide();
@@ -363,19 +362,10 @@
         $('#dvPagarAgora').hide();
         $('#dvAnonimo').hide();
         $('#dvUpload').hide();
-        $('#dvUpload').hide();
 
         if (sim) {
             $('#dvPagarAgora').fadeIn();
             $('#dvAnonimo').fadeIn();
-        }
-
-        // arquivo
-        if (true) {
-            $('#dvUpload').fadeIn();
-        }
-        else {
-            $('#dvUpload').fadeIn();
         }
     }
 
@@ -423,15 +413,17 @@
 
                 var itens = { Habilidades: [], Endereco: {} };
 
-                $.each($('#dvHabilidadesLista span'), function (index, value) {
-                    itens.Habilidades.push({
-                        'Id': value.id.split('_')[1],
-                        'Nome': value.innerText
-                    });
-                });
+                for (var i = 1; i <= habilidadeQuant; i++) {
+                    if ($('#habilidade' + i).val() != null && $('#habilidade' + i).val() != undefined && $('#habilidade' + i).val() != '') {
+                        itens.Habilidades.push({
+                            'Id': 0,
+                            'Nome': $('#habilidade' + i).val()
+                        });
+                    }
+                }
 
-                if (itens.Habilidades == undefined || itens.Habilidades == null || itens.Habilidades.length < 5)
-                    return Notify('Adicione 5 habilidades, no mínimo', null, null);
+                if (itens.Habilidades == undefined || itens.Habilidades == null || itens.Habilidades.length < 30)
+                    return Notify('Adicione 30 habilidades', null, null);
 
                 itens.Endereco = {
                     'Cep': enderecoCep,
@@ -443,18 +435,18 @@
                 };
 
                 var usuario =
-                {
-                    'Id': id,
-                    'Nome': nome,
-                    'Email': email,
-                    'Celular': celular,
-                    'CpfCnpj': CpfCnpj,
-                    'Pago': pago,
-                    'Anonimo': anonimo,
-                    'Endereco': itens.Endereco,
-                    'Habilidades': itens.Habilidades,
-                    'Tipo': tipo
-                };
+                    {
+                        'Id': id,
+                        'Nome': nome,
+                        'Email': email,
+                        'Celular': celular,
+                        'CpfCnpj': CpfCnpj,
+                        'Pago': pago,
+                        'Anonimo': anonimo,
+                        'Endereco': itens.Endereco,
+                        'Habilidades': itens.Habilidades,
+                        'Tipo': tipo
+                    };
 
                 $.ajax({
                     url: "../Cadastro/Gravar",
@@ -465,7 +457,7 @@
                     beforeSend: setHeader,
                     success: function (data) {
                         if (data.sucesso) {
-                            $("#Usuario_Id").val(data.usuario.Id);                            
+                            $("#Usuario_Id").val(data.usuario.Id);
                             localStorage.setItem("usuario", JSON.stringify(data.usuario))
                             Notify("Alterado com sucesso", null, null, 'success');
                         }
@@ -532,8 +524,8 @@
                     }
                     else {
                         var html = '<div class="form-group col-sm-6" id="arquivo_' + data.arquivo.Id + '">' + data.arquivo.Tipo + ': <br />' +
-                                   '<a id="btnArquivo" href="' + data.arquivo.Caminho.replace('~', '') + data.arquivo.Nome + '" download><i class="fa fa-download fa-2x" aria-hidden="true"></i> </a>' +
-                                   '<a id="btnExcluir" href="javascript: ExcluirArquivo(\'' + data.arquivo.Id + '\')"><i class="fa fa-trash fa-2x" aria-hidden="true"></i> </a> </div>';
+                            '<a id="btnArquivo" href="' + data.arquivo.Caminho.replace('~', '') + data.arquivo.Nome + '" download><i class="fa fa-download fa-2x" aria-hidden="true"></i> </a>' +
+                            '<a id="btnExcluir" href="javascript: ExcluirArquivo(\'' + data.arquivo.Id + '\')"><i class="fa fa-trash fa-2x" aria-hidden="true"></i> </a> </div>';
                         $('#dvDownload').append(html);
                         $('#dvUpload').hide();
                     }
@@ -558,14 +550,13 @@
             beforeSend: setHeader,
             success: function (data) {
                 if (data.sucesso && data.arquivos != null && data.arquivos.length > 0) {
-
                     var html = '';
                     $.each(data.arquivos, function (index, arquivo) {
                         if (arquivo.Tipo == 'Curriculo')
                             arquivo.Tipo = 'Currículo';
 
                         html += '<div class="form-group col-sm-6" id="arquivo_' + arquivo.Id + '">' + arquivo.Tipo + ': <br />' +
-                                   '<a id="btnArquivo" href="' + arquivo.Caminho.replace('~', '') + arquivo.Nome + '" download><i class="fa fa-download fa-2x" aria-hidden="true"></i> </a>';
+                            '<a id="btnArquivo" href="' + arquivo.Caminho.replace('~', '') + arquivo.Nome + '" download><i class="fa fa-download fa-2x" aria-hidden="true"></i> </a>';
                         if (arquivo.Tipo != 'Boleto')
                             html += '<a id="btnExcluir" href="javascript: ExcluirArquivo(\'' + arquivo.Id + '\')"><i class="fa fa-trash fa-2x" aria-hidden="true"></i> </a> ';
 
