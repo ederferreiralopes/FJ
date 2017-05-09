@@ -33,5 +33,10 @@ namespace FinderJobs.Application
         {
             return _usuarioService.GetByEmail(email);
         }
+
+        public Dictionary<string, string> GetDashboard(string tipo, DateTime inicio, DateTime fim)
+        {
+            return _usuarioService.GetDashboard(tipo, inicio, fim);
+        }
     }
 }

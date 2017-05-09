@@ -39,12 +39,13 @@ namespace FinderJobs.Manager.Controllers
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two factor provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "The phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                message == ManageMessageId.ChangePasswordSuccess ? "Senha alterada."
+                : message == ManageMessageId.ChangePasswordInvalid ? "Senha atual ou nova inválida."
+                : message == ManageMessageId.SetPasswordSuccess ? "Senha cadastrada."                
+                : message == ManageMessageId.SetTwoFactorSuccess ? "Adicionado verifição em dois passos."
+                : message == ManageMessageId.Error ? "Ocorreu um erro."
+                : message == ManageMessageId.AddPhoneSuccess ? "Número de telefone adicionado."
+                : message == ManageMessageId.RemovePhoneSuccess ? "Número de telefone removido."
                 : "";
 
             var model = new IndexViewModel
@@ -187,6 +188,10 @@ namespace FinderJobs.Manager.Controllers
             {
                 return View(model);
             }
+
+            // Quando implementar verificação de telefone por sms, remover a linha abaixo
+            model.Code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), model.PhoneNumber);
+
             var result = await UserManager.ChangePhoneNumberAsync(User.Identity.GetUserId(), model.PhoneNumber, model.Code);
             if (result.Succeeded)
             {
@@ -234,7 +239,7 @@ namespace FinderJobs.Manager.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordInvalid });
             }
             var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
             if (result.Succeeded)
@@ -388,6 +393,7 @@ namespace FinderJobs.Manager.Controllers
         {
             AddPhoneSuccess,
             ChangePasswordSuccess,
+            ChangePasswordInvalid,            
             SetTwoFactorSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,

@@ -27,15 +27,15 @@ namespace FinderJobs.Manager.Controllers
             RoleManager = roleManager;
         }
 
-		public ApplicationIdentityContext IdentityContext
-		{
-			get
-			{
-				return HttpContext.GetOwinContext().GetUserManager<ApplicationIdentityContext>();
-			}
-		}
+        public ApplicationIdentityContext IdentityContext
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<ApplicationIdentityContext>();
+            }
+        }
 
-		private ApplicationUserManager _userManager;
+        private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
         {
             get
@@ -65,8 +65,16 @@ namespace FinderJobs.Manager.Controllers
         // GET: /Roles/
         public async Task<ActionResult> Index()
         {
-	        var roles = await IdentityContext.AllRolesAsync();
+            var roles = await IdentityContext.AllRolesAsync();
             return View(roles);
+        }
+
+        //
+        // GET: /Roles/
+        public async Task<ActionResult> Get()
+        {
+            var roles = await IdentityContext.AllRolesAsync();
+            return Json(roles, JsonRequestBehavior.AllowGet);
         }
 
         //
@@ -80,7 +88,7 @@ namespace FinderJobs.Manager.Controllers
             var role = await RoleManager.FindByIdAsync(id);
 
             // Get the list of Users in this Role
-	        var users = await IdentityContext.Users.Find(u => u.Roles.Contains(role.Name)).ToListAsync();
+            var users = await IdentityContext.Users.Find(u => u.Roles.Contains(role.Name)).ToListAsync();
 
             ViewBag.Users = users;
             ViewBag.UserCount = users.Count();
@@ -180,15 +188,10 @@ namespace FinderJobs.Manager.Controllers
                 {
                     return HttpNotFound();
                 }
+
                 IdentityResult result;
-                if (deleteUser != null)
-                {
-                    result = await RoleManager.DeleteAsync(role);
-                }
-                else
-                {
-                    result = await RoleManager.DeleteAsync(role);
-                }
+                result = await RoleManager.DeleteAsync(role);
+
                 if (!result.Succeeded)
                 {
                     ModelState.AddModelError("", result.Errors.First());

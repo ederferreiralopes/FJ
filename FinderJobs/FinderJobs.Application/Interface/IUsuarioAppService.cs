@@ -13,6 +13,8 @@ namespace FinderJobs.Application.Interface
 
         IEnumerable<Usuario> BuscarPorTipo(string tipo, List<string> habilidades);
 
-        Usuario GetByEmail(string email);        
+        Usuario GetByEmail(string email);
+
+        Dictionary<string, string> GetDashboard(string tipo, DateTime inicio, DateTime fim);
     }
 }

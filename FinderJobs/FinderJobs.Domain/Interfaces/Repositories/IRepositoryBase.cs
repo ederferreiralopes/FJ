@@ -17,7 +17,7 @@ namespace FinderJobs.Domain.Interfaces.Repositories
         bool Delete(TEntity entity);
         IList<TEntity> SearchFor(Expression<Func<TEntity, bool>> predicate);
         IList<TEntity> GetAll();
-        IList<TEntity> Find(string query, int pagina);
+        IList<TEntity> Find(string query, int pagina);             
         TEntity GetById(Guid id);
     }
 

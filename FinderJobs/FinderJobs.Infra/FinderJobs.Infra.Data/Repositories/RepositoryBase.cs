@@ -17,7 +17,7 @@ namespace FinderJobs.Infra.Data.Repositories
     public class RepositoryBaseMongoDb<TEntity> : IRepositoryBase<TEntity> where TEntity : EntityBase
     {
         private IMongoDatabase database;
-        private IMongoCollection<TEntity> collection;
+        public IMongoCollection<TEntity> collection;
 
         public RepositoryBaseMongoDb()
         {
@@ -91,7 +91,7 @@ namespace FinderJobs.Infra.Data.Repositories
             return ConfigurationManager.AppSettings.Get("MongoDbDatabaseName");
         }
 
-        private void GetCollection()
+        public void GetCollection()
         {
             collection = database.GetCollection<TEntity>(typeof(TEntity).Name);
         }

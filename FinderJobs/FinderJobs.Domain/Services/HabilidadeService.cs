@@ -19,9 +19,15 @@ namespace FinderJobs.Domain.Services
             _habilidadeRepository = habilidadeRepository;
         }
 
-        public IEnumerable<Habilidade> BuscarPorNome(string nome)
+        public IEnumerable<Habilidade> BuscarPorNome(string nome, bool ativo)
         {
-            return _habilidadeRepository.GetAll().Where(h => h.Nome.IndexOf(nome, StringComparison.OrdinalIgnoreCase) > -1);
+            IEnumerable<Habilidade> resultado;
+            if (string.IsNullOrWhiteSpace(nome))            
+                resultado = _habilidadeRepository.GetAll().Where(h => h.Ativo == ativo);            
+            else            
+                resultado = _habilidadeRepository.GetAll().Where(h => h.Nome.IndexOf(nome, StringComparison.OrdinalIgnoreCase) > -1 && h.Ativo == ativo);            
+            
+            return resultado;
         }
     }
 }

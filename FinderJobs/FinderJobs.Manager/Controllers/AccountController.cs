@@ -104,7 +104,10 @@ namespace FinderJobs.Manager.Controllers
             switch (result)
             {
                 case FinderJobs.Manager.Models.SignInStatus.Success:
-                    return Json(new { sucesso = true }, JsonRequestBehavior.AllowGet);
+                    var user = UserManager.FindByName(Email);
+                    var roles = user.Roles.Aggregate(( i, j) => i + "," + j);
+
+                    return Json(new { sucesso = true, roles }, JsonRequestBehavior.AllowGet);
                 default:
                     return Json(new { sucesso = false, mensagem = "Usuario ou senha inválidos" }, JsonRequestBehavior.AllowGet);
             }
@@ -203,7 +206,6 @@ namespace FinderJobs.Manager.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> RegisterApi(string Email, string Password, string Url)
         {
-
             var user = new ApplicationUser { UserName = Email, Email = Email };
             var result = await UserManager.CreateAsync(user, Password);
             if (result.Succeeded)

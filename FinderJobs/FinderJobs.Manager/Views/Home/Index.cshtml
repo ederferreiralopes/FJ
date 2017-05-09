@@ -1,9 +1,139 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Home";
 }
-
 <div class="jumbotron">
-    <h1>FinderJobs Manager</h1>
+    <br />
     <p class="lead">Sistema de administração e relatórios.</p>
-    <p><a href="http://www.finderjobs.com.br" class="btn btn-primary btn-large">FinderJobs &raquo;</a></p>
+    <div class="row">
+        <div class="col-lg-6">
+            <canvas id="empresa_candidatoChart" width="120" height="100"></canvas>
+        </div>
+        <div class="col-lg-6">
+            <canvas id="totalChart" width="120" height="100"></canvas>
+        </div>
+    </div>
 </div>
+
+<!--Scripts-->
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<script>
+
+    var candidatosLabels = new Array();
+    var candidatosQuantidade = new Array();   
+
+    var empresasLabels = new Array();
+    var empresasQuantidade = new Array();
+    
+    $(document).ready(function () {
+
+        GetDashBoard();
+    });
+
+    function GetDashBoard() {
+        $.ajax({
+            url: "http://localhost:2222/Cadastro/GetDashBoard",
+            type: "GET",
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.sucesso) {
+
+                    $.each(data.dados, function (index, value) {
+                        if (value.tipo == "Candidato") {
+                            $.each(value.dashboard, function (index, item) {
+                                if (index != null && index != undefined)
+                                {
+                                    candidatosLabels.push(index);
+                                    candidatosQuantidade.push(parseInt(item));                                    
+                                }
+                            });
+                        }         
+
+                        if (value.tipo == "Empresa") {
+                            $.each(value.dashboard, function (index, item) {
+                                if (index != null && index != undefined) {
+                                    empresasLabels.push(index);
+                                    empresasQuantidade.push(parseInt(item));
+                                }
+                            });
+                        }
+                    });                    
+
+                    GerarGraficoBarras2('empresa_candidatoChart', 'Candidatos', 'Empresas', candidatosLabels, candidatosQuantidade, empresasQuantidade, "#FF6384", "#36A2EB");                    
+
+                    var totalCandidato = candidatosQuantidade.reduce(function (candidatos, b) { return candidatos + b; }, 0);
+
+                    var totalEmpresa = empresasQuantidade.reduce(function (empresas, b) { return empresas + b; }, 0);
+                                        
+                    GerarGraficoPizza('totalChart', totalCandidato, totalEmpresa);
+                }
+                else
+                    alert("Nenhum dado encontrado!");
+            },
+            error: function (result) {
+                console.log('Ocoreu um erro, informe a equipe de suporte: ');
+                console.log(result);
+            }
+        });
+    }
+
+    function GerarGraficoBarras2(elemento, nome1, nome2, labels, quantidade1, quantidade2, corCandidato, corEmpresa) {
+        var ctx = document.getElementById(elemento);
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: "Candidatos",
+                        backgroundColor: corCandidato,
+                        data: quantidade1
+                    }, {
+                        label: "Empresa",
+                        backgroundColor: corEmpresa,
+                        data: quantidade2
+                    }
+                ]
+            },          
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    function GerarGraficoPizza(elemento, totalCandidato, totalEmpresa) {
+        var data = {
+            labels: [
+                "Candidatos",
+                "Empresas"
+            ],
+            datasets: [
+                {
+                    data: [totalCandidato, totalEmpresa],
+                    backgroundColor: [
+                        "#FF6384",
+                        "#36A2EB"
+                    ],
+                    hoverBackgroundColor: [
+                        "#FF6384",
+                        "#36A2EB"
+                    ]
+                }]
+        };
+
+        var ctx = document.getElementById(elemento);
+
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            //options: options
+        });
+    }
+</script>

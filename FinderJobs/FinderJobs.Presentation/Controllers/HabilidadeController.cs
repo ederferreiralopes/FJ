@@ -20,19 +20,41 @@ namespace FinderJobs.Site.Controllers
             _habilidadeService = habilidadeService;
         }
 
-        public ActionResult Index(string parametro)
+        public ActionResult Index(string parametro, bool ativo = true)
         {
             try
-            {
-                IEnumerable<Habilidade> habilidades = null;
-                if (string.IsNullOrWhiteSpace(parametro))
-                    habilidades = _habilidadeService.GetAll();
-                else                
-                    habilidades = _habilidadeService.BuscarPorNome(parametro);
+            {                
+                var habilidades = _habilidadeService.BuscarPorNome(parametro, ativo);
 
                 var lista = (from h in habilidades select new ViewModels.HabilidadeViewModel { Id = h.Id.ToString(), Nome = h.Nome }).ToList();
 
                 return Json(lista, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                var resultado = new object();
+                resultado = new { mensagem = "Ocorreu um erro: " + ex.Message };
+
+                return Json(resultado, JsonRequestBehavior.AllowGet);
+            }
+        }
+        
+        public ActionResult Salvar(Guid id, string nome, bool ativo)
+        {
+            try
+            {
+                if (id == new Guid())
+                {
+                    var habilidade = _habilidadeService.Insert(new Habilidade { Id = new Guid(), Nome = nome, Ativo = ativo });
+
+                    return Json(habilidade, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var habilidade = _habilidadeService.Update(new Habilidade { Id = id, Nome = nome, Ativo = ativo });
+
+                    return Json(habilidade, JsonRequestBehavior.AllowGet);
+                }
             }
             catch (Exception ex)
             {

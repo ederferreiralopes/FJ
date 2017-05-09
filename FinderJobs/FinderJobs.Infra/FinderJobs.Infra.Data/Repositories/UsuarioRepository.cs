@@ -1,36 +1,34 @@
-﻿
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using NHibernate.Linq;
+using System.Collections.Generic;
 using FinderJobs.Domain.Entities;
 using FinderJobs.Infra.Data.Repositories;
-using FinderJobs.Infra.Data.Context;
 using FinderJobs.Domain.Interfaces.Repositories;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace FinderJobs.Infra.Data
 {
     public class UsuarioRepository : RepositoryBaseMongoDb<Usuario>, IUsuarioRepository
     {
-        //public IList<Usuario> BuscarPorTipo(string tipo)
-        //{
-        //    return Find("{ Tipo : '" + tipo + "'}");
-        //}
+        public Dictionary<string, string> GetDashboard(string tipo, DateTime inicio, DateTime fim)
+        {
+            var resultado = collection.Aggregate()               
+               .Match(BsonDocument.Parse("{DataCadastro: {$gte: ISODate('2017-01-01T00:00:00.000Z'), $lt: ISODate('2017-12-31T00:00:00.000Z')}}"))               
+               .Match(BsonDocument.Parse("{Tipo: '" + tipo + "'}"))               
+               .Group(BsonDocument.Parse("{ _id: {$month: '$DataCadastro'}, total: { $sum: 1}}"))
+               .Sort(BsonDocument.Parse(" { _id: 1}"))
+               .ToList();
+            
+            var retorno = new Dictionary<string, string>();
+            
 
-        //public IList<Usuario> BuscarPorTipo(string tipo, List<Habilidade> habilidades)
-        //{
-        //    var query = "{ Tipo : '" + tipo + "'}";
-        //    if (habilidades != null && habilidades.Count > 0)
-        //    {
-        //        query = "{ Tipo : '" + tipo + "', 'Habilidades' : { $elemMatch: {";
-        //        foreach (var item in habilidades)
-        //        {
-        //            query += "Nome : '" + item.Nome + "'";
-        //        }
+            foreach (var item in resultado)
+            {
+                retorno.Add(((Mes)((int)item.Values.ToList()[0] - 1)).ToString(), item.Values.ToList()[1].ToString());
+            }
 
-        //        query += query + "'}}}";
-        //    }
-
-        //    return Find(query);
-        //}
+            return retorno;
+        }
     }
 }

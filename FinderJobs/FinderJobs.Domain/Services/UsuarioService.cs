@@ -45,5 +45,10 @@ namespace FinderJobs.Domain.Services
         {            
             return _usuarioRepository.SearchFor(u => u.Email == email).FirstOrDefault();
         }
+
+        public Dictionary<string, string> GetDashboard(string tipo, DateTime inicio, DateTime fim)
+        {
+            return _usuarioRepository.GetDashboard(tipo, inicio, fim);
+        }
     }
 }

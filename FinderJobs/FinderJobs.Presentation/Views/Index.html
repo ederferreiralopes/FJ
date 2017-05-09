@@ -10,201 +10,214 @@
     <!-- Bootstrap Core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="bootstrap/css/bootstrap-switch.min.css" rel="stylesheet" />
-    <!-- Theme CSS -->
-    <link href="content/css/finderjobs.css" rel="stylesheet">
     <!-- Notify CSS -->
     <link href="notify/notify.css" rel="stylesheet" />
     <!-- Custom Fonts -->
     <link href="content/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <style>
-        .corFinderJobs {
+        .cor-finder-jobs {
             color: #2C3E50;
+        }
+
+        .login {
+            border-radius: 7px;
+        }
+
+        .menos-padding {
+            padding-left: 3px;
+            padding-right: 0px;
         }
     </style>
 </head>
 <body id="page-top" class="index">
-    <!-- Navigation -->    
-    <div class="col-lg-12" style="background-color: #2C3E50;">
+    <!-- Navigation -->
+    <div class="container-fluid">
         <br />
-        <div class="col-lg-7">
-            <nav id="mainNav" class="navbar">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span><i class="fa fa-bars" style="font-size:x-large; color:white;"></i>
-                    </button>
-                    <img src="../images/logo-fj.jpg" height="90" style="border-radius: 4px;" />
-                </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <nav id="" class="navbar">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-navegacao">
+                            <span class="sr-only">Toggle navigation</span><i class="fa fa-bars" style="font-size:x-large;"></i>
+                        </button>
+                        <img src="../images/logo-fj.jpg" height="112" style="border-radius: 90px;" />
+                    </div>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="hidden">
-                            <a href="#page-top"></a>
-                        </li>
-                        <li class="page-scroll">
-                            <a href="#modalComoFunciona" class="portfolio-link" data-toggle="modal">Como Funciona</a>
-                        </li>
-                        <li class="page-scroll">
-                            <a href="#modalQuemSomos" class="portfolio-link" data-toggle="modal">Quem Somos</a>
-                        </li>
-                        <!--<li class="page-scroll">
-                            <a href="#modalPortalTransparencia" class="portfolio-link" data-toggle="modal">Portal da Transparência</a>
-                        </li>-->
-                        <li>
-                            <div class="dropdown" style="width:300px; top: 7px;">
-                                <button href="#" class="btn btn-link dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Acesso  <span class="caret"></span></button>
-                                <ul class="dropdown-menu">
-                                    <div class="col-lg-12">
-                                        <form name="sentMessage" id="acessoForm" novalidate action="Acesso/Login" method="post">
-                                            <div class="row control-group">
-                                                <div class="form-group col-xs-12 floating-label-form-group controls">
-                                                    <label>Email</label>
-                                                    <input type="text" class="form-control" placeholder="Email" id="Email" name="Email" required data-validation-required-message="Seu email">
-                                                    <p class="help-block text-danger"></p>
-                                                </div>
-                                            </div>
-                                            <div class="row control-group">
-                                                <div class="form-group col-xs-12 floating-label-form-group controls">
-                                                    <label>Senha</label>
-                                                    <input type="password" class="form-control" placeholder="Senha" id="Senha" name="Senha" required data-validation-required-message="Senha">
-                                                    <p class="help-block text-danger"></p>
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <div class="row pull-right">
-                                                <div class="form-group col-md-12 text-right">
-                                                    <a data-toggle="modal" href="#modalEsqueciSenha" style="font-size:smaller; color: #ff6a00;">esqueci a senha!</a>
-                                                    <button id="btnEntrar" type="button" class="btn btn-lg" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde">Entrar</button>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    <span style="font-size:smaller; color: black;">cadastre-se:</span>
-                                                    <a data-toggle="modal" onclick="Cadastro('Candidato')" style="font-size:smaller; color: #0b8711;">Candidato</a>
-                                                    <a data-toggle="modal" onclick="Cadastro('Empresa')" style="font-size:smaller; color: #3498db;"> Empresa</a>
-                                                </div>
-                                            </div>
-                                        </form>
+                    <div class="collapse navbar-collapse" id="menu-navegacao">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="hidden">
+                                <a href="#page-top"></a>
+                            </li>
+                            <li>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 login">
+                                        <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 text-right menos-padding">
+                                            Candidato: 
+                                        </div>
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-5 col-xs-12 menos-padding">
+                                            <input type="text" class="form-control" placeholder="Email" id="EmailCand" name="Email">
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-3 col-sm-4 col-xs-10 menos-padding">
+                                            <input type="password" class="form-control" placeholder="Senha" id="SenhaCand" name="Senha">
+                                        </div>
+                                        <div class="form-group col-lg-1 col-md-1 col-sm-1 col-xs-2 menos-padding">
+                                            <button id="btnEntrarCand" type="button" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde"><i class="glyphicon glyphicon-log-in"></i> </button>
+                                        </div>
                                     </div>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                    <!-- /.navbar-collapse -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 login">
+                                        <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 text-right menos-padding">
+                                            Empresa:
+                                        </div>
+                                        <div class="form-group col-lg-6 col-md-6 col-sm-5 col-xs-12 menos-padding">
+                                            <input type="text" class="form-control" placeholder="Email" id="EmailEmpr" name="Email">
+                                        </div>
+                                        <div class="form-group col-lg-3 col-md-3 col-sm-4 col-xs-10 menos-padding">
+                                            <input type="password" class="form-control" placeholder="Senha" id="SenhaEmpr" name="Senha">
+                                        </div>
+                                        <div class="form-group col-lg-1 col-md-1 col-sm-1 col-xs-2 menos-padding">
+                                            <button id="btnEntrarEmpr" type="button" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde"><i class="glyphicon glyphicon-log-in"></i> </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 text-center">
+                                        <span style="color: #ff6a00;">Cadastre-se:</span>
+                                        <a onclick="Cadastro('Candidato')" style="font-size:smaller; color: #0b8711;">Candidato</a> ou
+                                        <a onclick="Cadastro('Empresa')" style="font-size:smaller; color: #3498db;"> Empresa</a> |
+                                        <a data-toggle="modal" href="#modalEsqueciSenha" style="font-size:smaller; color: #ff6a00;">esqueci a senha!</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <!-- /.navbar-collapse -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </div>
+            <div class="col-lg-2">
+                <img src="../images/icone-portal-transparencia.jpg" height="80" style="border-radius: 4px;" />
+            </div>
+            <div class="col-lg-2" style="font-size:smaller;">
+                <span>Currículos Únicos : 0012</span><br />
+                <span>Empresas Únicas : 0004</span><br />
+                <span>SLA Mensal (uptime) = 99.87%</span>
+            </div>
+        </div>
+    </div>    
+    <div class="row" style="background-color: #d9edf7"><br />
+        <div class="container-fluid">
+            <div class="row" >
+                <div class="row text-center">
+                    <div class="col-lg-offset-2 col-md-8 col-md-12 col-sm-12" style="background-color: #ed7c31;">
+                        <div class="col-lg-3 col-md-3 col-sm-3" style="color: black; font-weight: bold;">
+                            Plano: Candidatos
+                        </div>
+                        <table class="col-lg-9 col-md-9 col-sm-9" style="background-color: white; font-size:small;">
+                            <thead>
+                                <tr>
+                                    <th class="col-lg-5 col-md-5 col-sm-5 text-center" style="background-color: skyblue; color: black">Standart</th>
+                                    <th class="col-lg-7 col-md-7 col-sm-7 text-center" style="background-color: silver; color: black">Advanced</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Uma candidatura por vaga publicada</td>
+                                    <td>re-candidatura as vagas(segunda vez)</td>
+                                </tr>
+                                <tr>
+                                    <td>Perfil visível</td>
+                                    <td>Perfil anônimo</td>
+                                </tr>
+                                <tr>
+                                    <td>30 palavras-chave</td>
+                                    <td>permitido "copiar-colar"</td>
+                                </tr>
+                                <tr>
+                                    <td>sem re-candidatura</td>
+                                    <td>envio de anexos(somente .PDF) até 1.1MB</td>
+                                </tr>
+                                <tr>
+                                    <td>sem limite de candidaturas às vagas</td>
+                                    <td>chat on-line</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold">R$ 0,00(gratuito)</td>
+                                    <td style="font-weight: bold">R$ 100,00/ano</td>
+                                </tr>
+                                <tr>
+                                    <td><button class="btn btn-default">Contratar Plano 1</button></td>
+                                    <td><button class="btn btn-default">Contratar Plano 2</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <!-- /.container-fluid -->
-
-            </nav>
-        </div>
-        <div class="col-lg-5">
-            <div class="col-lg-6">
-                <img src="../images/icone-portal-transparencia.jpg" height="90" style="border-radius: 4px;" />
-            </div>
-            <div class="col-lg-6" style="color:white;">                
-                    <span>Currículos Únicos : 0012</span><br />
-                    <span>Empresas Únicas : 0004</span><br />
-                    <span>SLA Mensal (uptime) = 99.87%</span>                
-            </div>
-        </div>
-    </div>
-    <!-- Section --><br />
-    <section class="alert-info">
-        <!--<div class="row">
-            <div class="col-lg-12 text-center">
-                <img style="padding: 12px;" width="174" src="content/img/profile.png" alt="">
-            </div>
-        </div>-->
-        <div class="container">
-            <div class="row" style="background-color: white;">
                 <br />
-                <div class="col-lg-12 text-center">
-                    <div class="col-lg-12" style="background-color: #ed7c31; color: black">
-                        <span>Plano : Pessoa Física (CANDIDATOS)</span>
+                <div class="row text-center">
+                    <div class="col-lg-offset-2 col-lg-8 col-md-12 col-sm-12" style="background-color: #ed7c31;">
+                        <div class="col-lg-3 col-md-3 col-sm-3" style="color: black; font-weight: bold;">
+                            Plano: Empresa
+                        </div>
+                        <table class="col-lg-9 col-md-9 col-sm-9" style="background-color: white; font-size:small;">
+                            <thead>
+                                <tr>
+                                    <th class="col-lg-5 col-md-5 col-sm-5 text-center" style="background-color: silver; color: black">Premium</th>
+                                    <th class="col-lg-7 col-md-7 col-sm-7 text-center" style="background-color: gold; color: black">Gold</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Anuncio: 10(dez) dias de publicação</td>
+                                    <td>Anúncio: 30(trinta) dias de publicação</td>
+                                </tr>
+                                <tr>
+                                    <td>sem re-publicação</td>
+                                    <td>re-publicar vaga(segunda vez)</td>
+                                </tr>
+                                <tr>
+                                    <td>30 palavras-chave</td>
+                                    <td>Perfil anônimo</td>
+                                </tr>
+                                <tr>
+                                    <td>Perfil visível</td>
+                                    <td>site próprio customizável(custo adicional)</td>
+                                </tr>
+                                <tr>
+                                    <td>Até 10(dez) publicações por mês</td>
+                                    <td>permitido "copiar-colar"</td>
+                                </tr>
+                                <tr>
+                                    <td>sem limite de vagas publicadas</td>
+                                    <td>"on-demand" via projetos implantação(custo adicional)</td>
+                                </tr>
+                                <tr>
+                                    <td>sem limite de buscas</td>
+                                    <td>um formulário de 5 questões por vaga publicada</td>
+                                </tr>
+                                <tr>
+                                    <td>upgrade via aditivos</td>
+                                    <td>chat on-line</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold">R$ 100,00/ano</td>
+                                    <td style="font-weight: bold">R$ 1.000,00/mês(não inclui custos adicionais)</td>
+                                </tr>
+                                <tr>
+                                    <td><button class="btn btn-default">Contratar Plano 3</button></td>
+                                    <td><button class="btn btn-default">Contratar Plano 4</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <table class="col-lg-12">
-                        <thead>
-                            <tr>
-                                <th class="text-center" style="background-color: skyblue; color: black">Standart</th>
-                                <th class="text-center" style="background-color: silver; color: black">Advanced</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Uma candidatura por vaga publicada</td>
-                                <td>re-candidatura as vagas (segunda vez)</td>
-                            </tr>
-                            <tr>
-                                <td>Perfil visível</td>
-                                <td>Perfil anônimo</td>
-                            </tr>
-                            <tr>
-                                <td>50 palavras-chave</td>
-                                <td>permitido "copiar-colar"</td>
-                            </tr>
-                            <tr>
-                                <td>sem re-candidatura</td>
-                                <td>envio de anexos (somente .PDF) até 1.1MB</td>
-                            </tr>
-                            <tr>
-                                <td>sem limite de candidaturas às vagas</td>
-                                <td>chat on-line</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold">R$ 0,00 (gratuito)</td>
-                                <td style="font-weight: bold">R$ 100,00/ano</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-lg-12 text-center">
-                    <div class="col-lg-12" style="background-color: #ed7c31; color: black">
-                        <span>Plano: Pessoa Jurídica (EMPRESAS)</span>
-                    </div>
-                    <table class="col-lg-12">
-                        <thead>
-                            <tr>
-                                <th class="text-center" style="background-color: silver; color: black">Silver</th>
-                                <th class="text-center" style="background-color: gold; color: black">Gold</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Anuncio: 10 (dez) dias de publicação</td>
-                                <td>Anúncio: 21 (vinte e um) dias de publicação</td>
-                            </tr>
-                            <tr>
-                                <td>sem re-publicação</td>
-                                <td>re-publicar vaga (segunda vez)</td>
-                            </tr>
-                            <tr>
-                                <td>50 palavras-chave</td>
-                                <td>Perfil anônimo</td>
-                            </tr>
-                            <tr>
-                                <td>Perfil visível</td>
-                                <td>permitido "copy-paste"</td>
-                            </tr>
-                            <tr>
-                                <td>Até 10 (dez) anúncios por mês</td>
-                                <td>um formulário com cinco perguntas adicionais</td>
-                            </tr>
-                            <tr>
-                                <td>sem limite de número de vagas</td>
-                                <td>chat on-line</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold">R$ 100,00/ano</td>
-                                <td style="font-weight: bold">R$ 1.000,00/mês</td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
 
             </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
+        </div><br />
+    </div>
+    <!-- Footer --><br />
     <footer class="text-center">
         <div class="footer-below">
             <div class="container">
@@ -221,7 +234,7 @@
                                 <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-twitter"></i></a>
                             </li>
                             <li>
-                                Direitos Reservados &copy; Finder Jobs 2014-2016
+                                Direitos Reservados &copy; Finder Jobs 2014-<span id="anoAtual"></span>
                             </li>
                         </ul>
                     </div>
@@ -480,19 +493,15 @@
     <script src="bootstrap/js/bootstrap-filestyle.min.js"></script>
     <!-- Plugin JavaScript -->
     <script src="jquery/jquery.easing.min.js"></script>
-    <!-- Contact Form JavaScript -->
-    <script src="content/js/jqBootstrapValidation.js"></script>
-    <script src="content/js/contact_me.js"></script>
-    <!-- Theme JavaScript -->
-    <script src="content/js/finderjobs.min.js"></script>
-
-    <script src="../bootstrap/js/bootstrap-confirmation.min.js"></script>
 
     <script language="javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCycG73VSX4N6sFxieKuCpYBnAKCJrG3XI"></script>
 
     <script>
 
         $(document).ready(function () {
+
+            $('#anoAtual').html(new Date().getFullYear());           
+
             localStorage.setItem('usuario', '');
             $.urlParam = function (name) {
                 var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -585,11 +594,22 @@
             }, 1000);
         });
 
-        $("#btnEntrar").click(function () {
+        $("#btnEntrarCand").click(function () {
+            var email = $('#EmailCand').val();
+            var senha = $('#SenhaCand').val();
+            AcessarFJ(email, senha);
+        });
+
+        $("#btnEntrarEmpr").click(function () {
+            var email = $('#EmailEmpr').val();
+            var senha = $('#SenhaEmpr').val();
+            AcessarFJ(email, senha);
+        });
+
+        function AcessarFJ(email, senha) {
+
             $("#btnEntrar").button('loading');
 
-            var email = $('#Email').val();
-            var senha = $('#Senha').val();
             if (email != undefined && email.length > 5 && senha != undefined && senha.length > 5) {
                 var dados = {
                     grant_type: "password",
@@ -628,7 +648,8 @@
             setTimeout(function () {
                 $("#btnEntrar").button('reset');
             }, 1000);
-        });
+
+        }
 
         function GetCadastro() {
             $.ajax({
@@ -656,8 +677,7 @@
         function setHeader(xhr) {
             xhr.setRequestHeader('Authorization', 'bearer ' + localStorage.getItem('token'));
         }
+
     </script>
-
-</body>
-
+  </body>
 </html>

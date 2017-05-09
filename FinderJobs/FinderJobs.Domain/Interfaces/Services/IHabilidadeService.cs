@@ -9,6 +9,6 @@ namespace FinderJobs.Domain.Interfaces.Services
 {
     public interface IHabilidadeService : IServiceBase<Habilidade>
     {
-        IEnumerable<Habilidade> BuscarPorNome(string nome);
+        IEnumerable<Habilidade> BuscarPorNome(string nome, bool ativo);
     }
 }

@@ -1,53 +1,169 @@
 @model FinderJobs.Manager.Models.IndexViewModel
 @{
-    ViewBag.Title = "Manage your account";
+    ViewBag.Title = "Gerencie seus dados";
 }
+<style>
+    .padding-menor{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+</style>
+<div class="jumbotron">
+    <h4>@ViewBag.Title</h4>
+    <p class="text-success">@ViewBag.StatusMessage</p>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <a id="btn_alterar_senha" onclick="AlterarSenha()">Trocar Senha</a>
+                    </div>
+                    <div class="col-md-9" id="div_alterar_senha" hidden>
+                        @using (Html.BeginForm("ChangePassword", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                <div class="col-md-1 control-label padding-menor">
+                                    <label>Atual: </label>
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.Password("OldPassword", null, new { @class = "form-control", required = "" })
+                                </div>
 
-<h2>@ViewBag.Title.</h2>
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div class="row">
-    <div class="col-md-8">
-        <p>
-            @if (Model.HasPassword) {
-                @Html.ActionLink("Change your password", "ChangePassword")
-            }
-            else {
-                @Html.ActionLink("Pick a password", "SetPassword")
-            }
-        </p>
-        <p>
-            Phone Number: @(Model.PhoneNumber ?? "None") [
-            @if (Model.PhoneNumber != null) {
-                @Html.ActionLink("Change", "AddPhoneNumber")
-                @: &nbsp;|&nbsp;
-                @Html.ActionLink("Remove", "RemovePhoneNumber")
-            }
-            else {
-                @Html.ActionLink("Add", "AddPhoneNumber")
-            }
-            ]
-        </p>
-        <p>
-            External Logins: @Model.Logins.Count
-            @Html.ActionLink("[Manage]", "ManageLogins")
-        </p>
-        <p>
-            Two Factor Enabled: @(Model.TwoFactor)
-            @if (Model.TwoFactor) {
-                @Html.ActionLink("[Disable]", "DisableTFA")
-            }
-            else {
-                @Html.ActionLink("[Enable]", "EnableTFA")
-            }
-        </p>
-        <p>
-            Two Factor Browser Remembered?: @Model.BrowserRemembered
-            @if (Model.BrowserRemembered) {
-                @Html.ActionLink("[Forget]", "ForgetBrowser")
-            }
-            else {
-                @Html.ActionLink("[Remember]", "RememberBrowser")
-            }
-        </p>
+                                <div class="col-md-1 control-label padding-menor">
+                                    <label>Nova: </label>
+                                </div>                                
+                                <div class="col-md-2">
+                                    @Html.Password("NewPassword", null, new { @class = "form-control", required = "" })
+                                </div>
+
+                                <div class="col-md-1 control-label padding-menor">
+                                    <label for="ConfirmPassword">Confirme: </label>
+                                </div>                                  
+                                <div class="col-md-2">
+                                    @Html.Password("ConfirmPassword", null, new { @class = "form-control", required = "" })
+                                </div>
+
+                                <div class="col-md-1">
+                                    <button type="submit" value="" class="btn btn-success"><i class="glyphicon glyphicon-check"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        Telefone
+                        @if (Model.PhoneNumber != null)
+                        {
+                            <span>@Model.PhoneNumber</span>
+                            <a id="btn_Excluir_telefone" href="Manage/RemovePhoneNumber"><i class="glyphicon glyphicon-remove"></i></a>
+                        }
+                        else
+                        {
+                            <a id="btn_adicionar_telefone" onclick="TelefoneAdicionar()"><i class="glyphicon glyphicon-plus-sign"></i></a>
+                        }
+                    </div>
+                    <div class="col-md-9" id="div_adicionar_telefone" hidden>
+                        @using (Html.BeginForm("VerifyPhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input hidden name="Code" value="123456" />
+                            <div class="form-group">
+                                @Html.Label("Número", new { @class = "col-md-2 control-label" })
+                                <div class="col-md-3">
+                                    @Html.TextBox("PhoneNumber", null, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" value=""><i class="glyphicon glyphicon-check"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <a id="btn_login_externo" onclick="GetLoginExterno()">Login Externo</a>
+                    </div>
+                    <div class="col-md-9" id="div_login_externo" hidden>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        Dois Passos
+                        @if (Model.TwoFactor)
+                        {
+                            @Html.ActionLink(" [desabilitar]", "DisableTFA")
+                        }
+                        else
+                        {
+                            @Html.ActionLink(" [habilitar]", "EnableTFA")
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        Lembrar Navegador?
+                        @if (Model.BrowserRemembered)
+                        {
+                            @Html.ActionLink(" [esquecer]", "ForgetBrowser")
+                        }
+                        else
+                        {
+                            @Html.ActionLink(" [lembrar]", "RememberBrowser")
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script>
+    function AlterarSenha() {
+        $('#div_alterar_senha').show('fadeIn');
+    }
+
+    function TelefoneAdicionar() {
+        $('#div_adicionar_telefone').show('fadeIn');
+    }
+
+    function GetLoginExterno() {
+        $.ajax({
+            url: "Manage/ManageLogins",
+            type: "GET",
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.length > 0) {
+                    var html = '';
+                    //$.each(data, function (index, value) {
+                    //    html += "<div class'col-sm-2 col-md-2 col-lg-2'><input type='checkbox' name='SelectedRoles' value='" + value.Name + "' class='checkbox-inline' />" +
+                    //        "&nbsp<label for='" + value.Name + "' class=''>" + value.Name + "</label></div>";
+                    //});
+                    //$('#div_login_externo').html(html);
+                    console.log(data)
+                }
+                else
+                    alert("Nenhuma login externo encontrado!");
+            },
+            error: function (result) {
+                console.log('Ocoreu um erro, informe a equipe de suporte: ');
+                console.log(result);
+            }
+        });
+    }
+</script>

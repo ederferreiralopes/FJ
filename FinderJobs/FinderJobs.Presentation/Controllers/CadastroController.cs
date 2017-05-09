@@ -18,7 +18,7 @@ using Uol.PagSeguro.Resources;
 
 namespace FinderJobs.Site.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Usuario")]
     public class CadastroController : Controller
     {
 
@@ -47,6 +47,26 @@ namespace FinderJobs.Site.Controllers
             return Json(new { sucesso = false }, JsonRequestBehavior.AllowGet);
         }
 
+        [AllowAnonymous]
+        public ActionResult GetDashBoard()
+        {
+            var dados = new List<object>();
+  
+
+            var dadosCandidato = _usuarioService.GetDashboard("Candidato", DateTime.Now.AddYears(-1), DateTime.Now);
+            var dadosEmpresas = _usuarioService.GetDashboard("Empresa", DateTime.Now.AddYears(-1), DateTime.Now);
+
+            dados.Add(new { tipo = "Candidato", dashboard = dadosCandidato });
+            dados.Add(new { tipo = "Empresa", dashboard = dadosEmpresas });            
+
+            if (dados != null)
+            {
+                return Json(new { sucesso = true, dados = dados }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { sucesso = false }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public ActionResult Gravar(UsuarioViewModel model)
         {
@@ -62,9 +82,9 @@ namespace FinderJobs.Site.Controllers
 
                     foreach (var item in habilidadesModel)
                     {
-                        var hab = _habilidadeService.BuscarPorNome(item);
+                        var hab = _habilidadeService.BuscarPorNome(item, true);
                         if (hab == null || hab.Count() == 0)
-                            _habilidadeService.Insert(new Habilidade { Nome = item });
+                            _habilidadeService.Insert(new Habilidade { Nome = item, Ativo = false });
                     }
 
                     var usuario = new Usuario

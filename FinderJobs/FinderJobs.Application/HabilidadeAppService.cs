@@ -19,9 +19,9 @@ namespace FinderJobs.Application
             _habilidadeService = habilidadeService;
         }
 
-        public IEnumerable<Habilidade> BuscarPorNome(string nome)
+        public IEnumerable<Habilidade> BuscarPorNome(string nome, bool ativo)
         {
-            return _habilidadeService.BuscarPorNome(nome);
+            return _habilidadeService.BuscarPorNome(nome, ativo);
         }
     }
 }

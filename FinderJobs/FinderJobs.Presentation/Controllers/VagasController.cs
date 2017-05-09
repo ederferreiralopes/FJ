@@ -49,9 +49,9 @@ namespace FinderJobs.Site.Controllers
 
                     foreach (var item in habilidadesModel)
                     {
-                        var hab = _habilidadeService.BuscarPorNome(item);
+                        var hab = _habilidadeService.BuscarPorNome(item, true);
                         if (hab == null || hab.Count() == 0)
-                            _habilidadeService.Insert(new Habilidade { Nome = item });
+                            _habilidadeService.Insert(new Habilidade { Nome = item, Ativo = false });
                     }
 
                     vaga.Habilidades = (from h in model.Habilidades select h.Nome).ToList();

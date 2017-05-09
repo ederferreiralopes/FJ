@@ -208,6 +208,7 @@
     <Content Include="content\js\validarCadastroHabilidade.js" />
     <Content Include="Global.asax" />
     <Content Include="images\favicon.ico" />
+    <Content Include="images\logo-fj.jpg" />
     <Content Include="images\icone-acesso.png" />
     <Content Include="images\icone-add-foto.png" />
     <Content Include="images\icone-boleto.png" />
@@ -215,7 +216,6 @@
     <Content Include="images\icone-empresa.png" />
     <Content Include="images\icone-portal-transparencia.jpg" />
     <Content Include="images\icone-usuario.png" />
-    <Content Include="images\logo-fj.jpg" />
     <Content Include="images\sort_asc.png" />
     <Content Include="images\sort_asc_disabled.png" />
     <Content Include="images\sort_both.png" />

@@ -27,4 +27,9 @@ namespace FinderJobs.Domain.Entities
         Candidato,
         Empresa,        
     }
+
+    public enum Mes
+    {
+        Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez
+    }
 }

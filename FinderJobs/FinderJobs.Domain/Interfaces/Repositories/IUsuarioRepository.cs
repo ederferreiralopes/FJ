@@ -9,5 +9,6 @@ namespace FinderJobs.Domain.Interfaces.Repositories
 {
     public interface IUsuarioRepository : IRepositoryBase<Usuario>
     {
+        Dictionary<string, string> GetDashboard(string tipo, DateTime inicio, DateTime fim);
     }
 }

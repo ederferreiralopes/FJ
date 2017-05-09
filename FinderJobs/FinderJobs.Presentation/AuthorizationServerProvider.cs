@@ -42,7 +42,7 @@ namespace FinderJobs.Site
                     respostaJson = reader.ReadToEnd();
                 }
 
-                var resposta = JsonConvert.DeserializeAnonymousType(respostaJson, new { sucesso = false, mensagem = "" });
+                var resposta = JsonConvert.DeserializeAnonymousType(respostaJson, new { sucesso = false, mensagem = "", roles = "" });
                 if (resposta == null || !resposta.sucesso)
                 {
                     context.SetError("invalid_grant", "Usuário ou senha inválidos");
@@ -52,7 +52,8 @@ namespace FinderJobs.Site
                 var identity = new ClaimsIdentity(context.Options.AuthenticationType);
                 identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
                 var roles = new List<string>();
-                roles.Add("User");
+                roles.Add("Usuario");
+                roles.AddRange(resposta.roles.Split(','));
 
                 foreach (var role in roles)
                 {
