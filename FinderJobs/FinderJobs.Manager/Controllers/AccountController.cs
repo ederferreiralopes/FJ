@@ -98,18 +98,24 @@ namespace FinderJobs.Manager.Controllers
                 return Json(new { sucesso = false, mensagem = "Usuario ou senha inválidos" }, JsonRequestBehavior.AllowGet);
             }
 
-            // This doen't count login failures towards lockout only two factor authentication
-            // To enable password failures to trigger lockout, change to shouldLockout: true
-            var result = await SignInHelper.PasswordSignIn(Email, Password, false, shouldLockout: false);
-            switch (result)
+            try
             {
-                case FinderJobs.Manager.Models.SignInStatus.Success:
-                    var user = UserManager.FindByName(Email);
-                    var roles = user.Roles.Aggregate(( i, j) => i + "," + j);
+                var result = await SignInHelper.PasswordSignIn(Email, Password, false, shouldLockout: false);
+                switch (result)
+                {
+                    case FinderJobs.Manager.Models.SignInStatus.Success:
+                        var user = UserManager.FindByName(Email);                        
+                        var roles = user.Roles != null && user.Roles.Count > 0 ? user.Roles.Aggregate((i, j) => i + "," + j) : "";
 
-                    return Json(new { sucesso = true, roles }, JsonRequestBehavior.AllowGet);
-                default:
-                    return Json(new { sucesso = false, mensagem = "Usuario ou senha inválidos" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { sucesso = true, roles }, JsonRequestBehavior.AllowGet);
+                    default:
+                        return Json(new { sucesso = false, mensagem = "Usuario ou senha inválidos" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                //new Infra.Log.Gerar().LogErro(Email, ex.Message);
+                return Json(new { sucesso = false, mensagem = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -210,16 +216,16 @@ namespace FinderJobs.Manager.Controllers
             var result = await UserManager.CreateAsync(user, Password);
             if (result.Succeeded)
             {
-                var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);                
+                var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                code = HttpUtility.UrlEncode(code);
                 var callbackUrl = string.Concat(Url, "?email=", Email, "&code=", code, "&date=", DateTime.Now.ToString("ddMMyyyyHHmmss"));
 
-                var emailTitulo = "Recuperação de Senha";
+                var emailTitulo = "Confirmação de cadastro";
                 var emailConteudo = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/> <title>FindeJobs</title> <style type=\"text/css\"> body{margin: 0; padding: 0; min-width: 100%!important;}.content{width: 100%; max-width: 600px;}@media only screen and (min-device-width: 601px){.content{width: 600px !important;}}.header{padding: 40px 30px 20px 30px;}.col425{width: 425px!important;}.subhead{font-size: 15px; color: #ffffff; font-family: sans-serif; letter-spacing: 10px;}.h1{font-size: 33px; line-height: 38px; font-weight: bold;}.h1, .h2, .bodycopy{color: #153643; font-family: sans-serif;}.innerpadding{padding: 30px 30px 30px 30px;}.borderbottom{border-bottom: 1px solid #f2eeed;}.h2{padding: 0 0 15px 0; font-size: 24px; line-height: 28px; font-weight: bold;}.bodycopy{font-size: 16px; line-height: 22px;}.button{text-align: center; font-size: 18px; font-family: sans-serif; font-weight: bold; padding: 0 30px 0 30px;}.button a{color: #ffffff; text-decoration: none;}@media only screen and (min-device-width: 601px){.content{width: 600px !important;}.col425{width: 425px!important;}.col380{width: 380px!important;}}img{height: auto;}.footer{padding: 20px 30px 15px 30px;}.footercopy{font-family: sans-serif; font-size: 14px; color: #ffffff;}.footercopy a{color: #ffffff; text-decoration: underline;}@media only screen and (max-width: 550px), screen and (max-device-width: 550px){body[yahoo] .buttonwrapper{background-color: transparent!important;}body[yahoo] .button a{background-color: #e05443; padding: 15px 15px 13px!important; display: block!important;}}body[yahoo] .unsubscribe{display: block; margin-top: 20px; padding: 10px 50px; background: #b5c5dd; border-radius: 5px; text-decoration: none!important; font-weight: bold;}body[yahoo] .hide{display: none!important;}</style> </head> <body yahoo bgcolor=\"#bce8f1\"><!--[if (gte mso 9)|(IE)]><table width=\"600\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td><![endif]--><table class=\"content\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td class=\"header\" bgcolor=\"#b5c5dd\"><table width=\"70\" align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td height=\"70\" style=\"padding: 0 20px 20px 0;\"><img src=\"http://finderjobs.com.br/content/img/profile.png\" width=\"70\" height=\"70\" border=\"0\" alt=\"\" / ></td></tr></table><!--[if (gte mso 9)|(IE)]><table width=\"425\" align=\"left\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td><![endif]--><table class=\"col425\" align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; max-width: 425px;\"><tr><td height=\"70\"><table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"subhead\" style=\"padding: 0 0 0 3px;\">FinderJobs</td></tr><tr><td class=\"h1\" style=\"padding: 5px 0 0 0;\">Controle de Acesso</td></tr></table></td></tr></table><!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]--></td></tr><tr> <td class=\"innerpadding borderbottom\"><table width=\"115\" align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"> <tr><td height=\"115\" style=\"padding: 0 20px 20px 0;\"> <img src=\"http://finderjobs.com.br/images/icone-acesso.png\" width=\"115\" height=\"115\" border=\"0\" alt=\"\"/></td></tr></table><!--[if (gte mso 9)|(IE)]> <table width=\"380\" align=\"left\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr> <td><![endif]--><table class=\"col380\" align=\"left\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width: 100%; max-width: 380px;\"> <tr><td> <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr> <td class=\"bodycopy\">#mensagemTexto </td></tr><tr> <td style=\"padding: 20px 0 0 0;\"><table class=\"buttonwrapper\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"> <tr><td> <a href=\"#link\" class=\"unsubscribe\"> <font color=\"#000\">Clique aqui</font> </a></td></tr></table> </td></tr></table></td></tr></table><!--[if (gte mso 9)|(IE)]> </td></tr></table><![endif]--> </td></tr></table><!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]--> </body></html>";
-                emailConteudo = emailConteudo.Replace("#mensagemTexto", "Por favor, cadastre uma nova senha clicando no botão abaixo");
+                emailConteudo = emailConteudo.Replace("#mensagemTexto", "Por favor, confirme seu cadastro clicando no botão abaixo e cadastre a sua senha");
                 emailConteudo = emailConteudo.Replace("#link", callbackUrl);
-                await UserManager.SendEmailAsync(user.Id, emailTitulo, emailConteudo);
-
-                await UserManager.SendEmailAsync(user.Id, "Confirmação de cadastro", "Por favor, confirme seu cadastro clicando neste link: <a href=\"" + callbackUrl + "\">link</a>");
+                UserManager.SendEmailAsync(user.Id, emailTitulo, emailConteudo);
+                
                 return Json(new { sucesso = true, mensagem = "Foi enviado um email de confirmação para " + Email }, JsonRequestBehavior.AllowGet);
             }
             AddErrors(result);
@@ -284,13 +290,14 @@ namespace FinderJobs.Manager.Controllers
         public async Task<ActionResult> ForgotPasswordApi(string Email, string Url)
         {
             var user = await UserManager.FindByNameAsync(Email);
-            if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+            if (user == null)
             {
                 // Don't reveal that the user does not exist or is not confirmed
                 return Json(new { sucesso = true, mensagem = "Enviado email de recuperação de senha" }, JsonRequestBehavior.AllowGet);
             }
 
-            var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);                        
+            var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+            code = HttpUtility.UrlEncode(code);
             var callbackUrl = string.Concat(Url, "?email=", Email, "&code=", code, "&date=", DateTime.Now.ToString("ddMMyyyyHHmmss"));
 
             var emailTitulo = "Recuperação de Senha";
@@ -298,7 +305,6 @@ namespace FinderJobs.Manager.Controllers
             emailConteudo = emailConteudo.Replace("#mensagemTexto", "Por favor, cadastre uma nova senha clicando no botão abaixo");
             emailConteudo = emailConteudo.Replace("#link", callbackUrl);            
             await UserManager.SendEmailAsync(user.Id, emailTitulo, emailConteudo);
-            ViewBag.Link = callbackUrl;
 
             return Json(new { sucesso = true, mensagem = "Enviado email de recuperação de senha" }, JsonRequestBehavior.AllowGet);
         }
@@ -336,6 +342,7 @@ namespace FinderJobs.Manager.Controllers
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
+                        
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
@@ -348,20 +355,19 @@ namespace FinderJobs.Manager.Controllers
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult> ResetPasswordApi(string Email, string Password, string Code)
-        {
-            var mensagem = "Enviado email de recuperação de senha";            
-            Code = Uri.UnescapeDataString(Code);
+        {            
             var user = await UserManager.FindByNameAsync(Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
-                return Json(new { sucesso = true, mensagem = mensagem }, JsonRequestBehavior.AllowGet);
+                return Json(new { sucesso = true, mensagem = "" }, JsonRequestBehavior.AllowGet);
             }
+            Code = HttpUtility.UrlDecode(Code);
             var result = await UserManager.ResetPasswordAsync(user.Id, Code, Password);
-            if (result.Succeeded)
-                return Json(new { sucesso = true, mensagem = mensagem }, JsonRequestBehavior.AllowGet);
-
-            return Json(new { sucesso = true, mensagem = mensagem }, JsonRequestBehavior.AllowGet);
+            if (result.Succeeded)            
+                return Json(new { sucesso = true, mensagem = "" }, JsonRequestBehavior.AllowGet);
+            
+            return Json(new { sucesso = true, mensagem = result.Errors.FirstOrDefault() }, JsonRequestBehavior.AllowGet);
         }
 
         //

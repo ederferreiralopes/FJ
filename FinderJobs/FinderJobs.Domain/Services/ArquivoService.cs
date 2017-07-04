@@ -19,19 +19,14 @@ namespace FinderJobs.Domain.Services
             _arquivoRepository = arquivoRepository;
         }
 
-        public void Desativar(Guid id)
-        {
-            _arquivoRepository.Disable(id);
-        }
-
         public IEnumerable<Arquivo> GetArquivo(Guid usuarioId, string tipo)
         {            
-            return _arquivoRepository.SearchFor(x => x.UsuarioId == usuarioId && x.Tipo == tipo && x.Ativo);
+            return _arquivoRepository.SearchFor(x => x.CadastroId == usuarioId && x.Tipo == tipo && x.Ativo);
         }
 
         public IEnumerable<Arquivo> CarregarTodos(Guid usuarioId)
         {            
-            return _arquivoRepository.SearchFor(x => x.UsuarioId == usuarioId && x.Ativo);
+            return _arquivoRepository.SearchFor(x => x.CadastroId == usuarioId && x.Ativo);
         }
     }
 }

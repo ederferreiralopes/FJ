@@ -18,15 +18,15 @@ namespace FinderJobs.Site.Controllers
     [Authorize]
     public class VagasController : Controller
     {
-        private readonly IUsuarioAppService _usuarioService;
+        private readonly ICadastroAppService _cadastroService;
         private readonly IHabilidadeAppService _habilidadeService;
         private readonly IVagaAppService _vagaService;
 
-        public VagasController(IHabilidadeAppService habilidadeService, IVagaAppService vagaService, IUsuarioAppService usuarioService)
+        public VagasController(IHabilidadeAppService habilidadeService, IVagaAppService vagaService, ICadastroAppService cadastroService)
         {
             _habilidadeService = habilidadeService;
             _vagaService = vagaService;
-            _usuarioService = usuarioService;
+            _cadastroService = cadastroService;
         }
 
         public ActionResult Index()
@@ -86,7 +86,7 @@ namespace FinderJobs.Site.Controllers
 
         public ActionResult Carregar()
         {
-            var cadastro = _usuarioService.GetByEmail(User.Identity.Name);            
+            var cadastro = _cadastroService.GetByEmail(User.Identity.Name);            
             var vagas = _vagaService.BuscarPorEmpresa(cadastro.Id).ToList();
 
             if (vagas != null && vagas.Count > 0)
@@ -149,16 +149,16 @@ namespace FinderJobs.Site.Controllers
 
                 }
 
-                var candidatos = _usuarioService.BuscarPorTipo(UsuarioTipo.Candidato.ToString(), vagasHabilidades).ToList();
+                var candidatos = _cadastroService.BuscarPorTipo(PlanoTipo.Candidato.ToString(), vagasHabilidades).ToList();
 
-                empresaVagaViewModel.Candidatos = (from usuario in candidatos
+                empresaVagaViewModel.Candidatos = (from candidato in candidatos
                                                    select new ViewModels.CandidatoDistanciaViewModel
                                                    {
-                                                       Id = usuario.Id,
-                                                       Nome = usuario.Anonimo ? "" : usuario.Nome,
-                                                       Habilidades = JsonConvert.SerializeObject(usuario.Habilidades),
-                                                       EnderecoCep = usuario.Endereco.Cep,
-                                                       UrlAvatar = usuario.Anonimo ? "" : usuario.UrlAvatar,
+                                                       Id = candidato.Id,
+                                                       Nome = candidato.Anonimo ? "" : candidato.Nome,
+                                                       Habilidades = JsonConvert.SerializeObject(candidato.Habilidades),
+                                                       EnderecoCep = candidato.Endereco.Cep,
+                                                       UrlAvatar = candidato.Anonimo ? "" : candidato.UrlAvatar,
                                                    }).ToList();
 
                 empresaVagaViewModel = CalcularAderencia(empresaVagaViewModel);
@@ -197,20 +197,20 @@ namespace FinderJobs.Site.Controllers
 
         public ActionResult PesquisaCandidato(string id, int pagina = 1)
         {
-            var usuarioId = Guid.Parse(id);
-            var usuario = _usuarioService.GetById(usuarioId);
+            var candidatoId = Guid.Parse(id);
+            var candidato = _cadastroService.GetById(candidatoId);
             var viewModel = new CandidatoVagaViewModel
             {
-                Origem = new UsuarioViewModel
+                Origem = new CadastroViewModel
                 {
-                    Id = usuario.Id,
-                    Nome = usuario.Nome,
-                    Habilidades = (from h in usuario.Habilidades select new HabilidadeViewModel { Id = "", Nome = h }).ToList(),
-                    Endereco = usuario.Endereco,
+                    Id = candidato.Id,
+                    Nome = candidato.Nome,
+                    Habilidades = (from h in candidato.Habilidades select new HabilidadeViewModel { Id = "", Nome = h }).ToList(),
+                    Endereco = candidato.Endereco,
                 }
             };
 
-            var vagas = _vagaService.BuscarVagas(usuario.Habilidades, pagina).ToList();
+            var vagas = _vagaService.BuscarVagas(candidato.Habilidades, pagina).ToList();
             if (vagas != null && vagas.Count > 0)
             {
                 var vagasViewModel = new List<VagaDistanciaViewModel>();

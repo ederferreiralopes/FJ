@@ -13,5 +13,7 @@ namespace FinderJobs.Manager.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public bool Ativo { get; set; }
     }
 }

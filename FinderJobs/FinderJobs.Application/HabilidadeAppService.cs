@@ -23,5 +23,10 @@ namespace FinderJobs.Application
         {
             return _habilidadeService.BuscarPorNome(nome, ativo);
         }
+
+        public Dictionary<string, string> GetDashboard()
+        {
+            return _habilidadeService.GetDashboard();
+        }
     }
 }

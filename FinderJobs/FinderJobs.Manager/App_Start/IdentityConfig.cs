@@ -142,7 +142,7 @@ namespace FinderJobs.Manager.Models
             client.Port = 587;
             client.Host = "smtp.gmail.com";
             client.EnableSsl = true;
-            //client.Timeout = 10000;
+            client.Timeout = 10000;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential("eder.zoe@gmail.com", "eder7710");

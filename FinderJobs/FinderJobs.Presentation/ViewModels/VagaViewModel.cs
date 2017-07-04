@@ -27,19 +27,19 @@ namespace FinderJobs.Site.ViewModels
         public string Cep { get; set; }
         public List<HabilidadeViewModel> Habilidades { get; set; }
         public Vaga Vaga { get; set; }
-        public UsuarioViewModel Candidato { get; set; }
+        public CadastroViewModel Candidato { get; set; }
         public DistanciaViewModel Pesquisa { get; set; }
     }
 
     public class CandidatoVagaViewModel
     {
-        public UsuarioViewModel Origem { get; set; }
+        public CadastroViewModel Origem { get; set; }
         public List<VagaDistanciaViewModel> Destinos { get; set; }
     }
 
     public class EmpresaViewModel
     {
-        public UsuarioViewModel Usuario { get; set; }
+        public CadastroViewModel Usuario { get; set; }
         public List<VagaViewModel> Vagas { get; set; }        
     }
 

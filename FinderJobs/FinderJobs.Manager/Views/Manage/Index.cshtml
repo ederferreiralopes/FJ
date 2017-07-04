@@ -3,7 +3,7 @@
     ViewBag.Title = "Gerencie seus dados";
 }
 <style>
-    .padding-menor{
+    .padding-menor {
         padding-left: 0px;
         padding-right: 0px;
     }
@@ -32,14 +32,14 @@
 
                                 <div class="col-md-1 control-label padding-menor">
                                     <label>Nova: </label>
-                                </div>                                
+                                </div>
                                 <div class="col-md-2">
                                     @Html.Password("NewPassword", null, new { @class = "form-control", required = "" })
                                 </div>
 
                                 <div class="col-md-1 control-label padding-menor">
                                     <label for="ConfirmPassword">Confirme: </label>
-                                </div>                                  
+                                </div>
                                 <div class="col-md-2">
                                     @Html.Password("ConfirmPassword", null, new { @class = "form-control", required = "" })
                                 </div>
@@ -132,7 +132,6 @@
     </div>
 </div>
 
-<script src="~/Scripts/jquery-3.1.1.min.js"></script>
 <script>
     function AlterarSenha() {
         $('#div_alterar_senha').show('fadeIn');
@@ -158,10 +157,10 @@
                     console.log(data)
                 }
                 else
-                    alert("Nenhuma login externo encontrado!");
+                    Notify('Nenhuma login externo encontrado', null, null, 'error');
             },
             error: function (result) {
-                console.log('Ocoreu um erro, informe a equipe de suporte: ');
+                Notify('Ocorreu um erro, informe a equipe de suporte', null, null, 'error');
                 console.log(result);
             }
         });

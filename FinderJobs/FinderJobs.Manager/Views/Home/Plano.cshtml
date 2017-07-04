@@ -1,0 +1,203 @@
+﻿@{
+    ViewBag.Title = "Planos";
+}
+
+<div class="jumbotron">
+    <h4>Planos <a id="btn_adicionar"><i class="glyphicon glyphicon-plus-sign"></i></a></h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <div class="col-md-2">
+                        Nome
+                    </div>
+                </th>
+                <th>
+                    <div class="col-md-2">
+                        Tipo
+                    </div>
+                </th>
+                <th>
+                    <div class="col-md-2">
+                        Valor(R$)
+                    </div>
+                </th>
+                <th>
+                    <div class="col-md-2">
+                        Características
+                    </div>
+                </th>
+                <th>
+                    <div class="col-md-2">
+                        Data Cadastro
+                    </div>
+                </th>
+                <th>
+                    <div class="col-md-2">
+                        Ativo
+                    </div>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<!-- Modal Novo Plano -->
+<div class="modal fade" id="modalPlano" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>Novo Plano</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        @using (Html.BeginForm("Salvar", "Gravar", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "form_plano" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                <input hidden id="Id" />
+                                @Html.Label("Nome", null, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-4">
+                                    @Html.TextBox("Nome", null, new { @class = "form-control", required = "" })
+                                </div>
+                                @Html.Label("Tipo", new { @class = "col-md-2 control-label" })
+                                <div class="col-md-4">
+                                    @Html.TextBox("Tipo", null, new { @class = "form-control", required = "" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.Label("Características: *separar por vírgula", new { @class = "col-md-12 control-label" })
+                                <div class="col-md-12 pull-right">
+                                    @Html.TextArea("Caracteristicas", null, new { @class = "form-control", required = "", rows="3" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.Label("Valor", new { @class = "col-md-2 control-label" })
+                                <div class="col-md-4">
+                                    @Html.TextBox("Valor", null, new { @class = "form-control", required = "", @type = "nunber" })
+                                </div>
+                                @Html.Label("Ativo", new { @class = "col-md-2 control-label" })
+                                <div class="col-md-2">
+                                    @Html.CheckBox("Ativo", new { @class = "form-control", required = "" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input id="btn_gravar" type="button" class="btn btn-success" value="Salvar" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var caracteristicas = new Array();
+
+    $(document).ready(function () {
+        Listar();
+    });
+
+    $('#btn_adicionar').on('click', function (e) {
+        $('#form_plano')[0].reset();
+        $('#modalPlano').modal();
+    });
+
+    $('#btn_gravar').on('click', function (e) {
+        Salvar($('#Id').val(), $('#Nome').val(), $('#Tipo').val(), $('#Caracteristicas').val(), $('#Valor').val(), $('#Ativo').is(':checked'));
+    });
+
+    function Editar(id) {
+        $('#form_plano')[0].reset();
+        var valores = $('#tr_' + id).children();
+        $('#Id').val(id);
+        $('#Nome').val(valores[0].innerText);
+        $('#Tipo').val(valores[1].innerText);
+        $('#Valor').val(valores[2].innerText);
+        $('#Caracteristicas').val(valores[3].innerText);
+        $('#Ativo').attr('checked', $('#tr_' + id + ' input').is(':checked'));
+
+        $('#modalPlano').modal();
+    }
+
+    function Listar() {
+        $.ajax({
+            url: urlBase + "Plano",
+            type: "GET",
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.sucesso) {
+                    var html = '';
+                    $.each(data.dados, function (index, value) {
+                        var checked = value.Ativo ? "checked" : "";
+                        var dataCadastro = new Date(parseInt(value.DataCadastro.substr(6)));                        
+                        html += "<tr id='tr_" + value.Id + "'>" +
+                                    "<td>" + value.Nome + "</td>" +
+                                    "<td>" + value.Tipo + "</td>" +
+                                    "<td>" + value.Valor + "</td>" +
+                                    "<td>" + value.Caracteristicas.join() + "</td>" +
+                                    "<td>" + dataCadastro.getDate() + "/" + (dataCadastro.getMonth() + 1) + "/" + dataCadastro.getFullYear() + "</td>" +
+                                    "<td><input type='checkbox' class='form-control' " + checked + "/ disabled></td>" +
+                            "<td> <a onclick='Editar(\"" + value.Id + "\")'><i class='glyphicon glyphicon-pencil'></i></a></td>" +
+                            "</tr>";
+                    });
+                    $('tbody').html(html);
+                }
+                else
+                    Notify('Nenhum plano encontrado', null, null);                    
+            },
+            error: function (result) {
+                Notify('Ocorreu um erro, informe a equipe de suporte', null, null, 'danger');
+                console.log(result);
+            }
+        });
+    }
+
+    $("#btn_novo").click(function () {
+        SalvarPlano(id)
+    });
+
+    function Salvar(id, nome, tipo, caracteristicas, valor, ativo) {
+
+        if (caracteristicas == null || caracteristicas == undefined || caracteristicas.split(',').length == 0) {
+            return alert("Favor adicionar características");
+        }
+
+        var plano =
+        {
+            'Id': id,
+            'Tipo': tipo,
+            'Nome': nome,
+            'Valor': valor,
+            'Caracteristicas': caracteristicas.split(','),
+            'Ativo': ativo
+        };
+
+        $.ajax({
+            url: urlBase + "Plano/Gravar",
+            type: "Post",
+            contentType: 'application/json',
+            data: JSON.stringify(plano),
+            success: function (data) {
+                if (data.sucesso) {
+                    Notify('Sucesso', null, null, 'success');
+                    Listar();
+                    $('#modalPlano').modal('toggle');
+                }
+                else
+                    Notify('Ocorreu um erro', null, null, 'danger');
+            },
+            error: function (result) {                
+                Notify('Ocorreu um erro, informe a equipe de suporte', null, null, 'danger');                
+                console.log(result);
+            }
+        });
+    }
+</script>

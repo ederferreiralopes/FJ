@@ -1,19 +1,29 @@
-﻿<!DOCTYPE html>
+﻿@{ var urlBase = "http://localhost/"; }
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - FinderJobs Manager</title>
-    <!-- Bootstrap Core CSS -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="bootstrap/css/bootstrap-switch.min.css" rel="stylesheet" />
-    <!-- Notify CSS -->
-    <link href="notify/notify.css" rel="stylesheet" />
-    <!-- Custom Fonts -->
-    <link href="content/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="@Url.Content(urlBase + "bootstrap/css/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content(urlBase + "notify/notify.css")" rel="stylesheet">
     <style>
-        .glyphicon {
-            font-size: 20px;
+        .glyphicon:hover {
+            background-color: #b6ff00;
+        }
+
+        .glyphicon-floppy-disk {
+            color: #3c763d;
+            top: 7px;
+        }
+
+        .glyphicon-remove {
+            color: #ff0000;
+            top: 7px;
+        }
+
+        .glyphicon-check {
+            top: 7px;
         }
 
         .cor-fj {
@@ -40,7 +50,7 @@
                     </button>
                 }
                 <div style="padding: 4px;">
-                    <a href="@Url.Action("Index", "Home")"><img src="http://finderjobs.com.br/images/logo-fj.jpg" height="70" style="border-radius: 90px;"></a>
+                    <a href="@Url.Action("Index", "Home")"><img src='@Url.Content(urlBase + "/images/logo-fj.jpg")' height="70" style="border-radius: 90px;"></a>
                 </div>
             </div>
             <div class="navbar-collapse collapse">
@@ -49,7 +59,10 @@
                     {
                         <li class="cor-fj">@Html.ActionLink("Usuários", "Index", "UsersAdmin")</li>
                         <li class="cor-fj">@Html.ActionLink("Privilégios", "Index", "RolesAdmin")</li>
-                        <li class="cor-fj">@Html.ActionLink("Habilidades", "Index", "HabilidadesAdmin")</li>
+                        <li class="cor-fj">@Html.ActionLink("Habilidades", "Habilidade", "Home")</li>
+                        <li class="cor-fj">@Html.ActionLink("Pagamentos", "Pagamento", "Home")</li>
+                        <li class="cor-fj">@Html.ActionLink("Planos", "Plano", "Home")</li>
+                        <li class="cor-fj">@Html.ActionLink("Logs", "Log", "Home")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -58,17 +71,27 @@
     </div>
     <div class="container body-content">
         <br /><br />
+        <script src='@Url.Content(urlBase + "jquery/jquery.min.js")' type="text/javascript"></script>
+        <script src='@Url.Content(urlBase + "bootstrap/js/bootstrap.min.js")' type="text/javascript"></script>        
+        <script src='@Url.Content(urlBase + "notify/notify.js")' type="text/javascript"></script>
+        <script>
+            var urlBase = '@urlBase';
+
+            function ConverterData(data) {
+                if (data != undefined) {
+                    var dataConvertida = new Date($.parseJSON(data.replace('/Date(', '').replace(')/', '')))
+                    var mes = dataConvertida.getMonth() < 9 ? '0' + (dataConvertida.getMonth() + 1) : (dataConvertida.getMonth() + 1);
+                    return dataConvertida.getDate() + '/' + mes + '/' + dataConvertida.getFullYear();
+                }
+                else
+                    return data;
+            }
+        </script>
         @RenderBody()
+
         <footer>
             <p>&copy;FinderJobs 2014 - @DateTime.Now.Year</p>
         </footer>
     </div>
-
-    <!-- jQuery -->
-    <script src="jquery/jquery.min.js"></script>
-    <!-- Notify JS -->
-    <script src="notify/notify.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

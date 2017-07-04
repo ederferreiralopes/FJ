@@ -1,36 +1,177 @@
 ﻿@model IEnumerable<FinderJobs.Manager.Models.ApplicationUser>
-
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Usuários";
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<div class="jumbotron">
+    <h4>Usuários <a id="btn_adicionar"><i class="glyphicon glyphicon-plus-sign"></i></a></h4>
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
+            <th>
+                <div class="col-md-1">
+                    Usuário
+                </div>
+                <div class="col-md-8">
+                </div>
+            </th>
+            <th>Privilégios</th>
+            <th></th>
         </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr id="tr_@item.Id">
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @if (item.Roles != null)
+                    {
+                        @String.Join(",", item.Roles.ToArray());
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ativo)
+                </td>
+                <td>
+                    <a onclick="Editar('@item.Id')"><i class="glyphicon glyphicon-pencil"></i></a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+<!-- Modal Novo Usuario -->
+<div class="modal fade" id="modalNovoUsuario" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>Novo Usuário</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        @using (Html.BeginForm("Create", "UsersAdmin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "form_usuario" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input hidden type="text" name="Id" id="Id" />
+                            <div class="form-group">
+                                @Html.Label("Email", null, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.TextBox("Email", null, new { @class = "form-control", required = "", email = "" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.Label("Senha", new { @class = "col-md-2 control-label" })
+                                <div class="col-md-4">
+                                    @Html.Password("Password", null, new { @class = "form-control", required = "" })
+                                </div>
+                                @Html.Label("Confirme", new { @class = "col-md-2 control-label", placeholder = "Confirme a senha" })
+                                <div class="col-md-4">
+                                    @Html.Password("ConfirmPassword", null, new { @class = "form-control", required = "" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">
+                                    Privilégios
+                                </label>
+                                <div class="col-md-10" id="div_privelegios">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.Label("Ativo", new { @class = "col-md-2 control-label" })
+                                <div class="col-md-2">
+                                    @Html.CheckBox("Ativo", new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" class="btn btn-success" value="Salvar" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Confirmação -->
+<div class="modal fade" id="modalConfirmacao" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 style="color: #a94442">Deseja realmente fazer isso?</h4>
+                <span class="modal-title">Não será possível reverter.</span>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                        <label>Email: </label>
+                        <span id="email_usuario"></span>
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                        <form method="post" action="UsersAdmin/Delete" class="form-horizontal">
+                            @Html.AntiForgeryToken()
+                            <input id="id_usuario" hidden name="id" value="" />
+                            <input type="submit" value="Excluir" class="btn btn-danger" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#btn_adicionar').on('click', function () {
+        $('#form_usuario')[0].reset();
+        $('#form_usuario').attr('action', '/Manager/UsersAdmin/Create');
+        GetPrivilegios();
+        $('#modalNovoUsuario').modal();
+    });
+
+    function Editar(id) {
+        $('#form_usuario')[0].reset();
+        $('#form_usuario').attr('action', '/Manager/UsersAdmin/Edit');
+        debugger;
+        $('#Id').val(id);
+        var dados = $('#tr_' + id).children();
+        GetPrivilegios(dados[1].innerText.split(','));
+        $('#Ativo').attr('checked', $('#tr_' + id + ' input').is(':checked'));
+        $('#Email').val(dados[0].innerText);
+        $('#Password').prop('disabled', true);
+        $('#ConfirmPassword').prop('disabled', true);
+        $('#modalNovoUsuario').modal();
     }
 
-</table>
+    function GetPrivilegios(atuais) {
+        $.ajax({
+            url: "RolesAdmin/Get",
+            type: "GET",
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.length > 0) {
+                    var html = '';
+                    $.each(data, function (index, value) {
+                        var checked = $.inArray(value.Name, atuais) > -1 ? 'checked' : '';
+                        html += "<div class'col-sm-2 col-md-2 col-lg-2'><input type='checkbox' " + checked + " name='SelectedRoles' value='" + value.Name + "' class='checkbox-inline' />" +
+                                "&nbsp<label for='" + value.Name + "' class=''>" + value.Name + "</label></div>";
+                    });
+                    $('#div_privelegios').html(html);
+                }
+                else
+                    Notify('Nenhuma privilégio cadastrado', null, null, 'error');
+            },
+            error: function (result) {
+                Notify('Ocorreu um erro, informe a equipe de suporte', null, null, 'error');
+                console.log(result);
+            }
+        });
+    }
+</script>

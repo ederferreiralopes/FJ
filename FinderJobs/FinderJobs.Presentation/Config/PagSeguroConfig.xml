@@ -2,6 +2,8 @@
 <PagSeguroConfiguration>
   <!-- Urls defaults for call services PagSeguro -->
   <Urls>
+    <!-- atenção! para ambiente de teste o valor deve ser true -->
+    <Sandbox>true</Sandbox>
     <!-- url for payment service -->
     <Payment>
       <Link>https://ws.sandbox.pagseguro.uol.com.br/v2/checkout</Link>
@@ -41,17 +43,17 @@
     <PreApprovalPayment>
       <Link>https://ws.sandbox.pagseguro.uol.com.br/v2/pre-approvals/payment</Link>
     </PreApprovalPayment>
-  </Urls>
+  </Urls>   
   <!-- user's credential -->
   <Credential>
     <!-- your email here -->
-    <Email>eder.lopes@live.com</Email>
+    <Email>roberto.carvalho@finderjobs.com.br</Email>
     <!-- your token here -->
     <Token>meutokenprod</Token>
     <!-- your sandbox email here -->
-    <SandboxEmail>eder.lopes@live.com</SandboxEmail>
+    <SandboxEmail>roberto.carvalho@finderjobs.com.br</SandboxEmail>
     <!-- your sandbox token here -->
-    <SandboxToken>E3798056BBF44037988EB68DA01FCFCB</SandboxToken>
+    <SandboxToken>C333374EDCCE4112BDE4A1B8DE7BADD6</SandboxToken>
   </Credential>
   <!-- configuration default for PagSeguro API-->
   <Configuration>

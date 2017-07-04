@@ -1,7 +1,5 @@
-﻿using FinderJobs.Infra.Data.Context;
+﻿
 using FinderJobs.Domain.Interfaces.Repositories;
-using NHibernate;
-using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +7,6 @@ using System.Configuration;
 using System.Linq.Expressions;
 using FinderJobs.Domain.Entities;
 using MongoDB.Driver;
-using MongoDB.Bson;
 using MongoDB.Driver.Linq;
 
 namespace FinderJobs.Infra.Data.Repositories
@@ -29,7 +26,7 @@ namespace FinderJobs.Infra.Data.Repositories
         {            
             entity.Id = Guid.NewGuid();
             entity.Ativo = true;
-            collection.InsertOne(entity);
+            collection.InsertOne(entity);            
             return entity.Id;     
         }
 
@@ -61,7 +58,7 @@ namespace FinderJobs.Infra.Data.Repositories
 
         public IList<TEntity> GetAll()
         {
-            return collection.Find<TEntity>(_ => true).ToList();
+            return collection.Find<TEntity>(_ => true).ToListAsync().Result;
         }
 
         public IList<TEntity> Find(string query, int pagina)
@@ -95,112 +92,12 @@ namespace FinderJobs.Infra.Data.Repositories
         {
             collection = database.GetCollection<TEntity>(typeof(TEntity).Name);
         }
+       
+        public object InsertLog(TEntity entity)
+        {                       
+            collection.InsertOne(entity);
+            return entity.Id;
+        }
         #endregion
-    }
-
-    public class RepositoryBaseNhibernate<TEntity> : IRepositoryBaseNhibernate<TEntity> where TEntity : class
-    {
-        /// <summary>
-        /// Método para inserir
-        /// </summary>
-        /// <param name="obj"></param>        
-        public object Add(TEntity obj)
-        {
-            object entidade = null;
-            using (ISession session = SessionFactory.AbrirSession())
-            {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    try
-                    {
-                        entidade = session.Save(obj);
-                        transaction.Commit();
-                    }
-                    catch (Exception erro)
-                    {
-                        if (!transaction.WasCommitted)
-                        {
-                            transaction.Rollback();
-                        }
-                        throw new Exception("Erro ao inserir dados : " + erro.Message);
-                    }
-                }
-            }
-
-            return entidade;
-        }
-
-        public void Update(TEntity obj)
-        {
-            using (ISession session = SessionFactory.AbrirSession())
-            {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    try
-                    {
-                        session.Update(obj);
-                        transaction.Commit();
-                    }
-                    catch (Exception erro)
-                    {
-                        if (!transaction.WasCommitted)
-                        {
-                            transaction.Rollback();
-                        }
-                        throw new Exception("Erro ao alterar dados : " + erro.Message);
-                    }
-                }
-            }
-        }
-
-        public void Remove(TEntity obj)
-        {
-            using (ISession session = SessionFactory.AbrirSession())
-            {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    try
-                    {
-                        session.Delete(obj);
-                        transaction.Commit();
-                    }
-                    catch (Exception erro)
-                    {
-                        if (!transaction.WasCommitted)
-                        {
-                            transaction.Rollback();
-                        }
-                        throw new Exception("Erro ao excluir dados : " + erro.Message);
-                    }
-                }
-            }
-        }        
-
-        public TEntity GetById(int Id)
-        {
-            using (ISession session = SessionFactory.AbrirSession())
-            {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    return session.Get<TEntity>(Id);
-                }
-            }
-        }
-
-        public IEnumerable<TEntity> GetAll()
-        {
-            using (ISession session = SessionFactory.AbrirSession())
-            {
-                using (ITransaction transacao = session.BeginTransaction())
-                {
-                    return (from c in session.Query<TEntity>() select c).ToList();
-                }
-            }
-        }
-
-        public void Dispose()
-        {
-
-        }
     }
 }

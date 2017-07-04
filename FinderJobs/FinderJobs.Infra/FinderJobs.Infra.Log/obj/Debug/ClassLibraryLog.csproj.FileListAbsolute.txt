@@ -1,0 +1,14 @@
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\bin\Debug\ClassLibraryLog.dll.config
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\bin\Debug\ClassLibraryLog.dll
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\bin\Debug\ClassLibraryLog.pdb
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\bin\Debug\Log4Mongo.dll
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\bin\Debug\log4net.dll
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\bin\Debug\MongoDB.Bson.dll
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\bin\Debug\MongoDB.Driver.Core.dll
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\bin\Debug\MongoDB.Driver.dll
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\bin\Debug\log4net.xml
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\bin\Debug\MongoDB.Bson.xml
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\bin\Debug\MongoDB.Driver.xml
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\obj\Debug\ClassLibraryLog.dll
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\obj\Debug\ClassLibraryLog.pdb
+D:\Angular2\Vs2017\FinderJobsLog\ClassLibraryLog\obj\Debug\ClassLibraryLog.csprojResolveAssemblyReference.cache

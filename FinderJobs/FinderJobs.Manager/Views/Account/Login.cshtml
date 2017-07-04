@@ -3,42 +3,33 @@
     ViewBag.Title = "Log in";
 }
 
-<!-- Bootstrap Core CSS -->
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-</head>
+<style>
+    .login {
+        background-color: black;
+        opacity: 0.8;
+        color: white;
+    }
+</style>
 <div class="row">
+    <div class="container">
         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-        {
-            <div class="col-md-8">
+        {            
+            <div class="col-md-6 login">
+                <br /><br />
                 @Html.AntiForgeryToken()
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                    </div>
+                <div class="col-md-12 form-group">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
                 </div>
-                <div class="form-group">
-                    @Html.Label("Senha", null, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                    </div>
+                <div class="col-md-12 form-group">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                 </div>
+                <div class="col-md-12 form-group text-right">
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                    <span>Manter logado?</span>            
+                    <input type="submit" value="Entrar" class="btn btn-success" />
+                </div>
+                <br />
             </div>
-            <div class="col-md-8 text-right">         
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                        <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
-                        </div>
-                    </div>
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        <input type="submit" value="Entrar" class="btn btn-success" />
-                    </div>                
-            </div>
-        }    
+        }
+    </div>
 </div>

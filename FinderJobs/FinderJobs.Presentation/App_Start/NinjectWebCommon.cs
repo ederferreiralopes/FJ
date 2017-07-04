@@ -69,26 +69,31 @@ namespace FinderJobs.Site.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind(typeof(IAppServiceBase<>)).To(typeof(AppServiceBase<>));
-            kernel.Bind<IUsuarioAppService>().To<UsuarioAppService>();
+            kernel.Bind<ICadastroAppService>().To<CadastroAppService>();
             kernel.Bind<IHabilidadeAppService>().To<HabilidadeAppService>();            
             kernel.Bind<IVagaAppService>().To<VagaAppService>();
             kernel.Bind<IConfiguracaoBoletoAppService>().To<ConfiguracaoBoletoAppService>();
             kernel.Bind<IArquivoAppService>().To<ArquivoAppService>();
+            kernel.Bind<IPlanoAppService>().To<PlanoAppService>();
+            kernel.Bind<IPagamentoAppService>().To<PagamentoAppService>();            
 
             kernel.Bind(typeof(IServiceBase<>)).To(typeof(ServiceBase<>));            
-            kernel.Bind<IUsuarioService>().To<UsuarioService>();
+            kernel.Bind<ICadastroService>().To<CadastroService>();
             kernel.Bind<IHabilidadeService>().To<HabilidadeService>();            
             kernel.Bind<IVagaService>().To<VagaService>();
             kernel.Bind<IConfiguracaoBoletoService>().To<ConfiguracaoBoletoService>();
             kernel.Bind<IArquivoService>().To<ArquivoService>();
+            kernel.Bind<IPlanoService>().To<PlanoService>();
+            kernel.Bind<IPagamentoService>().To<PagamentoService>();            
 
-            kernel.Bind(typeof(IRepositoryBase<>)).To(typeof(RepositoryBaseMongoDb<>));
-            kernel.Bind(typeof(IRepositoryBase<>)).To(typeof(RepositoryBaseNhibernate<>));
-            kernel.Bind<IUsuarioRepository>().To<UsuarioRepository>();
+            kernel.Bind(typeof(IRepositoryBase<>)).To(typeof(RepositoryBaseMongoDb<>));            
+            kernel.Bind<ICadastroRepository>().To<CadastroRepository>();
             kernel.Bind<IHabilidadeRepository>().To<HabilidadeRepository>();            
             kernel.Bind<IVagaRepository>().To<VagaRepository>();
             kernel.Bind<IConfiguracaoBoletoRepository>().To<ConfiguracaoBoletoRepository>();
             kernel.Bind<IArquivoRepository>().To<ArquivoRepository>();
+            kernel.Bind<IPlanoRepository>().To<PlanoRepository>();
+            kernel.Bind<IPagamentoRepository>().To<PagamentoRepository>();            
         }        
     }
 }

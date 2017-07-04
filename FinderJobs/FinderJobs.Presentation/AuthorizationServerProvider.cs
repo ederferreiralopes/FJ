@@ -20,6 +20,7 @@ namespace FinderJobs.Site
 {
     public class AuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
+
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();
@@ -30,7 +31,7 @@ namespace FinderJobs.Site
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
             try
             {
-                var url = "http://localhost:1111/Account/LoginApi?";
+                var url = "http://localhost/Manager/Account/LoginApi?";
                 var parametros = string.Concat("Email=", context.UserName, "&Password=", context.Password);
                 var respostaJson = string.Empty;
                 var request = (HttpWebRequest)WebRequest.Create(url + parametros);

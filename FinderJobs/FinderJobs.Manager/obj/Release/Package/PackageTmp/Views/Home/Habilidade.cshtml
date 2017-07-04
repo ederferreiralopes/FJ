@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "Habilidades";
+}
+
+<div class="jumbotron">
+    <h4>Habilidades<a onclick="Adicionar()"><i class="glyphicon glyphicon-plus-sign"></i></a></h4>
+    <div class="form-group col-lg-4 col-md-1 col-sm-4 col-xs-10">
+        <a onclick="GetHabilidades(true)"><i class="glyphicon glyphicon-list"></i> Listar</a>
+    </div>
+    <div class="form-group col-lg-4 col-md-1 col-sm-4 col-xs-10">
+        <a onclick="GetHabilidades(false)"><i class="glyphicon glyphicon-ok"></i> Aprovar</a>
+    </div>
+    <div class="form-group form-inline col-lg-4 col-md-4 col-sm-4 col-xs-12" id="div_nova_habilidade" style="visibility: hidden">
+        <input type="text" class="form-control" placeholder="Habilidade" id="txt_nova_habilidade" name="txt_nova_habilidade">
+        <a id="btn_nova_habilidade"><i class="glyphicon glyphicon-floppy-disk"></i></a>
+    </div>
+    <div class="row">
+        <div id="lista" class="col-lg-12">
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function GetHabilidades(ativo) {
+        $.ajax({
+            url: urlBase + "Habilidade/Index?ativo=" + ativo,
+            type: "GET",
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.length > 0) {
+                    var html = '';
+                    var icone = ativo ? 'remove' : 'check';
+                    $.each(data, function (index, value) {
+                        html += "<div id='tr_" + value.Id + "' class='col-lg-4 col-md-4 col-sm-12 col-xs-12 form-inline'>" +
+                                "<input  id='" + value.Id + "' class='form-control' type='text' name='" + value.Nome + "' value='" + value.Nome + "'>" +
+                                "<a style='padding: 2px' onclick='Salvar(\"" + value.Id + "\"," + ativo + ")'><i class='glyphicon glyphicon-floppy-disk'></i></a>" +
+                                "<a style='padding: 2px' onclick='Aprovar(\"" + value.Id + "\"," + ativo + ")'><i class='glyphicon glyphicon-" + icone + "'></i></a>" +
+                                "</div>";
+                    });
+                    $('#lista').html(html);
+                }
+                else
+                    Notify('Nenhuma habilidade encontrada', null, null, 'danger');
+            },
+            error: function (result) {
+                Notify('Ocorreu um erro, informe a equipe de suporte', null, null, 'danger');
+                console.log(result);
+            }
+        });
+    }
+
+    function Adicionar() {
+        $('#txt_nova_habilidade').val('');
+        $("#div_nova_habilidade").css("visibility", "visible");
+    }
+
+    $("#btn_nova_habilidade").click(function () {
+        Salvar('00000000-0000-0000-0000-000000000000', true);
+        $("#div_nova_habilidade").css("visibility", "hidden");
+    });
+
+    function Aprovar(id, ativo) {
+
+        var habilidade = {
+            'id': id,
+            'nome': $('#' + id).val(),
+            'ativo': !ativo
+        }
+
+        $.ajax({
+            url: urlBase + "Habilidade/Salvar",
+            type: "post",
+            contentType: 'application/json',
+            data: JSON.stringify(habilidade),
+            success: function (data) {
+                if (data.sucesso) {
+                    Notify('Sucesso', null, null, 'success');
+                    $('#tr_' + id).remove();
+                }
+                else
+                    Notify('Ocorreu um erro', null, null, 'danger');
+            },
+            error: function (result) {
+                Notify('Ocorreu um erro, informe a equipe de suporte', null, null, 'danger');
+                console.log(result);
+            }
+        });
+    }
+
+    function Salvar(id, ativo) {
+
+        var nome = '';
+        if (id == '00000000-0000-0000-0000-000000000000')
+            nome = $('#txt_nova_habilidade').val();
+        else
+            nome = $('#' + id).val();
+
+        var habilidade = {
+            'id': id,
+            'nome': nome,
+            'ativo': ativo
+        }
+
+        $.ajax({
+            url: urlBase + "Habilidade/Salvar",
+            type: "post",
+            contentType: 'application/json',
+            data: JSON.stringify(habilidade),
+            success: function (data) {
+                if (data.sucesso) {
+                    Notify('Sucesso', null, null, 'success');
+                }
+                else
+                    Notify('Ocorreu um erro', null, null);
+            },
+            error: function (result) {
+                Notify('Ocorreu um erro, informe a equipe de suporte', null, null, 'danger');
+                console.log(result);
+            }
+        });
+    }
+</script>

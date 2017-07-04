@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentNHibernate, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentNHibernate.2.0.3.0\lib\net40\FluentNHibernate.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
       <Private>True</Private>
@@ -51,10 +47,6 @@
       <HintPath>..\packages\MongoDB.Driver.Core.2.4.1\lib\net45\MongoDB.Driver.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NHibernate, Version=4.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\packages\NHibernate.4.1.0.4000\lib\net40\NHibernate.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -69,6 +61,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Email.cs" />
+    <Compile Include="Entities\Log.cs" />
+    <Compile Include="Entities\Pagamento.cs" />
+    <Compile Include="Entities\Plano.cs" />
     <Compile Include="Entities\ConfiguracaoBoleto.cs" />
     <Compile Include="Entities\Cedente.cs" />
     <Compile Include="Entities\Arquivo.cs" />
@@ -77,33 +73,31 @@
     <Compile Include="Entities\Generico.cs" />
     <Compile Include="Entities\Habilidade.cs" />
     <Compile Include="Entities\Sacado.cs" />
-    <Compile Include="Entities\Usuario.cs" />
+    <Compile Include="Entities\Cadastro.cs" />
     <Compile Include="Entities\Vaga.cs" />
+    <Compile Include="Interfaces\Repositories\IPagamentoRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IPlanoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IArquivoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IConfiguracaoBoletoRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRepositoryBase.cs" />
     <Compile Include="Interfaces\Repositories\IHabilidadeRepository.cs" />
     <Compile Include="Interfaces\Repositories\IVagaRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IUsuarioRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ICadastroRepository.cs" />
+    <Compile Include="Interfaces\Services\IPagamentoService.cs" />
+    <Compile Include="Interfaces\Services\IPlanoService.cs" />
     <Compile Include="Interfaces\Services\IArquivoService.cs" />
     <Compile Include="Interfaces\Services\IConfiguracaoBoletoService.cs" />
     <Compile Include="Interfaces\Services\IHabilidadeService.cs" />
     <Compile Include="Interfaces\Services\IVagaService.cs" />
-    <Compile Include="Interfaces\Services\IUsuarioService.cs" />
+    <Compile Include="Interfaces\Services\ICadastroService.cs" />
     <Compile Include="Interfaces\Services\IServiceBase.cs" />
-    <Compile Include="Mapping\HabilidadeMap.cs" />
-    <Compile Include="Mapping\ConfiguracaoBoletoMap.cs" />
-    <Compile Include="Mapping\ArquivoMap.cs" />
-    <Compile Include="Mapping\SacadoMap.cs" />
-    <Compile Include="Mapping\CedenteMap.cs" />
-    <Compile Include="Mapping\VagaMap.cs" />
-    <Compile Include="Mapping\UsuarioMap.cs" />
-    <Compile Include="Mapping\EnderecoMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\PagamentoService.cs" />
+    <Compile Include="Services\PlanoService.cs" />
     <Compile Include="Services\ArquivoService.cs" />
     <Compile Include="Services\ConfiguracaoBoletoService.cs" />
     <Compile Include="Services\ServiceBase.cs" />
-    <Compile Include="Services\UsuarioService.cs" />
+    <Compile Include="Services\CadastroService.cs" />
     <Compile Include="Services\HabilidadeService.cs" />
     <Compile Include="Services\VagaService.cs" />
   </ItemGroup>

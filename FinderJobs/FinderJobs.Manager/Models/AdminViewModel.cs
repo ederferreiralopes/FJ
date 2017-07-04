@@ -21,6 +21,8 @@ namespace FinderJobs.Manager.Models
         [EmailAddress]
         public string Email { get; set; }
 
+        public bool Ativo { get; set; }
+
         public IEnumerable<SelectListItem> RolesList { get; set; }
     }
 }

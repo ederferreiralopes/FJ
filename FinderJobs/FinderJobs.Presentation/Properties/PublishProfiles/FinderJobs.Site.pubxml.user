@@ -16,37 +16,49 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/29/2016 23:09:40</publishTime>
     </File>
     <File Include="bin/FinderJobs.Application.dll">
-      <publishTime>03/09/2017 00:18:45</publishTime>
+      <publishTime>06/24/2017 02:35:44</publishTime>
     </File>
     <File Include="bin/FinderJobs.Application.dll.config">
       <publishTime>01/22/2017 06:28:04</publishTime>
     </File>
     <File Include="bin/FinderJobs.Application.pdb">
-      <publishTime>03/09/2017 00:18:45</publishTime>
+      <publishTime>06/24/2017 02:35:44</publishTime>
     </File>
     <File Include="bin/FinderJobs.Domain.dll">
-      <publishTime>03/09/2017 00:18:44</publishTime>
+      <publishTime>06/24/2017 02:35:39</publishTime>
     </File>
     <File Include="bin/FinderJobs.Domain.dll.config">
       <publishTime>01/22/2017 06:28:04</publishTime>
     </File>
     <File Include="bin/FinderJobs.Domain.pdb">
-      <publishTime>03/09/2017 00:18:44</publishTime>
+      <publishTime>06/24/2017 02:35:39</publishTime>
+    </File>
+    <File Include="bin/FinderJobs.Infra.CrossCutting.dll">
+      <publishTime>06/24/2017 02:35:43</publishTime>
+    </File>
+    <File Include="bin/FinderJobs.Infra.CrossCutting.pdb">
+      <publishTime>06/24/2017 02:35:43</publishTime>
     </File>
     <File Include="bin/FinderJobs.Infra.Data.dll">
-      <publishTime>03/09/2017 00:18:45</publishTime>
+      <publishTime>06/24/2017 02:35:42</publishTime>
     </File>
     <File Include="bin/FinderJobs.Infra.Data.dll.config">
       <publishTime>01/22/2017 06:28:05</publishTime>
     </File>
     <File Include="bin/FinderJobs.Infra.Data.pdb">
-      <publishTime>03/09/2017 00:18:45</publishTime>
+      <publishTime>06/24/2017 02:35:42</publishTime>
+    </File>
+    <File Include="bin/FinderJobs.Infra.Log.dll">
+      <publishTime>05/24/2017 03:03:15</publishTime>
+    </File>
+    <File Include="bin/FinderJobs.Infra.Log.pdb">
+      <publishTime>05/24/2017 03:03:15</publishTime>
     </File>
     <File Include="bin/FinderJobs.Site.dll">
-      <publishTime>03/28/2017 01:50:53</publishTime>
+      <publishTime>06/24/2017 02:35:47</publishTime>
     </File>
     <File Include="bin/FinderJobs.Site.pdb">
-      <publishTime>03/28/2017 01:50:53</publishTime>
+      <publishTime>06/24/2017 02:35:47</publishTime>
     </File>
     <File Include="bin/FluentNHibernate.dll">
       <publishTime>01/07/2017 14:43:26</publishTime>
@@ -55,10 +67,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/07/2017 14:43:26</publishTime>
     </File>
     <File Include="bin/Iesi.Collections.dll">
-      <publishTime>10/02/2013 10:44:52</publishTime>
+      <publishTime>02/10/2013 10:44:52</publishTime>
+    </File>
+    <File Include="bin/Log4Mongo.dll">
+      <publishTime>02/11/2015 21:45:44</publishTime>
     </File>
     <File Include="bin/log4net.dll">
-      <publishTime>01/07/2017 14:12:11</publishTime>
+      <publishTime>02/16/2012 16:12:04</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Cors.dll">
       <publishTime>02/13/2015 13:16:32</publishTime>
@@ -79,13 +94,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/07/2013 14:15:08</publishTime>
     </File>
     <File Include="bin/MongoDB.Bson.dll">
-      <publishTime>03/01/2017 03:42:36</publishTime>
+      <publishTime>06/08/2017 14:46:02</publishTime>
     </File>
     <File Include="bin/MongoDB.Driver.Core.dll">
-      <publishTime>03/01/2017 03:42:38</publishTime>
+      <publishTime>06/08/2017 14:46:04</publishTime>
     </File>
     <File Include="bin/MongoDB.Driver.dll">
-      <publishTime>03/01/2017 03:42:40</publishTime>
+      <publishTime>06/08/2017 14:46:04</publishTime>
     </File>
     <File Include="bin/MySql.Data.dll">
       <publishTime>09/29/2016 23:09:40</publishTime>
@@ -97,7 +112,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/29/2016 23:09:40</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>09/29/2016 23:09:40</publishTime>
+      <publishTime>02/04/2017 17:46:32</publishTime>
     </File>
     <File Include="bin/NHibernate.dll">
       <publishTime>01/07/2017 14:43:12</publishTime>
@@ -154,10 +169,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/07/2017 13:29:00</publishTime>
     </File>
     <File Include="bin/Uol.PagSeguro.dll">
-      <publishTime>03/09/2017 00:18:44</publishTime>
+      <publishTime>06/24/2017 02:35:43</publishTime>
     </File>
     <File Include="bin/Uol.PagSeguro.pdb">
-      <publishTime>03/09/2017 00:18:44</publishTime>
+      <publishTime>06/24/2017 02:35:43</publishTime>
     </File>
     <File Include="bin/WebActivatorEx.dll">
       <publishTime>01/07/2017 14:11:08</publishTime>
@@ -226,10 +241,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/27/2017 13:29:56</publishTime>
     </File>
     <File Include="Config/PagSeguroConfig.xml">
-      <publishTime>01/28/2017 09:42:34</publishTime>
+      <publishTime>06/20/2017 16:23:05</publishTime>
     </File>
     <File Include="content/css/finderjobs.css">
-      <publishTime>01/07/2017 13:30:08</publishTime>
+      <publishTime>04/04/2017 03:34:35</publishTime>
     </File>
     <File Include="content/css/finderjobs.min.css">
       <publishTime>01/07/2017 13:30:08</publishTime>
@@ -438,8 +453,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="images/icone-empresa.png">
       <publishTime>02/15/2017 00:53:45</publishTime>
     </File>
+    <File Include="images/icone-portal-transparencia.jpg">
+      <publishTime>06/07/2017 21:06:42</publishTime>
+    </File>
     <File Include="images/icone-usuario.png">
       <publishTime>01/07/2017 13:32:12</publishTime>
+    </File>
+    <File Include="Images/loader.gif">
+      <publishTime>05/25/2017 23:16:55</publishTime>
+    </File>
+    <File Include="images/logo-fj.jpg">
+      <publishTime>04/06/2017 02:11:20</publishTime>
     </File>
     <File Include="images/Sorting icons.psd">
       <publishTime>01/07/2017 13:32:12</publishTime>
@@ -553,7 +577,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/07/2017 13:30:49</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>01/13/2017 13:37:44</publishTime>
+      <publishTime>06/13/2017 02:04:56</publishTime>
     </File>
     <File Include="Scripts/jquery-3.1.1.js">
       <publishTime>01/07/2017 14:12:52</publishTime>
@@ -574,28 +598,34 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/07/2017 14:12:52</publishTime>
     </File>
     <File Include="Views/Cadastro.html">
-      <publishTime>01/11/2017 01:28:51</publishTime>
-    </File>
-    <File Include="Views/CadastroEditar.html">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
+    <File Include="Views/CadastroEditar.html">
+      <publishTime>05/25/2017 23:21:27</publishTime>
+    </File>
     <File Include="Views/CadastroNovo.html">
-      <publishTime>03/28/2017 01:59:32</publishTime>
+      <publishTime>05/14/2017 02:52:24</publishTime>
     </File>
     <File Include="Views/Candidato.html">
-      <publishTime>03/23/2017 01:32:20</publishTime>
+      <publishTime>06/14/2017 00:32:04</publishTime>
     </File>
     <File Include="Views/Empresa.html">
-      <publishTime>03/23/2017 03:50:02</publishTime>
+      <publishTime>06/14/2017 00:32:10</publishTime>
     </File>
     <File Include="Views/Index.html">
-      <publishTime>03/09/2017 00:31:27</publishTime>
+      <publishTime>06/14/2017 00:37:38</publishTime>
+    </File>
+    <File Include="Views/NotFound.html">
+      <publishTime>06/11/2017 04:53:35</publishTime>
+    </File>
+    <File Include="Views/Redireciona.html">
+      <publishTime>06/08/2017 02:14:35</publishTime>
     </File>
     <File Include="Views/web.config">
       <publishTime>01/07/2017 13:29:00</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>03/28/2017 01:50:56</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
   </ItemGroup>
 </Project>

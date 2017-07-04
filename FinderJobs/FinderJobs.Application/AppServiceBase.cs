@@ -6,56 +6,122 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using FinderJobs.Infra.CrossCutting;
 
 namespace FinderJobs.Application
 {
     public class AppServiceBase<TEntity> : IAppServiceBase<TEntity> where TEntity : class
     {
-        private readonly IServiceBase<TEntity> _serviceBase;
+        private readonly IServiceBase<TEntity> _serviceBase;        
 
         public AppServiceBase(IServiceBase<TEntity> appServiceBase)
         {
-            _serviceBase = appServiceBase;
+            _serviceBase = appServiceBase;            
         }
 
         public object Insert(TEntity obj)
         {
-            return _serviceBase.Insert(obj);
+            try
+            {
+                return _serviceBase.Insert(obj);                                
+            }
+            catch (Exception erro)
+            {
+                LogService.NotifyException("Insert", erro);                
+                return new { erro = erro.Message };
+            }            
         }
 
         public TEntity GetById(Guid id)
         {
-            return _serviceBase.GetById(id);
+            try
+            {
+                return _serviceBase.GetById(id);
+            }
+            catch (Exception erro)
+            {
+                LogService.NotifyException("Insert", erro);
+                return null;
+            }            
         }
 
         public bool Update(TEntity obj)
         {
-            return _serviceBase.Update(obj);
+
+            try
+            {
+                return _serviceBase.Update(obj);
+            }
+            catch (Exception erro)
+            {
+                LogService.NotifyException("Insert", erro);
+                return false;
+            }
         }
 
         public bool UpdateByField(Guid id, string campo, string valor)
-        {
-            return _serviceBase.UpdateByField(id, campo, valor);
+        {            
+            try
+            {
+                return _serviceBase.UpdateByField(id, campo, valor);
+            }
+            catch (Exception erro)
+            {
+                LogService.NotifyException("Insert", erro);
+                return false;
+            }
         }
 
         public bool Disable(Guid id)
-        {
-            return _serviceBase.Disable(id);
+        {            
+            try
+            {
+                return _serviceBase.Disable(id);
+            }
+            catch (Exception erro)
+            {
+                LogService.NotifyException("Insert", erro);
+                return false;
+            }
         }
 
         public bool Delete(TEntity obj)
-        {
-            return _serviceBase.Delete(obj);
+        {            
+            try
+            {
+                return _serviceBase.Delete(obj);
+            }
+            catch (Exception erro)
+            {
+                LogService.NotifyException("Insert", erro);
+                return false;
+            }
         }
 
         public IList<TEntity> SearchFor(Expression<Func<TEntity, bool>> predicate)
-        {
-            return _serviceBase.SearchFor(predicate);
+        {            
+            try
+            {
+                return _serviceBase.SearchFor(predicate);
+            }
+            catch (Exception erro)
+            {
+                LogService.NotifyException("Insert", erro);
+                return null;
+            }
         }
 
         public IList<TEntity> GetAll()
         {
-            return _serviceBase.GetAll();
+            try
+            {
+                return _serviceBase.GetAll();
+            }
+            catch (Exception erro)
+            {
+                LogService.NotifyException("Insert", erro);
+                return null;
+            }            
         }
     }
 }

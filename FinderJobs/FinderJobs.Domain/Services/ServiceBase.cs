@@ -19,7 +19,15 @@ namespace FinderJobs.Domain.Services
 
         public object Insert(TEntity obj)
         {
-            return _repository.Insert(obj);
+            try
+            {
+                var resultado =_repository.Insert(obj);
+                return resultado;
+            }
+            catch (Exception e)
+            {
+                throw  e;
+            }            
         }
 
         IList<TEntity> IServiceBase<TEntity>.GetAll()

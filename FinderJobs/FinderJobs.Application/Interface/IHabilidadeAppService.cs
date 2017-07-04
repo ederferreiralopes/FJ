@@ -10,5 +10,7 @@ namespace FinderJobs.Application.Interface
     public interface IHabilidadeAppService : IAppServiceBase<Habilidade>
     {
         IEnumerable<Habilidade> BuscarPorNome(string nome, bool ativo);
+
+        Dictionary<string, string> GetDashboard();
     }
 }

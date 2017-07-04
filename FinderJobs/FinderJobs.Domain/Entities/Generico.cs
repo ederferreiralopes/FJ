@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace FinderJobs.Domain.Entities
 {
+    public enum Planos
+    {
+        Standart, Advanced, Premium, Gold
+    }
+
     public enum ArquivoTipo
     {
         Boleto,
@@ -22,7 +27,7 @@ namespace FinderJobs.Domain.Entities
         Indefinido,
     }
 
-    public enum UsuarioTipo
+    public enum PlanoTipo
     {
         Candidato,
         Empresa,        

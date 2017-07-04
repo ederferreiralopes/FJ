@@ -39,17 +39,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\IPagamentoAppService.cs" />
+    <Compile Include="PagamentoAppService.cs" />
+    <Compile Include="PlanoAppService.cs" />
     <Compile Include="ArquivoAppService.cs" />
     <Compile Include="ConfiguracaoBoletoAppService.cs" />
+    <Compile Include="Interface\IPlanoAppService.cs" />
     <Compile Include="Interface\IArquivoAppService.cs" />
     <Compile Include="Interface\IConfiguracaoBoletoAppService.cs" />
     <Compile Include="Interface\IHabilidadeAppService.cs" />
     <Compile Include="HabilidadeAppService.cs" />
     <Compile Include="VagaAppService.cs" />
-    <Compile Include="UsuarioAppService.cs" />
+    <Compile Include="CadastroAppService.cs" />
     <Compile Include="AppServiceBase.cs" />
     <Compile Include="Interface\IVagaAppService.cs" />
-    <Compile Include="Interface\IUsuarioAppService.cs" />
+    <Compile Include="Interface\ICadastroAppService.cs" />
     <Compile Include="Interface\IAppServiceBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -58,9 +62,15 @@
       <Project>{50243246-22db-420d-ac8c-831405f84468}</Project>
       <Name>FinderJobs.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FinderJobs.Infra\FinderJobs.Infra.CrossCutting\FinderJobs.Infra.CrossCutting.csproj">
+      <Project>{dec9455b-85c0-40e8-9b61-d5545e90bfcf}</Project>
+      <Name>FinderJobs.Infra.CrossCutting</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

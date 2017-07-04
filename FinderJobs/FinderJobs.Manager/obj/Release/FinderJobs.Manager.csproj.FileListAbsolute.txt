@@ -55,3 +55,6 @@ D:\Roberto\FinderJobs\FinderJobs.Manager\bin\System.Web.WebPages.Razor.xml
 D:\Roberto\FinderJobs\FinderJobs.Manager\obj\Release\FinderJobs.Manager.csprojResolveAssemblyReference.cache
 D:\Roberto\FinderJobs\FinderJobs.Manager\obj\Release\FinderJobs.Manager.dll
 D:\Roberto\FinderJobs\FinderJobs.Manager\obj\Release\FinderJobs.Manager.pdb
+D:\Roberto\FinderJobs\FinderJobs.Manager\bin\Log4Mongo.dll
+D:\Roberto\FinderJobs\FinderJobs.Manager\bin\log4net.dll
+D:\Roberto\FinderJobs\FinderJobs.Manager\bin\log4net.xml

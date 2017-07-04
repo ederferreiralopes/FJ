@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace FinderJobs.Domain.Interfaces.Repositories
 {
     public interface IHabilidadeRepository : IRepositoryBase<Habilidade>
-    {     
+    {
+        Dictionary<string, string> GetDashboard();
     }
 }

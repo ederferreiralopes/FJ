@@ -1,0 +1,16 @@
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\bin\Debug\Teste.exe.config
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\bin\Debug\Teste.exe
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\bin\Debug\Teste.pdb
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\bin\Debug\MongoDB.Bson.dll
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\bin\Debug\MongoDB.Driver.Core.dll
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\bin\Debug\MongoDB.Driver.dll
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\bin\Debug\Uol.PagSeguro.dll
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\bin\Debug\Uol.PagSeguro.pdb
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\bin\Debug\Uol.PagSeguro.xml
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\bin\Debug\MongoDB.Bson.xml
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\bin\Debug\MongoDB.Driver.xml
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\bin\Debug\MongoDB.Driver.Core.xml
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\obj\Debug\Teste.csprojResolveAssemblyReference.cache
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\obj\Debug\Teste.exe
+D:\Roberto\FinderJobs\FinderJobs.Integra\Teste\obj\Debug\Teste.pdb

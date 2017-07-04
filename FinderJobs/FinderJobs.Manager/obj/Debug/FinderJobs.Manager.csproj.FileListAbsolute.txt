@@ -3,6 +3,8 @@ D:\Roberto\FinderJobs\FinderJobs.Manager\bin\FinderJobs.Manager.dll
 D:\Roberto\FinderJobs\FinderJobs.Manager\bin\FinderJobs.Manager.pdb
 D:\Roberto\FinderJobs\FinderJobs.Manager\bin\Antlr3.Runtime.dll
 D:\Roberto\FinderJobs\FinderJobs.Manager\bin\AspNet.Identity.MongoDB.dll
+D:\Roberto\FinderJobs\FinderJobs.Manager\bin\Log4Mongo.dll
+D:\Roberto\FinderJobs\FinderJobs.Manager\bin\log4net.dll
 D:\Roberto\FinderJobs\FinderJobs.Manager\bin\Microsoft.AspNet.Identity.Core.dll
 D:\Roberto\FinderJobs\FinderJobs.Manager\bin\Microsoft.AspNet.Identity.Owin.dll
 D:\Roberto\FinderJobs\FinderJobs.Manager\bin\Microsoft.Owin.dll
@@ -30,6 +32,7 @@ D:\Roberto\FinderJobs\FinderJobs.Manager\bin\System.Web.WebPages.dll
 D:\Roberto\FinderJobs\FinderJobs.Manager\bin\System.Web.WebPages.Razor.dll
 D:\Roberto\FinderJobs\FinderJobs.Manager\bin\WebGrease.dll
 D:\Roberto\FinderJobs\FinderJobs.Manager\bin\Antlr3.Runtime.pdb
+D:\Roberto\FinderJobs\FinderJobs.Manager\bin\log4net.xml
 D:\Roberto\FinderJobs\FinderJobs.Manager\bin\Microsoft.AspNet.Identity.Core.xml
 D:\Roberto\FinderJobs\FinderJobs.Manager\bin\Microsoft.AspNet.Identity.Owin.xml
 D:\Roberto\FinderJobs\FinderJobs.Manager\bin\Microsoft.Owin.xml

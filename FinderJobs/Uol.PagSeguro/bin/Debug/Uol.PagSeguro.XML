@@ -1792,7 +1792,7 @@
             
             </summary>
         </member>
-        <member name="M:Uol.PagSeguro.Resources.EnvironmentConfiguration.ChangeEnvironment(System.Boolean)">
+        <member name="M:Uol.PagSeguro.Resources.EnvironmentConfiguration.ChangeEnvironment">
             <summary>
             
             </summary>

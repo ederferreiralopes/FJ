@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Pagamentos";
+}
+
+<div class="jumbotron">
+    <h4 class="cor-fj">Últimos 30 dias</h4>
+    <div class="row">
+        <div class="col-lg-12">
+            <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Ref.</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Data</th>
+                        <th>Plano</th>
+                    </tr>
+                </thead>
+
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        GetPagamentos();
+    });
+
+    function GetPagamentos() {
+
+        var ano = new Date().getFullYear();
+        var mes = new Date().getMonth() + 1;
+        
+        $.ajax({
+            url: urlBase + "Pagamento?ano=" + ano + "&mes=" + mes,
+            type: "GET",
+            contentType: 'application/json',
+            success: function (data) {
+                console.log(data);
+                if (data.sucesso && data.dados.length > 0) {
+                    pagamentos = new Array();
+                    $.each(data.dados, function (index, value) {
+                        if (value != null && value != undefined) {
+                            pagamentos.push(
+                                {
+                                    'Codigo': value.Codigo,
+                                    'Referencia': value.Referencia,
+                                    'Valor': value.Valor,
+                                    'Status': value.Status,
+                                    'Data': value.DataCadastro,
+                                    'Plano': value.Plano
+                                }
+                            );
+                        }
+                    });
+                    preenherGrid(pagamentos);
+                }
+                else
+                    Notify('Nenhum dado encontrado', null, null);
+            },
+            error: function (result) {
+                Notify('Ocorreu um erro, informe a equipe de suporte', null, null, 'danger');
+                console.log(result);
+            }
+        });
+    }
+
+    function preenherGrid(dados) {
+        var html = '';
+        $.each(dados, function (index, value) {
+            if (value != null && value != undefined) {
+                html += '<tr><td>' + value.Codigo + '</td><td>' + value.Referencia + '</td><td>' + value.Valor + '</td><td>' + value.Status + '</td><td>' + ConverterData(value.Data) + '</td><td>' + value.Plano.Nome + '</td></tr>'
+            }
+        });
+        $('tbody').html(html);
+    }
+</script>

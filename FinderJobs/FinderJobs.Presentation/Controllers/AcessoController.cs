@@ -17,14 +17,14 @@ namespace FinderJobs.Site.Controllers
 {
     public class AcessoController : Controller
     {
-        private readonly string _apiManager = "http://localhost:1111";
-        private readonly string _urlRetorno = "http://localhost:2222";
-        private readonly IUsuarioAppService _usuarioService;
+        private readonly string _apiManager = "http://localhost/Manager";
+        private readonly string _urlRetorno = "http://localhost";
+        private readonly ICadastroAppService _usuarioService;
         private readonly IHabilidadeAppService _habilidadeService;
         private readonly IArquivoAppService _arquivoService;
         private readonly IConfiguracaoBoletoAppService _configuracaoBoletoService;
 
-        public AcessoController(IUsuarioAppService usuarioService, IHabilidadeAppService habilidadeService, IArquivoAppService arquivoAppService, IConfiguracaoBoletoAppService configuracaoBoletoService)
+        public AcessoController(ICadastroAppService usuarioService, IHabilidadeAppService habilidadeService, IArquivoAppService arquivoAppService, IConfiguracaoBoletoAppService configuracaoBoletoService)
         {
             _usuarioService = usuarioService;
             _habilidadeService = habilidadeService;
@@ -35,12 +35,6 @@ namespace FinderJobs.Site.Controllers
         public ActionResult Index()
         {
             return File("~/views/Index.html", "text/html");
-        }
-
-
-        public ActionResult Cadastro()
-        {
-                return File("~/views/CadastroNovo.html", "text/html");
         }
 
         public ActionResult UsuarioDisponivel(string email)
@@ -63,7 +57,7 @@ namespace FinderJobs.Site.Controllers
             return Json(new { sucesso = resposta.sucesso, mensagem = resposta }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Registrar(string email, string senha)
+        public ActionResult Registrar(string email, string senha = "finderjobs123")
         {
             var url = _apiManager + "/Account/RegisterApi";
             var urlRetorno = _urlRetorno;
@@ -96,7 +90,7 @@ namespace FinderJobs.Site.Controllers
 
         public ActionResult EsqueceuSenha(string email)
         {
-            var url = _apiManager + "Account/ForgotPasswordApi?";
+            var url = _apiManager + "/Account/ForgotPasswordApi?";
             var urlRetorno = _urlRetorno;
             var parametros = string.Concat("Email=", email, "&Url=", urlRetorno);
             var respostaJson = string.Empty;

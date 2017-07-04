@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -128,8 +129,6 @@ namespace FinderJobs.Manager.Controllers
             return View();
         }
 
-        //
-        // GET: /Users/Edit/1
         public async Task<ActionResult> Edit(string id)
         {
             if (id == null)
@@ -158,35 +157,24 @@ namespace FinderJobs.Manager.Controllers
             });
         }
 
-        //
-        // POST: /Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Email,Id")] EditUserViewModel editUser, params string[] selectedRole)
+        public async Task<ActionResult> Edit(string id, bool ativo, string email, params string[] selectedRoles)
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByIdAsync(editUser.Id);
+                var user = await UserManager.FindByIdAsync(id);
                 if (user == null)
                 {
                     return HttpNotFound();
                 }
 
-                user.UserName = editUser.Email;
-                user.Email = editUser.Email;
+                user.UserName = email;
+                user.Email = email;
+                user.Ativo = ativo;
+                user.Roles = selectedRoles != null ? selectedRoles.ToList() : new List<string>();
 
-                var userRoles = await UserManager.GetRolesAsync(user.Id);
-
-                selectedRole = selectedRole ?? new string[] { };
-
-                var result = await UserManager.AddUserToRolesAsync(user.Id, selectedRole.Except(userRoles).ToList<string>());
-
-                if (!result.Succeeded)
-                {
-                    ModelState.AddModelError("", result.Errors.First());
-                    return View();
-                }
-                result = await UserManager.RemoveUserFromRolesAsync(user.Id, userRoles.Except(selectedRole).ToList<string>());
+                var result = await UserManager.UpdateAsync(user);
 
                 if (!result.Succeeded)
                 {

@@ -1,0 +1,563 @@
+﻿<div class="row">
+    <form name="sentMessage" id="formCadastro" novalidate action="Acesso/Cadastrar" method="post">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="hidden" value="" name="Cadastro.Id" id="Cadastro_Id">
+                        <input type="hidden" value="" name="Cadastro.Plano" id="Cadastro_Plano">
+
+                        <div class="col-md-6 form-group">
+                            Nome Completo<br />
+                            <input type="text" name="Cadastro.Nome" id="Cadastro_Nome" class="form-control nome" />
+                        </div>
+                        <div class="col-md-3 form-group" id="dvCelular">
+                            Celular<br />
+                            <input type="text" name="Cadastro.Celular" id="Cadastro_Celular" class="form-control phone_with_ddd" />
+                        </div>
+                        <div class="col-md-3 form-group" id="dvCpf">
+                            <input type="radio" name="tipo" value="cpf" checked>CPF <input type="radio" name="tipo" value="cnpj">CNPJ<br />
+                            <input type="text" name="Cadastro.CpfCnpj" value="cnpj" id="Cadastro_CpfCnpj" class="form-control cpf" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6 form-group">
+                            Email<br />
+                            <div class="input-group">
+                                <input type="text" name="Cadastro.Email" id="Cadastro_Email" class="form-control" />
+                                <a class="input-group-addon" id="Cadastro_EmailEditar" onclick="EditarEmail()"><i class="fa fa-pencil"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <label for="btnAdicionarAvatar">
+                            <img id="Cadastro_Avatar" src="../images/icone-add-foto.png" width="100%" height="120" style="pointer-events: none" />
+                        </label>
+                        <input id="btnAdicionarAvatar" type="file" style="visibility:hidden; width: 0; height: 0;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-2 form-group">
+                    Cep<br />
+                    <input type="text" class="form-control cep" maxlength="10" name="Cadastro.EnderecoCep" id="Cadastro_EnderecoCep" />
+                </div>
+                <div class="col-md-8 form-group">
+                    Logradouro<br />
+                    <input type="text" name="Cadastro.EnderecoLogradouro" id="Cadastro_EnderecoLogradouro" class="form-control" />
+                </div>
+                <div class="col-md-2 form-group">
+                    Número<br />
+                    <input type="text" name="Cadastro.EnderecoNumero" id="Cadastro_EnderecoNumero" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-5 form-group">
+                    Bairro<br />
+                    <input type="text" name="Cadastro.EnderecoBairro" id="Cadastro_EnderecoBairro" class="form-control" />
+                </div>
+                <div class="col-md-5 form-group">
+                    Cidade<br />
+                    <input type="text" disabled name="Cadastro.EnderecoCidade" id="Cadastro_EnderecoCidade" class="form-control" />
+                </div>
+                <div class="col-md-2 form-group">
+                    UF<br />
+                    <input type="text" disabled name="Cadastro.EnderecoUF" id="Cadastro_EnderecoUF" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" style="display: none" id="dvPago">
+                <div class="form-group col-sm-2" style="display: none" id="dvAnonimo">
+                    Anônimo: <br />
+                    <input id="btnAnonimo" type="checkbox" name="Cadastro.Anonimo" value="Cadastro.Anonimo" data-off-text="Não" data-on-text="Sim" class="BSswitch">
+                </div>
+                <div class="form-group col-sm-3" id="dvUpload">
+                    <br />
+                    <input type="file" id="btnAdicionarArquivo">
+                </div>
+                <div class="form-group col-sm-3" id="dvDownload">
+
+                </div>
+            </div>
+        </div>
+        <div class="row" id="dvHabilidadesCadastro" style="margin: 0px;">
+        </div>
+    </form>
+</div>
+
+<script src="../jquery/jquery.mask.min.js"></script>
+
+<script>
+    var habilidadeQuant = 30;
+    var habilidadeQuantMinima = 5;
+    $(document).ready(function () {
+        $("input[name=tipo]:radio").change(function () {
+            $('#Cadastro_CpfCnpj').removeClass('cpf').removeClass('cnpj');
+            if ($(this).val() == "cpf")
+                $("#Cadastro_CpfCnpj").addClass('cpf');
+            else
+                $("#Cadastro_CpfCnpj").addClass('cnpj');
+        });
+    });
+
+    function AdicionarMascara() {
+
+        var $radios = $("input[name=tipo]:radio");
+        if ($('#Cadastro_CpfCnpj').val().length > 11) {
+            $radios.filter('[value=cnpj]').prop('checked', true);
+            $('#Cadastro_CpfCnpj').removeClass('cpf').addClass('cnpj');
+        }
+
+        $('.cep').mask('00000-000');
+        $('.phone_with_ddd').mask('(00) 00000-0000');
+        $('.cpf').mask('000.000.000-00', { reverse: true });
+        $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
+        $('.nome').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {
+            'translation': {
+                A: { pattern: /[a-zA-Z0-9]/ }
+            }
+        });
+    }
+
+    function setHeader(xhr) {
+        xhr.setRequestHeader('Authorization', 'bearer ' + localStorage.getItem('token'));
+    }
+
+    function EditarEmail() {
+        Notify('Em breve você poderá editar seu email, aguarde.', null, null);
+    }
+
+    function CarregaCadastro(plano) {
+        $('#Cadastro_Plano').val(plano);
+        ExibirExtras(plano);
+        if (plano == 'Standart' || plano == 'Advanced') {
+            $('#dvCelular').fadeIn();            
+            $('#dvUpload').prepend('Adicionar Currículo:');
+        }        
+        else {
+            $('#dvCelular').hide();            
+            $('#dvUpload').prepend('Anexar "Vaga":');
+        }
+
+        if ($('#Cadastro_Id').val() != null && $('#Cadastro_Id').val() != '') {
+            $('#Cadastro_Email').prop('disabled', true);
+        }
+
+        $("#modalCadastro").modal();
+    }
+
+    function ExibirExtras(plano) {
+        if (plano == 'Advanced' || plano == 'Premium' || plano == 'Gold') {
+            $('#dvPago').fadeIn();
+            $('#btnAnonimo').bootstrapSwitch('state', false);
+            $('#btnAdicionarArquivo').filestyle({
+                buttonText: ' ',
+                buttonName: 'btn-info'
+            });
+        }
+    }
+
+    $("#Cadastro_EnderecoCep").change(function () {
+        buscarEndereco();
+    });
+
+    function buscarEndereco() {
+        var cep = $('#Cadastro_EnderecoCep').val();
+        if (cep != null && cep != undefined && cep.length > 7) {
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'address': cep }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var lat = results[0].geometry.location.lat();
+                    var lng = results[0].geometry.location.lng();
+
+                    geocoder.geocode({ latLng: results[0].geometry.location }, function (results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+
+                            $('#Cadastro_EnderecoLogradouro').val('');
+                            $('#Cadastro_EnderecoBairro').val('');
+                            $('#Cadastro_EnderecoCidade').val('');
+                            $('#Cadastro_EnderecoUF').val('');
+                            console.log(results[0].address_components);
+                            $.each(results[0].address_components, function (index, value) {
+                                $.each(value.types, function (index2, tipo) {
+                                    switch (tipo) {
+                                        //Logradouro
+                                        case "route":                                      
+                                            $('#Cadastro_EnderecoLogradouro').val(value.long_name);
+                                            break;
+                                        //Bairro
+                                        case "sublocality":
+                                            $('#Cadastro_EnderecoBairro').val(value.long_name);
+                                            break;
+                                        //Cidade
+                                        case "administrative_area_level_2":
+                                            $('#Cadastro_EnderecoCidade').val(value.long_name);
+                                            break;
+                                        //UF
+                                        case "administrative_area_level_1":
+                                            $('#Cadastro_EnderecoUF').val(value.short_name);
+                                            break;
+                                    }
+                                });
+                            });
+                        }
+                    })
+                }
+            });
+        }
+    }
+
+    function carregarHabilidades() {
+        var html = '<br />';
+        for (var i = 1; i <= habilidadeQuant; i++) {
+            html += '<div class="col-lg-2 form-group">' +
+                '<input id="habilidade' + i + '" autocomplete="false" type="text" class="form-control" placeholder="Habilidade..." >' +
+                '<div class="col-lg-12">' +
+                '<div class="dropdown">' +
+                '<button id="habilidade' + i + 'dropdown" style="display:none" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"></button>' +
+                '<ul class="dropdown-menu" id="habilidade' + i + 'sugestoes"></ul>' +
+                '</div></div></div>';
+        }
+
+        $("#dvHabilidadesCadastro").html(html);
+
+        $("input").keyup(function () {
+            var parametro = $(this).val();
+            var inputId = this.id;
+            console.log(inputId);
+            if (parametro != undefined && parametro != '') {
+                $.get("../Habilidade/Index?parametro=" + parametro, function (data) {
+                    if (data.length > 0) {
+                        var html = '';
+                        $.each(data, function (index, value) {
+                            html += "<li><a href=\"javascript: SelecionarDDL(\'" + value.Id + "_" + value.Nome + "\', \'" + inputId + "\');\">" + value.Nome + "</a></li>";
+                        });
+                        $('#' + inputId + 'sugestoes').html(html);
+                        $('#' + inputId + 'dropdown').dropdown('toggle');
+                        $('#' + inputId).focus();
+                    }
+                });
+            }
+        });
+    }
+
+    $("#txtHabilidadeCadastro").keyup(function () {
+        var parametro = $('#txtHabilidadeCadastro').val();
+        if (parametro != undefined && parametro != '') {
+            $.get("../Habilidade/Index?parametro=" + parametro, function (data) {
+                if (data.length > 0) {
+                    var html = '';
+                    $.each(data, function (index, value) {
+                        html += "<li><a href=\"javascript: SelecionarDDL(\'" + value.Id + "_" + value.Nome + "\');\">" + value.Nome + "</a></li>";
+                    });
+                    $('#HabilidadesSugestoes').html(html);
+                    $('#dropdownCadastro').dropdown('toggle');
+                    $("#txtHabilidadeCadastro").focus();
+                }
+            });
+        }
+    });
+
+    SelecionarDDL = function (selecionado, inputId) {
+        var id = selecionado.split('_')[0];
+        var habilidade = selecionado.split('_')[1];
+        if (!HabilidadeExiste(habilidade)) {
+            $('#' + inputId).val(habilidade);
+        }
+        else {
+            $('#' + inputId).val('');
+            Notify('Você já adicionou esta habilidade', null, null);
+        }
+    }
+
+    function HabilidadeExiste(habilidade) {
+        var existe = false;
+        for (var i = 1; i <= habilidadeQuant; i++) {
+            if ($('#habilidade' + i).val().toLowerCase() == habilidade.toLowerCase()) {
+                return true;
+            }
+        }
+        return existe;
+    }
+
+    $(function () {
+        $("#btnGravarCadastro").click(function () {          
+            var id = $("#Cadastro_Id").val();
+            if (id != '' && id != undefined) {
+                var id = $("#Cadastro_Id").val();
+                var email = $('#Cadastro_Email').val();
+                var plano = $('#Cadastro_Plano').val();
+                var nome = $("#Cadastro_Nome").val();
+                var celular = $("#Cadastro_Celular").cleanVal();
+                var CpfCnpj = $("#Cadastro_CpfCnpj").cleanVal();
+                var enderecoCep = $("#Cadastro_EnderecoCep").cleanVal();
+                var enderecoLogradouro = $("#Cadastro_EnderecoLogradouro").val();
+                var enderecoNumero = $("#Cadastro_EnderecoNumero").val();
+                var enderecoBairro = $("#Cadastro_EnderecoBairro").val();
+                var enderecoCidade = $("#Cadastro_EnderecoCidade").val();
+                var enderecoUF = $("#Cadastro_EnderecoUF").val();                
+                var anonimo = $("#btnAnonimo").bootstrapSwitch('state');
+
+                if (nome.length < 4)
+                    return Notify('Preencha o nome ', null, null);
+
+                if (plano == "Standart" || plano == "Advanced") {
+                    if (celular.length < 10 || celular.length > 15) {
+                        formularioValido = false;
+                        Notify('Informe o seu celular ', null, null);
+                    }
+                }
+
+                if ($("input[value=cpf]:radio").prop('checked')) {
+                    if (CpfCnpj.length != 11)
+                        return Notify('Informe o seu CPF ', null, null);
+                }
+
+                if ($("input[value=cnpj]:radio").prop('checked')) {
+                    if (CpfCnpj.length != 14)
+                        return Notify('Informe o seu CNPJ ', null, null);
+                }
+
+                if (enderecoCep.length != 8)
+                    return Notify('Informe o seu Cep ', null, null);
+
+                if (enderecoNumero.length < 1)
+                    return Notify('Informe o número do seu endereço ', null, null);
+
+                var itens = { Habilidades: [], Endereco: {} };
+
+                for (var i = 1; i <= habilidadeQuant; i++) {
+                    if ($('#habilidade' + i).val() != null && $('#habilidade' + i).val() != undefined && $('#habilidade' + i).val() != '') {
+                        itens.Habilidades.push({
+                            'Id': 0,
+                            'Nome': $('#habilidade' + i).val()
+                        });
+                    }
+                }
+
+                if (itens.Habilidades == undefined || itens.Habilidades == null || itens.Habilidades.length < habilidadeQuantMinima)
+                    return Notify('Adicione ' + habilidadeQuantMinima + ' habilidades', null, null);
+
+                itens.Endereco = {
+                    'Cep': enderecoCep,
+                    'Logradouro': enderecoLogradouro,
+                    'Numero': enderecoNumero,
+                    'Bairro': enderecoBairro,
+                    'Cidade': enderecoCidade,
+                    'UF': enderecoUF,
+                };
+
+                var cadastro =
+                    {
+                        'Id': id,
+                        'Nome': nome,
+                        'Email': email,
+                        'Celular': celular,
+                        'CpfCnpj': CpfCnpj,                        
+                        'Anonimo': anonimo,
+                        'Endereco': itens.Endereco,
+                        'Habilidades': itens.Habilidades,
+                        'Plano': plano
+                    };
+
+                var $this = $(this);
+                $this.button('loading');
+
+                $.ajax({
+                    url: "../Cadastro/Gravar",
+                    type: "post",
+                    data: JSON.stringify(cadastro),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    beforeSend: setHeader,
+                    success: function (data) {
+                        if (data.sucesso) {
+                            $("#Cadastro_Id").val(data.dados.Id);
+                            localStorage.setItem("cadastro", JSON.stringify(data.dados))
+                            Notify("Alterado com sucesso", null, null, 'success');
+                        }
+                        else {
+                            Notify('Ocorreu um erro: Informe a equipe de suporte', null, null, 'danger');
+                        }
+
+                        $this.button('reset');
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        Notify('Ocorreu um erro ' + result, null, null, 'danger');
+                    }
+                });
+            }
+        });
+    });
+
+    var form;
+    $('#btnAdicionarArquivo').change(function (event) {
+        if (event.target.files.length > 0) {
+            var arquivo = event.target.files[0];
+            var nome = arquivo.name.toLowerCase();
+            if (nome.indexOf('.txt') > -1 || nome.indexOf('.doc') > -1 || nome.indexOf('.docx') > -1 || nome.indexOf('.pdf') > -1) {
+                form = new FormData();
+                form.append('fileUpload', event.target.files[0]);
+                GravarArquivo($("#Cadastro_Plano").val());
+            }
+            else
+                Notify('Permitido apenas arquivos .txt, .pdf, .doc ou .docx ', null, null);
+        }
+    });
+
+    $('#btnAdicionarAvatar').change(function (event) {
+        if (event.target.files.length > 0) {
+            var arquivo = event.target.files[0];
+            var nome = arquivo.name.toLowerCase();
+            if (nome.indexOf('.png') > -1 || nome.indexOf('.jpg') > -1) {
+                form = new FormData();
+                form.append('fileUpload', event.target.files[0]);
+                GravarArquivo('Avatar');
+            }
+            else
+                Notify('Permitido apenas arquivos .png ou .jpg', null, null);
+        }
+    });
+
+    function GravarArquivo(tipo) {
+        if (tipo == 'Avatar') {
+            $('#Cadastro_Avatar').attr('src', '~/Images/loader.gif');
+        }
+        debugger;
+        $.ajax({
+            url: "../Cadastro/GravarArquivo?id=" + $("#Cadastro_Id").val() + "&tipo=" + tipo,
+            data: form,
+            processData: false,
+            contentType: false,
+            type: 'post',
+            beforeSend: setHeader,
+            success: function (data) {
+                if (data.sucesso) {
+                    if (data.arquivo.Tipo == 'Curriculo')
+                        data.arquivo.Tipo = 'Currículo';
+                    if (data.arquivo.Tipo == 'Avatar') {
+
+                        var cadastro = JSON.parse(localStorage.getItem("cadastro"));
+                        cadastro.UrlAvatar = data.arquivo.Caminho + data.arquivo.Nome;
+                        localStorage.setItem("cadastro", JSON.stringify(cadastro));
+                        $('#Cadastro_Avatar').attr('src', data.arquivo.Caminho.replace('~', '') + data.arquivo.Nome);
+                    }
+                    else {
+                        var html = '<div class="form-group col-sm-6" id="arquivo_' + data.arquivo.Id + '">' + data.arquivo.Tipo + ': <br />' +
+                            '<a id="btnArquivo" href="' + data.arquivo.Caminho.replace('~', '') + data.arquivo.Nome + '" download><i class="fa fa-download fa-2x" aria-hidden="true"></i> </a>' +
+                            '<a id="btnExcluir" href="javascript: ExcluirArquivo(\'' + data.arquivo.Id + '\')"><i class="fa fa-trash fa-2x" aria-hidden="true"></i> </a> </div>';
+                        $('#dvDownload').append(html);
+                        $('#dvUpload').hide();
+                    }
+                }
+                else {
+                    Notify('Erro ao salvar arquivo: Informe a equipe de suporte', null, null, 'danger');
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                Notify('Erro ao salvar arquivo ' + result, null, null, 'danger');
+            }
+        });
+    }
+
+    function CarregarTodosArquivos(cadastroId) {
+        $.ajax({
+            url: "../Cadastro/CarregarTodosArquivos/" + cadastroId,
+            contentType: 'application/json',
+            dataType: 'json',
+            type: 'get',
+            beforeSend: setHeader,
+            success: function (data) {
+                if (data.sucesso && data.arquivos != null && data.arquivos.length > 0) {
+                    var html = '';
+                    $.each(data.arquivos, function (index, arquivo) {
+                        if (arquivo.Tipo == 'Curriculo')
+                            arquivo.Tipo = 'Currículo';
+
+                        html += '<div class="form-group col-sm-6" id="arquivo_' + arquivo.Id + '">' + arquivo.Tipo + ': <br />' +
+                            '<a id="btnArquivo" href="' + arquivo.Caminho.replace('~', '') + arquivo.Nome + '" download><i class="fa fa-download fa-2x" aria-hidden="true"></i> </a>';
+                        if (arquivo.Tipo != 'Boleto')
+                            html += '<a id="btnExcluir" href="javascript: ExcluirArquivo(\'' + arquivo.Id + '\')"><i class="fa fa-trash fa-2x" aria-hidden="true"></i> </a> ';
+
+                        html += '</div>';
+                        $('#dvDownload').html(html);
+                    });
+                    $('#dvUpload').hide();
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                Notify('Não foi possível carregar o arquivo ' + result, null, null, 'danger');
+            }
+        });
+    }
+
+    function ExcluirArquivo(id) {
+        $.ajax({
+            url: "../Cadastro/ExcluirArquivo/" + id,
+            contentType: 'application/json',
+            dataType: 'json',
+            type: 'get',
+            beforeSend: setHeader,
+            success: function (data) {
+                if (data.sucesso) {
+                    $('#arquivo_' + id).remove();
+                    $('#btnAdicionarArquivo').filestyle('clear');
+                    $('#dvUpload').fadeIn();
+                    Notify('Arquivo excluído!', null, null, 'success');
+                }
+                else {
+                    Notify('Erro ao excluir arquivo: Informe a equipe de suporte', null, null, 'danger');
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                Notify('Erro ao salvar arquivo ' + result, null, null, 'danger');
+            }
+        });
+    }
+
+    function GerarPagamento(meio) {
+        if (meio != undefined && meio != null && meio != '') {
+            $('#modalPagamentoBody').html('');
+            $.ajax({
+                url: "../Cadastro/Pagamento",
+                data: JSON.stringify(meio),
+                contentType: 'application/json',
+                dataType: 'json',
+                type: 'post',
+                beforeSend: setHeader,
+                success: function (data) {
+                    if (data.sucesso) {
+                        var iframe = '<iframe id="iframePagSeguro" src="' + data.mensagem + '" style="zoom:0.60" width="99.6%" height="750" frameborder="0"></iframe>';
+                        $('#modalPagamentoBody').html(iframe);
+                        $('#modalPagamento').modal();
+                    }
+                    else {
+                        Notify('Ocorreu um erro, informe a equipe de suporte', null, null, 'danger');
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    Notify('correu um erro, informe a equipe de suporte', null, null, 'danger');
+                }
+            });
+        }
+    }
+</script>

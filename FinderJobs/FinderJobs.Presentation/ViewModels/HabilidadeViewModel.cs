@@ -1,6 +1,4 @@
 ﻿
-using FinderJobs.Domain.Entities;
-
 namespace FinderJobs.Site.ViewModels
 {
     public class HabilidadeViewModel

@@ -35,7 +35,7 @@ namespace Uol.PagSeguro.Resources
         /// <summary>
         /// 
         /// </summary>
-        public static void ChangeEnvironment(bool sandbox)
+        public static bool ChangeEnvironment()
         {
 
             string urlXmlConfiguration = AppDomain.CurrentDomain.BaseDirectory + PagSeguroConfiguration.UrlXmlConfiguration;
@@ -43,11 +43,14 @@ namespace Uol.PagSeguro.Resources
             XmlDocument xml = new XmlDocument();
             xml.Load(urlXmlConfiguration);
             XmlNodeList elemList = xml.GetElementsByTagName("Link");
+            XmlNodeList sandboxElement = xml.GetElementsByTagName("Sandbox");
+            bool isSandbox = bool.Parse(sandboxElement.Item(0).InnerText);
+
             bool changed = false;
 
             try
             {
-                if (sandbox)
+                if (isSandbox)
                 {
                     for (int i = 0; i < elemList.Count; i++)
                     {
@@ -77,13 +80,15 @@ namespace Uol.PagSeguro.Resources
                 if (changed)
                 {
                     xml.Save(urlXmlConfiguration);
-                }
+                }                
             }
             catch (FormatException exception)
             {
                 Console.WriteLine(exception.Message + "\n");
                 Console.ReadKey();
             }
+
+            return isSandbox;
         }
     }
 }

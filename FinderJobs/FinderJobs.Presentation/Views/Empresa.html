@@ -6,14 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Finder Jobs</title>
+    <title>Finder Jobs</title>    
+    <!-- CDN Font CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Bootstrap Core CSS -->
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../bootstrap/css/bootstrap-switch.min.css" rel="stylesheet" />
     <!-- Notify CSS -->
     <link href="../notify/notify.css" rel="stylesheet" />
-    <!-- Custom Fonts -->
-    <link href="../content/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <style>
         .corFinderJobs {
             color: #2C3E50;
@@ -27,9 +26,9 @@
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                    <span class="sr-only">Toggle navigation</span><i class="glyphicon glyphicon-menu-hamburger" style="font-size:x-large"></i>
                 </button>
-                <img src="../images/logo-fj.jpg" height="70" style="border-radius: 90px;" />
+                <img src="../images/logo-fj.jpg" height="70" style="border-radius: 90px;" />              
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -38,13 +37,13 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="">
-                        <a onclick="EditarCadastro()" class="portfolio-link" data-toggle="modal">Editar Cadastro</a>
+                        <a onclick="CarregarVagas()" class="" data-toggle="modal">Vagas</a>
                     </li>
                     <li class="">
-                        <a onclick="CarregarVagas()" class="portfolio-link" data-toggle="modal">Vagas</a>
+                        <a onclick="EditarCadastro()" id="btnCadastro" class="" data-toggle="modal"> <i class="glyphicon glyphicon-pencil"></i></a>
                     </li>
                     <li class="">
-                        <a href="javascript: Logout();" class="portfolio-link" data-toggle="modal">Sair</a>
+                        <a href="javascript: Logout();" class="" data-toggle="modal">Sair</a>
                     </li>
                 </ul>
             </div>
@@ -109,26 +108,24 @@
     <script src="../bootstrap/js/bootstrap-filestyle.min.js"></script>
     <!-- Plugin JavaScript -->
     <script src="../jquery/jquery.easing.min.js"></script>
-    <!-- Contact Form JavaScript -->
-    <script src="../content/js/jqBootstrapValidation.js"></script>
-    <script src="../content/js/contact_me.js"></script>
-    <!-- Theme JavaScript -->
-    <script src="../content/js/finderjobs.min.js"></script>
     <!-- google maps -->
     <script language="javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCycG73VSX4N6sFxieKuCpYBnAKCJrG3XI"></script>
 
     <script>
 
         $(document).ready(function () {
-
-            $('#anoAtual').html(new Date().getFullYear());  
+            $(document).ready(function () {
+                $('#anoAtual').html(new Date().getFullYear());
+                if (localStorage.getItem("cadastro") != '' && localStorage.getItem("cadastro") != null)
+                    $('#btnCadastro').prepend('Olá, ' + JSON.parse(localStorage.getItem("cadastro")).Nome);
+            });
 
             processarVagas(false, $('#paginaAtual').html());
         });
 
 
         function Logout() {
-            localStorage.setItem("usuario", '');
+            localStorage.setItem("cadastro", '');
             window.location.replace('/Acesso');
         }
 
@@ -147,41 +144,40 @@
 
         function EditarCadastro() {
 
-            if (localStorage.getItem("usuario") == '' || localStorage.getItem("usuario") == null)
+            if (localStorage.getItem("cadastro") == '' || localStorage.getItem("cadastro") == null)
                 window.location.replace('/Acesso');
             else
-                var usuario = JSON.parse(localStorage.getItem("usuario"));
+                var cadastro = JSON.parse(localStorage.getItem("cadastro"));
 
             // caregar partial view cadastro.html
-            $.get("../Home/Cadastro", function (data) {
+            $.get("../Cadastro", function (data) {
                 $('#modalCadastroBody').html('');
                 $('#modalCadastroBody').html(data);
 
-                //carrega usuario
-                $("#Usuario_Id").val(usuario.Id);
-                $("#Usuario_Tipo").val(usuario.Tipo);
-                $("#Usuario_Nome").val(usuario.Nome);
-                if (usuario.UrlAvatar != null)
-                    $("#Usuario_Avatar").attr('src', usuario.UrlAvatar.replace('~', ''));
-                $("#Usuario_Login").val(usuario.Login);
-                $("#Usuario_Email").val(usuario.Email);
-                $("#Usuario_Celular").val(usuario.Celular);
-                $("#Usuario_CpfCnpj").val(usuario.CpfCnpj);
-                $("#Usuario_EnderecoCep").val(usuario.Endereco.Cep);
-                $("#Usuario_EnderecoLogradouro").val(usuario.Endereco.Logradouro);
-                $("#Usuario_EnderecoNumero").val(usuario.Endereco.Numero);
-                $("#Usuario_EnderecoBairro").val(usuario.Endereco.Bairro);
-                $("#Usuario_EnderecoCidade").val(usuario.Endereco.Cidade);
-                $("#Usuario_EnderecoUF").val(usuario.Endereco.UF);
-                $('#dvDownload a').attr('href', usuario.CaminhoArquivo);
-                $('#btnPago').bootstrapSwitch('state', usuario.Pago);
-                $('#btnAnonimo').bootstrapSwitch('state', usuario.Anonimo);
+                //carrega cadastro
+                $("#Cadastro_Id").val(cadastro.Id);
+                $("#Cadastro_Plano").val(cadastro.Plano.Nome);
+                $("#Cadastro_Nome").val(cadastro.Nome);
+                if (cadastro.UrlAvatar != null)
+                    $("#Cadastro_Avatar").attr('src', cadastro.UrlAvatar.replace('~', ''));
+                $("#Cadastro_Login").val(cadastro.Login);
+                $("#Cadastro_Email").val(cadastro.Email);
+                $("#Cadastro_Celular").val(cadastro.Celular);
+                $("#Cadastro_CpfCnpj").val(cadastro.CpfCnpj);
+                $("#Cadastro_EnderecoCep").val(cadastro.Endereco.Cep);
+                $("#Cadastro_EnderecoLogradouro").val(cadastro.Endereco.Logradouro);
+                $("#Cadastro_EnderecoNumero").val(cadastro.Endereco.Numero);
+                $("#Cadastro_EnderecoBairro").val(cadastro.Endereco.Bairro);
+                $("#Cadastro_EnderecoCidade").val(cadastro.Endereco.Cidade);
+                $("#Cadastro_EnderecoUF").val(cadastro.Endereco.UF);
+                $('#dvDownload a').attr('href', cadastro.CaminhoArquivo);
+                $('#btnAnonimo').bootstrapSwitch('state', cadastro.Anonimo);
 
                 AdicionarMascara();
-                CarregaTipo(usuario.Tipo);
-                CarregarTodosArquivos(usuario.Id);
+                CarregaCadastro(cadastro.Tipo);
+                CarregarTodosArquivos(cadastro.Id);
 
-                var habilidades = usuario.Habilidades;
+                var habilidades = cadastro.Habilidades;
                 if (habilidades.length > 0) {
                     $.each(habilidades, function (index, habilidade) {
                         $('#habilidade' + (index + 1)).val(habilidade);
@@ -199,10 +195,10 @@
             var dataSetVagas = JSON.parse(localStorage.getItem("dataSetVagas"));
 
             if (forcar || dataSetVagas == null || dataSetVagas == undefined) {
-                var usuario = JSON.parse(localStorage.getItem("usuario"));
+                var cadastro = JSON.parse(localStorage.getItem("cadastro"));
 
                 $.ajax({
-                    url: '../Vagas/PesquisaEmpresa?id=' + usuario.Id + "&pagina=" + pagina,
+                    url: '../Vagas/PesquisaEmpresa?id=' + cadastro.Id + "&pagina=" + pagina,
                     type: "GET",
                     beforeSend: setHeader,
                     success: function (data) {
@@ -248,9 +244,9 @@
 
         function CadastrarVaga(btn) {
 
-            var usuario = JSON.parse(localStorage.getItem("usuario"));
-            if (usuario == undefined) {
-                return Notify('Ocorreu um erro, usuario não encontrado!', null, null, 'danger');
+            var cadastro = JSON.parse(localStorage.getItem("cadastro"));
+            if (cadastro == undefined) {
+                return Notify('Ocorreu um erro, cadastro não encontrado!', null, null, 'danger');
             }
 
             var descricao = $('#Vaga_Descricao').val();
@@ -263,10 +259,10 @@
             }
 
             var id = $('#Vaga_Id').val();
-            var empresaId = usuario.Id;
-            var empresaNome = usuario.Anonimo ? null : usuario.Nome;
-            var empresaUrlAvatar = usuario.Anonimo ? null : usuario.UrlAvatar;
-            var empresaCep = usuario.Endereco.Cep;
+            var empresaId = cadastro.Id;
+            var empresaNome = cadastro.Anonimo ? null : cadastro.Nome;
+            var empresaUrlAvatar = cadastro.Anonimo ? null : cadastro.UrlAvatar;
+            var empresaCep = cadastro.Endereco.Cep;
             var vagaDescricao = $('#Vaga_Descricao').val();
             var Habilidades = { itens: [] };
 
@@ -368,7 +364,7 @@
                             <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                         </div>
                         <div class="form-group col-lg-6 text-center">
-                            <input class="btn btn-default" type="button" id="btnCadastrar" value="Alterar" />
+                            <button class="btn btn-success" id="btnGravarCadastro" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Aguarde">Alterar</button>
                         </div>
                     </div>
                 </div>
@@ -532,17 +528,17 @@
                     SelecionarDDL = function (selecionado) {
                         var id = selecionado.split('_')[0];
                         var habilidade = selecionado.split('_')[1];
-                        if (!HabilidadeExiste(habilidade)) {
+                        if (!HabilidadeVagaExiste(habilidade)) {
                             var html = '<span id="habilidade_' + id + '" style="margin: 1px; padding: 4px;" class="alert-info">'
                                 + habilidade + '<a style="color:red" href="#" id="'
-                                + habilidade + '" onclick="RemoverHabilidade(this);return false;"><i class="fa fa-times"> </i></a></span>';
+                                + habilidade + '" onclick="RemoverHabilidade(this);return false;"><i class="glyphicon glyphicon-remove"> </i></a></span>';
                             $('#Vaga_Habilidades').append(html);
                         }
                         else
                             Notify('Você já adicionou esta habilidade', null, null);
                     }
 
-                    function HabilidadeExiste(habilidade) {
+                    function HabilidadeVagaExiste(habilidade) {
                         var existe = false;
                         var lista = $('#Vaga_Habilidades span');
                         $.each(lista, function (index, value) {
@@ -556,7 +552,7 @@
                     $("#btnAddHabilidade").click(function () {
                         var habilidade = $('#txtHabilidadeVaga').val();
                         if (habilidade.length > 0) {
-                            if (!HabilidadeExiste(habilidade)) {
+                            if (!HabilidadeVagaExiste(habilidade)) {
                                 var html = '<span id="habilidade_' + habilidade + '" style="margin: 1px; padding: 4px;" class="alert-info">'
                                     + habilidade + '<a style="color:red" href="#" id="'
                                     + habilidade + '" onclick="RemoverHabilidade(this);return false;"><i class="fa fa-times"> </i></a></span>';

@@ -10,7 +10,7 @@ namespace FinderJobs.Domain.Interfaces.Repositories
 
     public interface IRepositoryBase<TEntity> where TEntity : class
     {
-        object Insert(TEntity entity);
+        object Insert(TEntity entity);        
         bool Update(TEntity entity);
         bool UpdateByField(Guid id, string campo, string valor);
         bool Disable(Guid id);
@@ -18,16 +18,6 @@ namespace FinderJobs.Domain.Interfaces.Repositories
         IList<TEntity> SearchFor(Expression<Func<TEntity, bool>> predicate);
         IList<TEntity> GetAll();
         IList<TEntity> Find(string query, int pagina);             
-        TEntity GetById(Guid id);
-    }
-
-    public interface IRepositoryBaseNhibernate<TEntity> where TEntity : class
-    {
-        object Add(TEntity obj);
-        TEntity GetById(int id);
-        IEnumerable<TEntity> GetAll();
-        void Update(TEntity obj);
-        void Remove(TEntity obj);
-        void Dispose();
+        TEntity GetById(Guid id);        
     }
 }

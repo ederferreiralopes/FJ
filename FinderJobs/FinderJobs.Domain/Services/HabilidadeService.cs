@@ -29,5 +29,10 @@ namespace FinderJobs.Domain.Services
             
             return resultado;
         }
+
+        public Dictionary<string, string> GetDashboard()
+        {
+            return _habilidadeRepository.GetDashboard();
+        }
     }
 }

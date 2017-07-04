@@ -8,7 +8,7 @@
         <tr>
             <th>
                 <div class="col-md-1">
-                  Usuário
+                    Usuário
                 </div>
                 <div class="col-md-8">
                 </div>
@@ -19,17 +19,21 @@
 
         @foreach (var item in Model)
         {
-            <tr>
+            <tr id="tr_@item.Id">
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
                 <td>
-                    @if (item.Roles != null) {
-                        @String.Join(", ", item.Roles.ToArray());
+                    @if (item.Roles != null)
+                    {
+                        @String.Join(",", item.Roles.ToArray());
                     }
                 </td>
-                <td>                               
-                    <a onclick="Excluir('@item.Id', '@item.UserName')"><i class="glyphicon glyphicon-remove"></i></a>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ativo)
+                </td>
+                <td>
+                    <a onclick="Editar('@item.Id')"><i class="glyphicon glyphicon-pencil"></i></a>
                 </td>
             </tr>
         }
@@ -51,6 +55,7 @@
                         @using (Html.BeginForm("Create", "UsersAdmin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "form_usuario" }))
                         {
                             @Html.AntiForgeryToken()
+                            <input hidden type="text" name="Id" id="Id" />
                             <div class="form-group">
                                 @Html.Label("Email", null, new { @class = "col-md-2 control-label" })
                                 <div class="col-md-10">
@@ -71,9 +76,17 @@
                                 <label class="col-md-2 control-label">
                                     Privilégios
                                 </label>
-                                <div class="col-md-10" id="div_privelegios">                              
+                                <div class="col-md-10" id="div_privelegios">
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                @Html.Label("Ativo", new { @class = "col-md-2 control-label" })
+                                <div class="col-md-2">
+                                    @Html.CheckBox("Ativo", new { @class = "form-control" })
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
                                     <input type="submit" class="btn btn-success" value="Salvar" />
@@ -115,40 +128,48 @@
     </div>
 </div>
 
-<script src="~/Scripts/jquery-3.1.1.min.js"></script>
 <script>
-
     $('#btn_adicionar').on('click', function () {
         $('#form_usuario')[0].reset();
+        $('#form_usuario').attr('action', '/Manager/UsersAdmin/Create');
         GetPrivilegios();
         $('#modalNovoUsuario').modal();
     });
 
-    function Excluir(id, email) {
-        $('#id_usuario').val(id);
-        $('#email_usuario').html(email);
-        $('#modalConfirmacao').modal();
+    function Editar(id) {
+        $('#form_usuario')[0].reset();
+        $('#form_usuario').attr('action', '/Manager/UsersAdmin/Edit');
+        debugger;
+        $('#Id').val(id);
+        var dados = $('#tr_' + id).children();
+        GetPrivilegios(dados[1].innerText.split(','));
+        $('#Ativo').attr('checked', $('#tr_' + id + ' input').is(':checked'));
+        $('#Email').val(dados[0].innerText);
+        $('#Password').prop('disabled', true);
+        $('#ConfirmPassword').prop('disabled', true);
+        $('#modalNovoUsuario').modal();
     }
 
-    function GetPrivilegios() {
+    function GetPrivilegios(atuais) {
         $.ajax({
             url: "RolesAdmin/Get",
             type: "GET",
             contentType: 'application/json',
             success: function (data) {
                 if (data.length > 0) {
-                    var html = '';                    
+                    var html = '';
                     $.each(data, function (index, value) {
-                        html += "<div class'col-sm-2 col-md-2 col-lg-2'><input type='checkbox' name='SelectedRoles' value='" + value.Name + "' class='checkbox-inline' />" +
+                        var checked = $.inArray(value.Name, atuais) > -1 ? 'checked' : '';
+                        html += "<div class'col-sm-2 col-md-2 col-lg-2'><input type='checkbox' " + checked + " name='SelectedRoles' value='" + value.Name + "' class='checkbox-inline' />" +
                                 "&nbsp<label for='" + value.Name + "' class=''>" + value.Name + "</label></div>";
                     });
                     $('#div_privelegios').html(html);
                 }
                 else
-                    alert("Nenhuma privilégio cadastrado!");
+                    Notify('Nenhuma privilégio cadastrado', null, null, 'error');
             },
             error: function (result) {
-                console.log('Ocoreu um erro, informe a equipe de suporte: ');
+                Notify('Ocorreu um erro, informe a equipe de suporte', null, null, 'error');
                 console.log(result);
             }
         });
