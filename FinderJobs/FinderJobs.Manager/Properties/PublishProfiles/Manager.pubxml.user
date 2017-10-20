@@ -16,7 +16,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/13/2015 14:22:42</publishTime>
     </File>
     <File Include="bin/FinderJobs.Manager.dll">
-      <publishTime>06/24/2017 00:55:12</publishTime>
+      <publishTime>07/22/2017 17:47:28</publishTime>
     </File>
     <File Include="bin/Log4Mongo.dll">
       <publishTime>11/02/2015 21:45:44</publishTime>
@@ -436,7 +436,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/27/2016 22:32:12</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/13/2017 23:29:40</publishTime>
+      <publishTime>07/22/2017 17:47:29</publishTime>
     </File>
   </ItemGroup>
 </Project>

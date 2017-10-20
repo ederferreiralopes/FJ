@@ -26,3 +26,4 @@ D:\Roberto\FinderJobs\FinderJobs.Integra\EmailService\obj\Debug\FinderJobs.Email
 D:\Roberto\FinderJobs\FinderJobs.Integra\EmailService\obj\Debug\FinderJobs.EmailService.csproj.GenerateResource.Cache
 D:\Roberto\FinderJobs\FinderJobs.Integra\EmailService\obj\Debug\FinderJobs.EmailService.exe
 D:\Roberto\FinderJobs\FinderJobs.Integra\EmailService\obj\Debug\FinderJobs.EmailService.pdb
+D:\Roberto\FinderJobs\FinderJobs.Integra\EmailService\obj\Debug\FinderJobs.EmailService.csprojResolveAssemblyReference.cache

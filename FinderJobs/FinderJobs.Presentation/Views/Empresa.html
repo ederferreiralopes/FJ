@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Finder Jobs</title>    
+    <title>Finder Jobs</title>
     <!-- CDN Font CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Bootstrap Core CSS -->
@@ -28,7 +28,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span><i class="glyphicon glyphicon-menu-hamburger" style="font-size:x-large"></i>
                 </button>
-                <img src="../images/logo-fj.jpg" height="70" style="border-radius: 90px;" />              
+                <img src="../images/logo-fj.jpg" height="70" style="border-radius: 90px;" />
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -84,7 +84,7 @@
                             </li>
                             <li>
                                 Direitos Reservados &copy; Finder Jobs 2014-<span id="anoAtual"></span>
-</li>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -114,11 +114,18 @@
     <script>
 
         $(document).ready(function () {
-            $(document).ready(function () {
-                $('#anoAtual').html(new Date().getFullYear());
-                if (localStorage.getItem("cadastro") != '' && localStorage.getItem("cadastro") != null)
-                    $('#btnCadastro').prepend('Olá, ' + JSON.parse(localStorage.getItem("cadastro")).Nome);
-            });
+            
+            $('#anoAtual').html(new Date().getFullYear());
+
+            var cadastro = localStorage.getItem("cadastro");
+            if (cadastro != '' && cadastro != null) {
+                var cadastroObj = JSON.parse(localStorage.getItem("cadastro"));
+                $('#btnCadastro').prepend('Olá, ' + cadastroObj.Nome);
+                if (cadastroObj.Endereco == null) {
+                    EditarCadastro();
+                    Notify('Preencha o endereço', null, null);
+                }
+            }
 
             processarVagas(false, $('#paginaAtual').html());
         });
@@ -164,14 +171,18 @@
                 $("#Cadastro_Email").val(cadastro.Email);
                 $("#Cadastro_Celular").val(cadastro.Celular);
                 $("#Cadastro_CpfCnpj").val(cadastro.CpfCnpj);
-                $("#Cadastro_EnderecoCep").val(cadastro.Endereco.Cep);
-                $("#Cadastro_EnderecoLogradouro").val(cadastro.Endereco.Logradouro);
-                $("#Cadastro_EnderecoNumero").val(cadastro.Endereco.Numero);
-                $("#Cadastro_EnderecoBairro").val(cadastro.Endereco.Bairro);
-                $("#Cadastro_EnderecoCidade").val(cadastro.Endereco.Cidade);
-                $("#Cadastro_EnderecoUF").val(cadastro.Endereco.UF);
+                if (cadastro.Endereco != null && cadastro.Endereco != undefined) {
+                    $("#Cadastro_EnderecoCep").val(cadastro.Endereco.Cep);
+                    $("#Cadastro_EnderecoLogradouro").val(cadastro.Endereco.Logradouro);
+                    $("#Cadastro_EnderecoNumero").val(cadastro.Endereco.Numero);
+                    $("#Cadastro_EnderecoBairro").val(cadastro.Endereco.Bairro);
+                    $("#Cadastro_EnderecoCidade").val(cadastro.Endereco.Cidade);
+                    $("#Cadastro_EnderecoUF").val(cadastro.Endereco.UF);
+                }
+
                 $('#dvDownload a').attr('href', cadastro.CaminhoArquivo);
-                $('#btnAnonimo').bootstrapSwitch('state', cadastro.Anonimo);
+
+                $('#btnAnonimo').attr('checked', cadastro.Anonimo);
 
                 AdicionarMascara();
                 CarregaCadastro(cadastro.Tipo);

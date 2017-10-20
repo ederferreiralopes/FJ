@@ -19,6 +19,7 @@ namespace FinderJobs.Site
 
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
+            app.MapSignalR();
         }
 
         public static void ConfigureWebApi(HttpConfiguration config)

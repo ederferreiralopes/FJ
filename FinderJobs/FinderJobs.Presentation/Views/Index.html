@@ -15,6 +15,39 @@
     <link href="notify/notify.css" rel="stylesheet" />
 
     <style>
+        .login-cor {
+            color: white;
+            background: #4267b2;
+            border-radius: 7px;
+        }
+
+        .link {
+            font-size: small;
+            color: white;
+            font-weight: bold;
+        }
+
+        .circulo {
+            border-radius: 72%;
+            behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+            height: 100%;
+            width: 100%;
+            background: #4267b2;
+            font-size: large;
+            color: white;
+            display: inline-block;
+            vertical-align: middle;
+            float: none;
+        }
+
+        .altura-balao {
+            height: 120px;
+        }
+
+        .fonte-pequena {
+            font-size: 14px;
+        }
+
         li {
             font-size: 12px;
             line-height: .1em;
@@ -24,13 +57,8 @@
             cursor: pointer;
         }
 
-        .panel-heading {
-            background-color: #ed7c31;
-            font-weight: bold;
-        }
-
         .cor-finder-jobs {
-            background-color: skyblue;
+            background-color: #ed7c31;
         }
 
         .menos-padding {
@@ -109,158 +137,117 @@
     </style>
 </head>
 <body id="page-top" class="index">
-    <!-- Navigation -->
     <div class="container">
-        <br />
         <div class="row">
-            <div class="col-lg-8">
-                <nav id="" class="navbar">
+            <br />
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                    <span class="text-info fonte-pequena">Currículos Únicos : 0012</span> <span class="hidden-xs">| </span> <span class="hidden-md hidden-lg"><br /> </span>
+                    <span class="text-info fonte-pequena">Empresas Únicas : 0004</span><span class="hidden-xs"> | </span> <span class="hidden-md hidden-lg"><br /> </span>
+                    <span class="text-info fonte-pequena">SLA Mensal (uptime) = 99.87%</span>
+                </div>
+            </div>
+            <div class="navbar navbar">
+                <div class="container">
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-navegacao">
-                            <span class="sr-only">Toggle navigation</span><i class="glyphicon glyphicon-menu-hamburger" style="font-size:x-large"></i>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="fa fa-users" style="font-size:larger; color: #29487d"> Acesso </span>
+                            <span class="fa fa-briefcase" style="font-size:larger; color: #29487d"></span>
                         </button>
-                        <img src="../images/logo-fj.jpg" height="92" style="border-radius: 90px;" />
                     </div>
-
-                    <div class="collapse navbar-collapse" id="menu-navegacao" style="overflow: hidden">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="hidden">
-                                <a href="#page-top"></a>
-                            </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12" style="top: 7px; font-weight: bold">
-                                            Candidato:
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 frame-login">
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12" style="font-weight: bold; font-size:xx-large; margin-right: 7px;">
+                                        <i class="fa fa-users"> </i>
+                                    </div>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-left login-cor">
+                                        <b>Candidatos</b><br />
+                                        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 menos-padding">
+                                            <input type="text" class="form-control" placeholder="Email de candidato" id="EmailCand" name="Email">
                                         </div>
-                                        <div class="form-group col-lg-6 col-md-6 col-sm-5 col-xs-12 menos-padding">
-                                            <input type="text" class="form-control" placeholder="Email" id="EmailCand" name="Email">
+                                        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 menos-padding">
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" placeholder="Senha" id="SenhaCand" name="Senha">
+                                                <span class="input-group-btn">
+                                                    <button id="btnEntrarCand" type="button" class="btn btn-success" data-loading-text="<i class='fa fa-spinner fa-spin '></i>">Acessar</button>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="form-group col-lg-3 col-md-3 col-sm-4 col-xs-10 menos-padding">
-                                            <input type="password" class="form-control" placeholder="Senha" id="SenhaCand" name="Senha">
-                                        </div>
-                                        <div class="form-group col-lg-1 col-md-1 col-sm-1 col-xs-2 menos-padding">
-                                            <button id="btnEntrarCand" type="button" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde"><i class="glyphicon glyphicon-log-in"></i> </button>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                                            <a class="link" data-toggle="modal" href="#modalEsqueciSenha">esqueceu a senha! </a>
+                                            |
+                                            <a class="link" data-toggle="modal" onclick="ContratarPlano('candidato')"> cadastre-se</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12" style="top: 7px; font-weight: bold">
-                                            Empresa:
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 frame-login">
+                                    <hr class="hidden-lg hidden-md" />
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12" style="font-weight: bold; font-size:xx-large; margin-right: 7px;">
+                                        <i class="fa fa-briefcase"></i>
+                                    </div>
+                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-left login-cor">
+                                        <b>Empresas</b><br />
+                                        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 menos-padding">
+                                            <input type="text" class="form-control" placeholder="Email de empresa" id="EmailEmpr" name="Email">
                                         </div>
-                                        <div class="form-group col-lg-6 col-md-6 col-sm-5 col-xs-12 menos-padding">
-                                            <input type="text" class="form-control" placeholder="Email" id="EmailEmpr" name="Email">
+                                        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 menos-padding">
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" placeholder="Senha" id="SenhaEmpr" name="Senha">
+                                                <span class="input-group-btn">
+                                                    <button id="btnEntrarEmpr" type="button" class="btn btn-success" data-loading-text="<i class='fa fa-spinner fa-spin '></i>">Acessar</button>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="form-group col-lg-3 col-md-3 col-sm-4 col-xs-10 menos-padding">
-                                            <input type="password" class="form-control" placeholder="Senha" id="SenhaEmpr" name="Senha">
-                                        </div>
-                                        <div class="form-group col-lg-1 col-md-1 col-sm-1 col-xs-2 menos-padding">
-                                            <button id="btnEntrarEmpr" type="button" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde"><i class="glyphicon glyphicon-log-in"></i> </button>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                                            <a class="link" data-toggle="modal" href="#modalEsqueciSenha">esqueceu a senha!</a>
+                                            |
+                                            <a class="link" data-toggle="modal" onclick="ContratarPlano('empresa')"> cadastre-se</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="text-center menos-padding">
-                                        <a data-toggle="modal" href="#modalEsqueciSenha" style="font-size:small; color: #A569BD; font-weight: bold">esqueci a senha!</a>
-                                    </div>
-                                </div>
-                            </li>
+                            </div>
                         </ul>
-                        <!-- /.navbar-collapse -->
-                    </div>
-                    <!-- /.container-fluid -->
-                </nav>
-            </div>
-            <div class="col-lg-2">
-                <img src="../images/icone-portal-transparencia.jpg" height="80" style="border-radius: 4px;" />
-            </div>
-            <div class="col-lg-2" style="font-size:smaller;">
-                <span>Currículos Únicos : 0012</span><br />
-                <span>Empresas Únicas : 0004</span><br />
-                <span>SLA Mensal (uptime) = 99.87%</span>
-            </div>
-        </div>
-    </div>
-    <!--<div class="row text-center">
-        <span style="color: #ff6a00;">Cadastre-se:</span>
-        <a onclick="Cadastro('Candidato')" style="font-size:small; color: #0b8711;">Candidato</a> ou
-        <a onclick="Cadastro('Empresa')" style="font-size:small; color: #3498db;"> Empresa</a>
-    </div>-->
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12" id="planosCandidato">
-                <div class="col-lg-2 col-md-2 col-sm-2 text-center tabela-preco">
-                    <div class="panel">
-                        <div class="panel-heading">Planos(Candidato)</div>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-5 col-sm-5 text-center tabela-preco">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" style="background-color: #D4E6F1; color: black;">Standart <a class="" id="btn_plano1" onclick="ContratarPlano('Standart')"><i class="glyphicon glyphicon-hand-right blink_text"></i> Cadastrar-se</a></div>
-                        <ul class="list-group">
-                            <li class="list-group-item">Uma candidatura por vaga publicada</li>
-                            <li class="list-group-item">Perfil visível</li>
-                            <li class="list-group-item">30 palavras-chave</li>
-                            <li class="list-group-item">Sem re-candidaturas</li>
-                            <li class="list-group-item">Sem limite de candidaturas às vagas</li>
-                            <li class="list-group-item preco">R$ 0,00(grátis)</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-5 col-sm-5 text-center tabela-preco">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" style="background-color: #EAEDED; color: black">Advanced <a class="" id="btn_plano2" onclick="ContratarPlano('Advanced')"><i class="glyphicon glyphicon-hand-right blink_text"></i> Contratar</a></div>
-                        <ul class="list-group">
-                            <li class="list-group-item">Re-candidatura as vagas(segunda vez)</li>
-                            <li class="list-group-item">Perfil anônimo</li>
-                            <li class="list-group-item">Permitido "copiar-colar"</li>
-                            <li class="list-group-item">Envio de anexos(somente .PDF) até 1.1MB</li>
-                            <li class="list-group-item">Chat on-line</li>
-                            <li class="list-group-item preco">R$ 100,00/ano</li>
-                        </ul>
-                    </div>
+                    </div><!--/.nav-collapse -->
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12" id="planosCandidato">
-                <div class="col-lg-2 col-md-2 col-sm-2 text-center tabela-preco">
-                    <div class="panel">
-                        <div class="panel-heading">Planos(Empresa)</div>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-5 col-sm-5 text-center tabela-preco">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" style="background-color: #D5D8DC; color: black">Premium <a class="" id="btn_plano1" onclick="ContratarPlano('Premium')"><i class="glyphicon glyphicon-hand-right blink_text"></i> Contratar</a></div>
-                        <ul class="list-group">
-                            <li class="list-group-item">Anúncio: 10(dez) dias de publicação</li>
-                            <li class="list-group-item">Sem re-publicação</li>
-                            <li class="list-group-item">30 palavras-chave</li>
-                            <li class="list-group-item">Perfil visível</li>
-                            <li class="list-group-item">Até 10(dez) publicações por mês</li>
-                            <li class="list-group-item">Sem limite de vagas publicadas</li>
-                            <li class="list-group-item">Sem limite de buscas</li>
-                            <li class="list-group-item">Upgrade via aditivos</li>
-                            <li class="list-group-item preco">R$ 100,00/ano</li>
-                        </ul>
-                    </div>
-                </div>
 
-                <div class="col-lg-5 col-md-5 col-sm-5 text-center tabela-preco">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" style="background-color: #F1C40F; color: black">Gold <a class="" id="btn_plano1" onclick="ContratarPlano('Gold')"><i class="glyphicon glyphicon-hand-right blink_text"></i> Contratar</a></div>
-                        <ul class="list-group">
-                            <li class="list-group-item">Anúncio: 30(trinta) dias de publicação</li>
-                            <li class="list-group-item">Re-publicar vaga(segunda vez)</li>
-                            <li class="list-group-item">Perfil anônimo</li>
-                            <li class="list-group-item">Site próprio customizável(custo adicional)</li>
-                            <li class="list-group-item">Permitido "copiar-colar"</li>
-                            <li class="list-group-item">"On-demand" via projetos implantação(custo adicional)</li>
-                            <li class="list-group-item">Um formulário de 5 questões por vaga publicada</li>
-                            <li class="list-group-item">Chat on-line</li>
-                            <li class="list-group-item preco">R$ 1.000,00/mês(não inclui custos adicionais)</li>
-                        </ul>
+        <div class="col-lg-offset-1 col-lg-10 text-center">
+            <hr class="hidden-xs" />
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center circulo menos-padding">
+                        <br /> Somos a 1ª <br /> startup de bigdata<br /> para processos <br />seletivos<br /><br />
+                    </div>
+                </div>
+                <br />
+                <div class="row altura-balao">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center circulo menos-padding">
+                        <br /><br />Facil, Rápido, Barrato <br />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+                <div class="row">
+                    <br />
+                    <img src="../images/logo-fj.jpg" width="240" style="border-radius: 50%;" />
+                    <br /><br />
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center circulo menos-padding">
+                        <br /> Nossos 3 pilares: <br /> assertividade <br /> tempo real <br /> geo-localização <br /> <br />
+                    </div>
+                </div>
+                <br />
+                <div class="row altura-balao">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center circulo menos-padding">
+                        <br /> Fale conosco: <br /> contato@finderjobs.com.br
                     </div>
                 </div>
             </div>
@@ -272,18 +259,21 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h4 class="" style="color: #ed7c31">
+                        <h4 class="fonte-pequena" style="color: #ed7c31">
+                            * Direitos autorais, propriedade intelectual e codigo fonte reservados *
+                        </h4>
+                        <h4 class="fonte-pequena" style="color: #ed7c31">
                             Somos o primeiro e único portal de empregos à usar big data science:processo seletivo inteligente.
                         </h4>
                         <ul class="list-inline">
+                            <li>
+                                &copy; 2014-<span id="anoAtual"></span>
+                            </li>
                             <li>
                                 <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
                             </li>
                             <li>
                                 <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-twitter"></i></a>
-                            </li>
-                            <li>
-                                Direitos Reservados &copy; Finder Jobs 2014-<span id="anoAtual"></span>
                             </li>
                         </ul>
                     </div>
@@ -328,7 +318,41 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
-                                <input type="hidden" value="" name="Plano.Id" id="Plano_Id">
+                                <div class="col-md-12">
+                                    <input type="hidden" value="" name="Plano.Id" id="Plano_Id">
+                                    <div class="col-md-2 form-group" id="dvPlanosCandidato">
+                                        <input type="radio" name="plano" value="planoStandart" checked>Gratuito <br />
+                                        <input type="radio" name="plano" value="planoAdvanced">Pago
+                                    </div>
+                                    <div class="col-md-2 form-group" id="dvPlanosEmpresa">
+                                        <input type="radio" name="plano" value="planoPremium">Premium <br />
+                                        <input type="radio" name="plano" value="planoGold">Gold
+                                    </div>
+                                    <div class="col-md-9 form-group">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 text-center tabela-preco">
+                                                <div class="panel panel-default" id="dvPlanoStandart">
+                                                    <div class="panel-heading" style="background-color: #D4E6F1; color: black;">Standart</div>
+                                                    <ul class="list-group" id="tbl_standart"></ul>
+                                                </div>
+                                                <div class="panel panel-default" id="dvPlanoAdvanced">
+                                                    <div class="panel-heading" style="background-color: #EAEDED; color: black">Advanced</div>
+                                                    <ul class="list-group" id="tbl_advanced"></ul>
+                                                </div>
+                                                <div class="panel panel-default" id="dvPlanoPremium">
+                                                    <div class="panel-heading" style="background-color: #D5D8DC; color: black">Premium</div>
+                                                    <ul class="list-group" id="tbl_premium"></ul>
+                                                </div>
+                                                <div class="panel panel-default" id="dvPlanoGold">
+                                                    <div class="panel-heading" style="background-color: #F1C40F; color: black">Gold</div>
+                                                    <ul class="list-group" id="tbl_gold"></ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-12">
                                     <div class="col-md-6 form-group">
                                         Nome Completo<br />
@@ -352,7 +376,7 @@
                                     </div>
                                     <div class="col-md-2 form-group" id="">
                                         <br />
-                                        <button type="button" onclick="Registrar()" id="btnRegistrar" class="btn btn-success btn-block"  data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde">Enviar</button>                                        
+                                        <button type="button" onclick="Registrar()" id="btnRegistrar" class="btn btn-success btn-block" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde">Enviar</button>
                                     </div>
                                 </div>
                             </div>
@@ -395,7 +419,7 @@
                     <div class="form-group">
                         <input type="text" class="form-control" id="emailEsqueceuSenha" placeholder="Seu email">
                     </div>
-                    <button type="button" id="btnEsqueceuSenha" class="btn btn-success btn-block"  data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde"><i class="glyphicon glyphicon-envelope"></i> Enviar</button>
+                    <button type="button" id="btnEsqueceuSenha" class="btn btn-success btn-block" data-loading-text="<i class='fa fa-spinner fa-spin' ></i> Aguarde"><i class="glyphicon glyphicon-envelope"></i> Enviar</button>
                 </div>
             </div>
         </div>
@@ -526,7 +550,7 @@
         });
 
         $("#btnNovaSenha").click(function () {
-            $("#btnNovaSenha").button('aguarde...');
+            $("#btnNovaSenha").button('loading');
             var novaSenha = $('#NovaSenha').val();
             var confirmaSenha = $('#NovaSenhaConfirma').val();
             var email = $('#NovaSenhaEmail').val();
@@ -565,7 +589,7 @@
         });
 
         $("#btnEsqueceuSenha").click(function () {
-            $("#btnEsqueceuSenha").button('aguarde...');
+            $("#btnEsqueceuSenha").button('loading');
             var email = $('#emailEsqueceuSenha').val();
             var regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if (regexEmail.test(email)) {
@@ -597,20 +621,22 @@
         });
 
         $("#btnEntrarCand").click(function () {
+            var btn = $("#btnEntrarCand");
             var email = $('#EmailCand').val();
             var senha = $('#SenhaCand').val();
-            AcessarFJ(email, senha);
+            AcessarFJ(email, senha, btn);
         });
 
         $("#btnEntrarEmpr").click(function () {
+            var btn = $("#btnEntrarEmpr");
             var email = $('#EmailEmpr').val();
             var senha = $('#SenhaEmpr').val();
-            AcessarFJ(email, senha);
+            AcessarFJ(email, senha, btn);
         });
 
-        function AcessarFJ(email, senha) {
+        function AcessarFJ(email, senha, btn) {
 
-            $("#btnEntrar").button('loading');
+            btn.button('loading');
 
             if (email != undefined && email.length > 5 && senha != undefined && senha.length > 5) {
                 var dados = {
@@ -648,9 +674,65 @@
             }
 
             setTimeout(function () {
-                $("#btnEntrar").button('reset');
+                btn.button('reset');
             }, 1000);
 
+        }
+
+        function GetPlanos() {
+            $.ajax({
+                url: "../Plano",
+                type: "GET",
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.sucesso) {
+                        $.each(data.dados, function (index, value) {
+                            preencheTabelaPlano(value);
+                        });
+                    }
+                    else {
+                        Notify('Erro ao recuperar os planos', null, null, 'danger');
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    Notify(result.responseJSON.error_description, null, null, 'danger');
+                }
+            });
+        }
+
+        function preencheTabelaPlano(plano) {
+            var html = '';
+            $.each(plano.Caracteristicas, function (index, value) {
+                html += '<li class="list-group-item">' + value + '</li>';
+            });
+
+            html += '<li class="list-group-item preco">R$ ' + formataValor(plano.Valor) + ' ' + plano.Periodo +'</li>';
+
+            switch (plano.Nome) {
+                case 'Standart':
+                    $('#tbl_standart').html(html);
+                    break;
+                case 'Advanced':
+                    $('#tbl_advanced').html(html);
+                    break;
+                case 'Premium':
+                    $('#tbl_premium').html(html);
+                    break;
+                case 'Gold':
+                    $('#tbl_gold').html(html);
+                    break;
+            }
+        }
+
+        function formataValor(valor) {
+            if (navigator.languages[0] == 'pt-BR') {
+                valor = valor.toLocaleString();
+                if (valor.indexOf(',') == -1) {
+                    valor = valor + ',00';
+                }
+            }
+            return valor;
         }
 
         function GetCadastro() {
@@ -658,7 +740,7 @@
                 url: "../Cadastro/Get",
                 type: "GET",
                 contentType: 'application/json',
-                success: function (data) {                    
+                success: function (data) {
                     if (data.sucesso) {
                         Notify('Redirecionando para sua home!', null, null, 'success');
                         localStorage.setItem('cadastro', JSON.stringify(data.dados));
@@ -676,15 +758,54 @@
             });
         }
 
-        function ContratarPlano(plano) {
-            $("input[name=tipo]:radio").change(function () {
-                $('#Cadastro_CpfCnpj').removeClass('cpf').removeClass('cnpj');
-                if ($(this).val() == "cpf")
-                    $("#Cadastro_CpfCnpj").addClass('cpf');
-                else
-                    $("#Cadastro_CpfCnpj").addClass('cnpj');
-            });
+        $("input[name=tipo]:radio").change(function () {
+            $('#Cadastro_CpfCnpj').removeClass('cpf').removeClass('cnpj');
+            if ($(this).val() == "cpf")
+                $("#Cadastro_CpfCnpj").addClass('cpf');
+            else
+                $("#Cadastro_CpfCnpj").addClass('cnpj');
+        });
 
+        $("input[name=plano]:radio").change(function () {
+            if ($(this).val() == "planoStandart") {
+                $("#dvPlanoStandart").show();
+                $("#dvPlanoAdvanced").hide();
+            }
+            else if ($(this).val() == "planoAdvanced") {
+                $("#dvPlanoAdvanced").show();
+                $("#dvPlanoStandart").hide();
+            }
+            else if ($(this).val() == "planoPremium") {
+                $("#dvPlanoPremium").show();
+                $("#dvPlanoGold").hide();
+            }
+            else if ($(this).val() == "planoGold") {
+                $("#dvPlanoGold").show();
+                $("#dvPlanoPremium").hide();
+            }
+        });
+
+        function ContratarPlano(tipo) {
+            debugger;            
+            $("#dvPlanoAdvanced").hide();
+            $("#dvPlanoGold").hide();
+            if (tipo == 'candidato') {
+                $('input[value=planoStandart]').prop('checked', true);                
+                $("#dvPlanosCandidato").show();
+                $("#dvPlanosEmpresa").hide();
+                $("#dvPlanoStandart").show();                
+                $("#dvPlanoPremium").hide();
+                $('#Plano_Id').val('Standart');                
+            }
+            else {
+                $('input[value=planoPremium]').prop('checked', true);
+                $("#dvPlanosEmpresa").show();
+                $("#dvPlanosCandidato").hide();
+                $("#dvPlanoPremium").show();
+                $("#dvPlanoStandart").hide();
+                $('#Plano_Id').val('Premium');
+            }
+            GetPlanos();
             $('.phone_with_ddd').mask('(00) 00000-0000');
             $('.cpf').mask('000.000.000-00', { reverse: true });
             $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
@@ -694,7 +815,6 @@
                 }
             });
 
-            $('#Plano_Id').val(plano);
             $('#modalDadosPessoais').modal();
         }
 
@@ -712,9 +832,9 @@
                     Notify('Erro ao validar email ' + result, null, null, 'danger');
                 });
             }
-            else {                
+            else {
                 Notify('Email inválido ', null, null);
-            }                
+            }
         });
 
         function Registrar() {
@@ -742,7 +862,7 @@
             else if (!TestarEmail(email)) {
                 valido = false;
                 Notify('Email inválido', null, null, 'danger');
-            }                
+            }
 
             if (cpfCnpj == undefined || cpfCnpj == null || cpfCnpj == '') {
                 valido = false;
@@ -752,7 +872,7 @@
             if (telefone == undefined || telefone == null || telefone == '') {
                 valido = false;
                 Notify('Informe seu telefone', null, null, 'danger');
-            }            
+            }
 
             if (valido) {
                 // Registrar usuário
@@ -774,7 +894,7 @@
                     dataType: 'json',
                     type: 'get',
                     success: function (data) {
-                        if (data.sucesso) {                            
+                        if (data.sucesso) {
                             // Gravar Cadastro e o Plano
                             Assinatura(dadosPessoais);
                         }
@@ -808,9 +928,9 @@
                 type: 'post',
                 beforeSend: setHeader,
                 success: function (data) {
-                    if (data.sucesso) {                        
+                    if (data.sucesso) {
                         $('#modalDadosPessoais').modal('hide');
-                        if (dadosPessoais.plano == 'Standart') {                                                        
+                        if (dadosPessoais.plano == 'Standart') {
                             Notify('Por favor, acesse seu email para completar seu cadastro!', null, null, 'success');
                         }
                         else {

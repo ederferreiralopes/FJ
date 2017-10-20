@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Logs";
+}
+
+<div class="jumbotron">
+    <h4>Logs</h4>
+    <a class="btn btn-info" onclick="Listar('Info')">Info</a> 
+    <a class="btn btn-danger"  onclick="Listar('Erro')">Erro</a>    
+    <table class="table" hidden>
+        <thead>
+            <tr>
+                <th>
+                    <div class="col-md-2">
+                        Tipo
+                    </div>
+                </th>
+                <th>
+                    <div class="col-md-2">
+                        Objeto
+                    </div>
+                </th>
+                <th>
+                    <div class="col-md-2">
+                        Mensagem
+                    </div>
+                </th>
+                <th>
+                    <div class="col-md-2">
+                        Data
+                    </div>
+                </th>                
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+
+    var logTipoAtual = "";
+    function Listar(tipo) {
+        logTipoAtual = tipo;
+        $.ajax({
+            url: urlBase + "Geral/Log?tipo=" + tipo,
+            type: "GET",
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.sucesso && data.dados.length > 0) {
+                    var html = '';
+                    $.each(data.dados, function (index, value) {                        
+                        var btnAtivo = !value.Ativo ? "tratada" : "<a onclick='Editar(\"" + value.Id + "\")'><i class='glyphicon glyphicon-ok'></i></a></td>";
+                        html += "<tr id='tr_" + value.Id + "'>" +
+                                    "<td>" + value.Tipo + "</td>" +
+                                    "<td>" + value.Objeto + "</td>" +
+                                    "<td>" + value.Mensagem + "</td>" +
+                                    "<td>" + ConverterData(value.DataCadastro) + "</td>" +                                    
+                                    "<td>" + btnAtivo +
+                                "</tr>";
+                    });
+                    $('tbody').html(html);
+                    $('table').attr('hidden', false);
+                }
+                else {
+                    $('table').attr('hidden', true);
+                    Notify('Nenhuma informação encontrada', null, null);
+                }
+            },
+            error: function (result) {
+                Notify('Ocorreu um erro, informe a equipe de suporte', null, null, 'danger');
+                console.log(result);
+            }
+        });
+    }
+
+    function Editar(id) {
+        $.ajax({
+            url: urlBase + "Geral/LogDesativar/" + id,
+            type: "get",
+            contentType: 'application/json',            
+            success: function (data) {
+                if (data.sucesso) {
+                    Listar(logTipoAtual);
+                }
+                else
+                    Notify('Ocorreu um erro', null, null, 'danger');
+            },
+            error: function (result) {                
+                Notify('Ocorreu um erro, informe a equipe de suporte', null, null, 'danger');
+                console.log(result);
+            }
+        });
+    }
+</script>

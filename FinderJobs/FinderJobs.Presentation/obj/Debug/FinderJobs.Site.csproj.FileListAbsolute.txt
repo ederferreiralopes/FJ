@@ -122,3 +122,7 @@ D:\Roberto\FinderJobs\FinderJobs.Presentation\obj\Debug\FinderJobs.Site.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\obj\Debug\FinderJobs.Site.pdb
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\FinderJobs.Infra.CrossCutting.dll
 D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\FinderJobs.Infra.CrossCutting.pdb
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\Roberto\FinderJobs\FinderJobs.Presentation\bin\Microsoft.AspNet.SignalR.SystemWeb.xml

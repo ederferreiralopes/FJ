@@ -43,9 +43,9 @@ namespace FinderJobs.Site.Controllers
         {
             try
             {
-                if (!id.HasValue)
+                if (id.Value == new Guid())
                 {
-                    var habilidade = _habilidadeService.Insert(new Habilidade { Id = new Guid(), Nome = nome, Ativo = ativo });
+                    var habilidade = _habilidadeService.Insert(new Habilidade { Id = id.Value, Nome = nome, Ativo = ativo });
 
                     return Json(new { sucesso = true, habilidade = habilidade }, JsonRequestBehavior.AllowGet);
                 }

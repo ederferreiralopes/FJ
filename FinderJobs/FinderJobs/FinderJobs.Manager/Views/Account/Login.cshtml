@@ -1,0 +1,35 @@
+@model FinderJobs.Manager.Models.LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+
+<style>
+    .login {
+        background-color: black;
+        opacity: 0.8;
+        color: white;
+    }
+</style>
+<div class="row">
+    <div class="container">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {            
+            <div class="col-md-6 login">
+                <br /><br />
+                @Html.AntiForgeryToken()
+                <div class="col-md-12 form-group">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                </div>
+                <div class="col-md-12 form-group">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                </div>
+                <div class="col-md-12 form-group text-right">
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                    <span>Manter logado?</span>            
+                    <input type="submit" value="Entrar" class="btn btn-success" />
+                </div>
+                <br />
+            </div>
+        }
+    </div>
+</div>

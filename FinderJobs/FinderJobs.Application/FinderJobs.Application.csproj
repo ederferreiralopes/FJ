@@ -40,7 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interface\IPagamentoAppService.cs" />
+    <Compile Include="Interface\IEmailAppService.cs" />
     <Compile Include="PagamentoAppService.cs" />
+    <Compile Include="EmailAppService.cs" />
     <Compile Include="PlanoAppService.cs" />
     <Compile Include="ArquivoAppService.cs" />
     <Compile Include="ConfiguracaoBoletoAppService.cs" />

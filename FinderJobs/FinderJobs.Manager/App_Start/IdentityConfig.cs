@@ -11,6 +11,7 @@ using System.Web;
 using AspNet.Identity.MongoDB;
 using System.Net.Mail;
 using System.Net;
+using System.Configuration;
 
 namespace FinderJobs.Manager.Models
 {
@@ -138,21 +139,26 @@ namespace FinderJobs.Manager.Models
     {
         public Task SendAsync(IdentityMessage message)
         {
+
+            var emailCredencial = ConfigurationManager.AppSettings.Get("EmailCredencial");
+            var emailSenha = ConfigurationManager.AppSettings.Get("EmailSenha");
+            var emailHost = ConfigurationManager.AppSettings.Get("EmailHostSmtp");            
+            var emailSmtpPort = int.Parse(ConfigurationManager.AppSettings.Get("EmailHostPort") ?? "0");
+
             SmtpClient client = new SmtpClient();
-            client.Port = 587;
-            client.Host = "smtp.gmail.com";
-            client.EnableSsl = true;
-            client.Timeout = 10000;
+            client.Port = emailSmtpPort;
+            client.Host = emailHost;            
+            client.Timeout = 24000;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential("eder.zoe@gmail.com", "eder7710");
+            client.Credentials = new NetworkCredential(emailCredencial, emailSenha);
             var mailMessage = new MailMessage();
             
             mailMessage.To.Add(message.Destination);
             mailMessage.Subject = message.Subject;
             mailMessage.Body = message.Body;
             mailMessage.IsBodyHtml = true;
-            mailMessage.From = new MailAddress("contato@finderJobs.com.br");
+            mailMessage.From = new MailAddress(emailCredencial);
 
             return client.SendMailAsync(mailMessage);            
         }

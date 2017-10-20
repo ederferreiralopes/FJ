@@ -1,0 +1,1 @@
+2017-05-18 02:36:45,040 [32] INFO  FinderJobs.Domain.Entities.Habilidade – Log FJ

@@ -54,8 +54,9 @@ namespace FinderJobs.Site.Controllers
                     Valor = model.Valor,
                     Nome = model.Nome,
                     Pago = model.Pago,
+                    Periodo = model.Periodo,
                     Tipo = model.Tipo,
-                    Caracteristicas = (from h in model.Caracteristicas select h).ToList(),
+                    Caracteristicas = model.Caracteristicas,
                     Ativo = model.Ativo,
                 };
 
@@ -70,7 +71,7 @@ namespace FinderJobs.Site.Controllers
                     var planoBase = _planoService.GetById(plano.Id);
                     if (planoBase != null)
                     {
-                        plano.DataCadastro = planoBase.DataCadastro;
+                        plano.DataCadastro = planoBase.DataCadastro == DateTime.MinValue ? DateTime.Now : planoBase.DataCadastro;
                         sucesso = _planoService.Update(plano);
                     }
                 }

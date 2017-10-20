@@ -75,7 +75,8 @@ namespace FinderJobs.Site.App_Start
             kernel.Bind<IConfiguracaoBoletoAppService>().To<ConfiguracaoBoletoAppService>();
             kernel.Bind<IArquivoAppService>().To<ArquivoAppService>();
             kernel.Bind<IPlanoAppService>().To<PlanoAppService>();
-            kernel.Bind<IPagamentoAppService>().To<PagamentoAppService>();            
+            kernel.Bind<IPagamentoAppService>().To<PagamentoAppService>();
+            kernel.Bind<IEmailAppService>().To<EmailAppService>();
 
             kernel.Bind(typeof(IServiceBase<>)).To(typeof(ServiceBase<>));            
             kernel.Bind<ICadastroService>().To<CadastroService>();
@@ -84,7 +85,8 @@ namespace FinderJobs.Site.App_Start
             kernel.Bind<IConfiguracaoBoletoService>().To<ConfiguracaoBoletoService>();
             kernel.Bind<IArquivoService>().To<ArquivoService>();
             kernel.Bind<IPlanoService>().To<PlanoService>();
-            kernel.Bind<IPagamentoService>().To<PagamentoService>();            
+            kernel.Bind<IPagamentoService>().To<PagamentoService>();
+            kernel.Bind<IEmailService>().To<EmailService>();
 
             kernel.Bind(typeof(IRepositoryBase<>)).To(typeof(RepositoryBaseMongoDb<>));            
             kernel.Bind<ICadastroRepository>().To<CadastroRepository>();
@@ -93,7 +95,8 @@ namespace FinderJobs.Site.App_Start
             kernel.Bind<IConfiguracaoBoletoRepository>().To<ConfiguracaoBoletoRepository>();
             kernel.Bind<IArquivoRepository>().To<ArquivoRepository>();
             kernel.Bind<IPlanoRepository>().To<PlanoRepository>();
-            kernel.Bind<IPagamentoRepository>().To<PagamentoRepository>();            
+            kernel.Bind<IPagamentoRepository>().To<PagamentoRepository>();
+            kernel.Bind<IEmailRepository>().To<EmailRepository>();
         }        
     }
 }

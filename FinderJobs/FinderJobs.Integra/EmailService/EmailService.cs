@@ -36,7 +36,14 @@ namespace FinderJobs.EmailService
         public string Remetente { get; set; }
         public string Mensagem { get; set; }
         public string Destino { get; set; }
-        public string Titulo { get; set; }
+        public string Titulo { get; set; }        
+        public string TipoDestino { get; set; }
+    }
+
+    public class EmailTemplate : EntityBase
+    {
+        public string TipoDestino { get; set; }
+        public string Conteudo { get; set; }
     }
 
     public partial class EmailService : ServiceBase
@@ -47,7 +54,7 @@ namespace FinderJobs.EmailService
         public EmailService()
         {
             InitializeComponent();
-        }        
+        }
 
         protected override void OnStart(string[] args)
         {
@@ -72,14 +79,35 @@ namespace FinderJobs.EmailService
         {
             var getLogCollection = GetLogCollection();
             var getEmailCollection = GetEmailCollection();
+            var getEmailTemplateCollection = GetEmailTemplateCollection();
 
             try
             {
                 var emails = getEmailCollection.Find(x => x.Ativo).ToList();
+                var templateEmailCand = new EmailTemplate();
+                var templateEmailEmpr = new EmailTemplate();
+
                 foreach (var item in emails)
                 {
+                    if (!string.IsNullOrWhiteSpace(item.TipoDestino))
+                    {
+                        switch (item.TipoDestino)
+                        {
+                            case "Candidato":
+                                templateEmailCand = templateEmailCand == null ? getEmailTemplateCollection.Find(x => x.Ativo && x.TipoDestino == "Candidato").FirstOrDefault() : templateEmailCand;
+                                item.Mensagem = templateEmailCand.Conteudo.Replace("#mensagemTitulo", item.Titulo).Replace("#mensagemTexto", item.Mensagem);
+                                break;
+                            case "Empresa":
+                                templateEmailEmpr = templateEmailEmpr == null ? getEmailTemplateCollection.Find(x => x.Ativo && x.TipoDestino == "Empresa").FirstOrDefault() : templateEmailEmpr;
+                                item.Mensagem = templateEmailEmpr.Conteudo.Replace("#mensagemTitulo", item.Titulo).Replace("#mensagemTexto", item.Mensagem);
+                                break;
+                            default:
+                                getLogCollection.InsertOneAsync(new Log { Ativo = true, Tipo = "Erro", Data = DateTime.Now, Mensagem = "Serviço de Email - Template não definido para o email com id " + item.Id, Objeto = "FinderJobs.Integra.EmailService" });
+                                break;
+                        }
+                    }
                     SendAsync(item);
-                    var resultado = getEmailCollection.UpdateOne(Builders<Email>.Filter.Eq("Remetente", item.Remetente), Builders<Email>.Update.Set("Ativo", item.Ativo));
+                    var resultado = getEmailCollection.UpdateOne(Builders<Email>.Filter.Eq("_id", item.Id), Builders<Email>.Update.Set("Ativo", "false"));
                 }
 
                 getLogCollection.InsertOneAsync(new Log { Ativo = true, Tipo = "Info", Data = DateTime.Now, Mensagem = "Encontrados " + emails.Count() + " emails em : " + DateTime.Now.ToString(), Objeto = "Serviço de Email" });
@@ -97,10 +125,9 @@ namespace FinderJobs.EmailService
             var emailHost = ConfigurationManager.AppSettings.Get("EmailHostSmtp");
 
             SmtpClient client = new SmtpClient();
-            client.Port = 587;
+            client.Port = int.Parse(ConfigurationManager.AppSettings.Get("EmailHostPort") ?? "0");
             client.Host = emailHost;
-            client.EnableSsl = true;
-            client.Timeout = 10000;
+            client.Timeout = 24000;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential(emailCredencial, emailSenha);
@@ -110,7 +137,7 @@ namespace FinderJobs.EmailService
             mailMessage.Subject = email.Titulo;
             mailMessage.Body = email.Mensagem;
             mailMessage.IsBodyHtml = true;
-            mailMessage.From = new MailAddress("contato@finderJobs.com.br");
+            mailMessage.From = new MailAddress(emailCredencial);
 
             return client.SendMailAsync(mailMessage);
         }
@@ -123,6 +150,11 @@ namespace FinderJobs.EmailService
         private static IMongoCollection<Email> GetEmailCollection()
         {
             return GetMongoDatabase().GetCollection<Email>("Email");
+        }
+
+        private static IMongoCollection<EmailTemplate> GetEmailTemplateCollection()
+        {
+            return GetMongoDatabase().GetCollection<EmailTemplate>("EmailTemplate");
         }
 
         private static IMongoDatabase GetMongoDatabase()

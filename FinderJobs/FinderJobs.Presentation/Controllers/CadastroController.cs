@@ -28,34 +28,24 @@ namespace FinderJobs.Site.Controllers
         private readonly IArquivoAppService _arquivoService;
         private readonly IConfiguracaoBoletoAppService _configuracaoBoletoService;
         private readonly IPlanoAppService _planoService;
+        private readonly IEmailAppService _emailService;
 
         public CadastroController(ICadastroAppService cadastroService, IHabilidadeAppService habilidadeService,
                                   IArquivoAppService arquivoAppService, IConfiguracaoBoletoAppService configuracaoBoletoService,
-                                  IPlanoAppService planoService)
+                                  IPlanoAppService planoService, IEmailAppService emailService)
         {
             _cadastroService = cadastroService;
             _habilidadeService = habilidadeService;
             _arquivoService = arquivoAppService;
             _configuracaoBoletoService = configuracaoBoletoService;
             _planoService = planoService;
+            _emailService = emailService;
         }
 
         [AllowAnonymous]
         public ActionResult Index(string tipo)
         {
             return File("~/views/Cadastro.html", "text/html");
-        }
-
-        [AllowAnonymous]
-        public ActionResult Empresa(string tipo)
-        {
-            return File("~/views/Empresa.html", "text/html");
-        }
-
-        [AllowAnonymous]
-        public ActionResult Candidato(string tipo)
-        {
-            return File("~/views/Candidato.html", "text/html");
         }
 
         public ActionResult Get()
@@ -70,6 +60,18 @@ namespace FinderJobs.Site.Controllers
             return Json(new { sucesso = false }, JsonRequestBehavior.AllowGet);
         }
 
+        [AllowAnonymous]
+        public ActionResult Empresa(string tipo)
+        {
+            return File("~/views/Empresa.html", "text/html");
+        }
+
+        [AllowAnonymous]
+        public ActionResult Candidato(string tipo)
+        {
+            return File("~/views/Candidato.html", "text/html");
+        }
+
         [HttpPost]
         public ActionResult Gravar(CadastroViewModel model)
         {
@@ -80,14 +82,16 @@ namespace FinderJobs.Site.Controllers
 
                 if (!string.IsNullOrWhiteSpace(model.Nome))
                 {
-
-                    var habilidadesModel = (from h in model.Habilidades where h.Id.Equals(h.Nome) select h.Nome).ToList();
-
-                    foreach (var item in habilidadesModel)
+                    var habilidadeAtual = string.Empty;
+                    foreach (var item in model.Habilidades.OrderBy(x => x.Nome))
                     {
-                        var hab = _habilidadeService.BuscarPorNome(item, true);
-                        if (hab == null || hab.Count() == 0)
-                            _habilidadeService.Insert(new Habilidade { Nome = item, Ativo = false });
+                        if (habilidadeAtual != item.Nome)
+                        {
+                            var hab = _habilidadeService.BuscarPorNome(item.Nome, true);
+                            if (hab == null || hab.Count() == 0)
+                                _habilidadeService.Insert(new Habilidade { Nome = item.Nome, Ativo = false });
+                        }
+                        habilidadeAtual = item.Nome;
                     }
 
                     var cadastro = new Cadastro
@@ -235,6 +239,21 @@ namespace FinderJobs.Site.Controllers
             {
                 var arquivoId = Guid.Parse(id);
                 _arquivoService.Disable(arquivoId);
+
+                return Json(new { sucesso = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { sucesso = false, mensagem = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult Contatar(Guid idVaga, string tipo)
+        {
+            try
+            {
+                var email = new Email() { Ativo = true, TipoDestino = tipo == "Empresa" ? "Candidato" : "Empresa", Remetente = Thread.CurrentPrincipal.Identity.Name, Titulo = "Vaga " + idVaga  };                               
+                _emailService.Insert(email);
 
                 return Json(new { sucesso = true }, JsonRequestBehavior.AllowGet);
             }

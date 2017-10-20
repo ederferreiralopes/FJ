@@ -17,6 +17,38 @@
         .corFinderJobs {
             color: #2C3E50;
         }
+
+        /* CSS talk bubble */
+        .talk-bubble {
+            margin: 4px;        
+        }
+
+        .talk-bubble-color-left{            
+            background-color: lightyellow;                
+        }
+
+        .talk-bubble-color-right{
+            background-color: #d9edf7;    
+        }
+
+        .round {
+            border-radius: 7px;
+            -webkit-border-radius: 7px;
+            -moz-border-radius: 7px;
+        }      
+
+        /* talk bubble contents */
+        .talktext {
+            padding: 1em;
+            text-align: left;
+            line-height: 1.5em;
+        }
+
+        .talktext p {
+            /* remove webkit p margins */
+            -webkit-margin-before: 0em;
+            -webkit-margin-after: 0em;
+        }
     </style>
 </head>
 <body id="page-top" class="index">
@@ -38,6 +70,9 @@
                     </li>
                     <li class="">
                         <a onclick="BuscarVagas()" class="portfolio-link" data-toggle="modal">Buscar Vagas</a>
+                    </li>
+                    <li class="">
+                        <a href="#modalChat" class="portfolio-link" data-toggle="modal">Chat</a>
                     </li>
                     <li class="">
                         <a onclick="EditarCadastro()" id="btnCadastro" class="" data-toggle="modal"><i class="glyphicon glyphicon-pencil"></i></a>
@@ -101,6 +136,7 @@
 
     <!-- jQuery -->
     <script src="../jquery/jquery.min.js"></script>
+
     <!-- Notify JS -->
     <script src="../notify/notify.js"></script>
     <!-- Bootstrap Core JavaScript -->
@@ -113,11 +149,30 @@
     <script language="javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCycG73VSX4N6sFxieKuCpYBnAKCJrG3XI"></script>
 
     <script src="../bootstrap/js/bootstrap-confirmation.min.js"></script>
+
+    <!-- signalR -->
+    <script src="../Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="../signalr/hubs"></script>
+
     <script>
         $(document).ready(function () {
             $('#anoAtual').html(new Date().getFullYear());
-            if (localStorage.getItem("cadastro") != '' && localStorage.getItem("cadastro") != null)
-                $('#btnCadastro').prepend('Olá, ' + JSON.parse(localStorage.getItem("cadastro")).Nome);
+
+            var cadastro = localStorage.getItem("cadastro");
+            if (cadastro != '' && cadastro != null) {
+                var cadastroObj = JSON.parse(localStorage.getItem("cadastro"));
+                $('#btnCadastro').prepend('Olá, ' + cadastroObj.Nome);
+                if (cadastroObj.Endereco == null || cadastroObj.Habilidades == null) {
+                    EditarCadastro();
+                   
+                    if (cadastroObj.Endereco == null) {
+                        Notify('Preencha o endereço', null, null);
+                    }
+                    if (cadastroObj.Habilidades == null) {
+                        Notify('Preencha as habilidades', null, null);
+                    }
+                }
+            }
         });
 
         function BuscarVagas() {
@@ -171,8 +226,8 @@
                     $("#Cadastro_EnderecoCidade").val(cadastro.Endereco.Cidade);
                     $("#Cadastro_EnderecoUF").val(cadastro.Endereco.UF);
                 }
-               
-                $('#btnAnonimo').bootstrapSwitch('state', cadastro.Anonimo);
+
+                $('#btnAnonimo').attr('checked', cadastro.Anonimo);
 
                 AdicionarMascara();
                 CarregaCadastro(cadastro.Plano.Nome);
@@ -225,7 +280,7 @@
 
                 var urlAvatar = vaga.EmpresaUrlAvatar == null || vaga.EmpresaUrlAvatar == "" ? '../images/icone-usuario.png' : vaga.EmpresaUrlAvatar.replace('~', '');
                 var empresaNome = vaga.EmpresaNome == null || vaga.EmpresaNome == "" ? "Anônimo" : vaga.EmpresaNome;
-                var btnEnviarEmail = '<a class="btn btn-sm" href="javascript: enviarEmail(' + vaga.IdVaga + ');"><span class="glyphicon glyphicon-envelope"><span></a>';
+                var btnEnviarEmail = '<a class="btn btn-sm" href="javascript: EnviarEmail(\'' + vaga.IdVaga + '\');"><span class="glyphicon glyphicon-envelope"><span></a>';
                 var habilidades = '';
                 $.each(vaga.Habilidades, function (index, habilidade) {
                     habilidades += '<span style="margin: 1px; padding: 1px;" class="alert-info"> ' + habilidade + '</span>';
@@ -239,8 +294,62 @@
                     '<div class="col-lg-3"> Cadastrada em ' + vaga.DataCadastro + '<br /> Disponível até ' + vaga.DataExpiracao + ' </div></div><div class="col-lg-1">' + btnEnviarEmail + '</div></div></div> ';
             });
             $('#listaVagas').html(html);
-
         }
+
+        function EnviarEmail(idVaga) {
+            var cadastro = JSON.parse(localStorage.getItem("cadastro"));
+            $.ajax({
+                url: '../Cadastro/Contatar?idVaga=' + idVaga + "&tipo=" + cadastro.Plano.Tipo,
+                type: "GET",
+                beforeSend: setHeader,
+                success: function (data) {
+                    if (data.sucesso)
+                        return Notify('Enviado com sucesso!', null, null, 'success');
+                    else {
+                        console.log(data);
+                        return Notify('Ocorreu um erro!', null, null, 'warning');
+                    }
+                }
+            });
+        }
+
+        // chat SignalR
+        $(function () {
+            $.signalR.ajaxDefaults.headers = { Authorization: "Bearer " + localStorage.getItem('token') };
+            var chatDestino = JSON.parse(localStorage.getItem("cadastro")).Email == "eder.lopes@live.com" ? "eder.zoe@gmail.com" : "eder.lopes@live.com";
+            $('#users-list').append('Destino: <label>' + chatDestino + '</label>');
+            $('.messageTo').text(chatDestino);
+            $('.message').focus();
+
+            var chat = $.connection.chatHub;
+            chat.client.showMessage = function (username, message) {
+                username = username == chatDestino ? chatDestino : "você";
+                var lado = username == 'você' ? 'talk-bubble-color-left ' : 'talk-bubble-color-right ';
+                var html = '<div class="talk-bubble tri-right round ' + lado + '"><div class="talktext">'
+                         + '<p>' + message + '</p></div></div>';
+
+                $('#chat-list').append("<div class=''> " + html + "</div>");
+                $('.chat > div').scrollTop($('#chat-list')[0].scrollHeight);
+            };
+                        
+            $.connection.hub.start().done(function () {
+                $('.btn-send').on('click', function (e) {
+                    e.preventDefault();
+                    sendMessage();
+                });
+                $('form').submit(function (e) {
+                    e.preventDefault();
+                    sendMessage();
+                });
+            });
+
+            function sendMessage() {
+                var m = $('.message');
+                chat.server.sendMessage(chatDestino, m.val());
+                m.val('').focus();
+            }
+        });
+
     </script>
 </body>
 
@@ -270,4 +379,35 @@
     </div>
 </div>
 
+<!-- Modal Chat -->
+<div class="modal fade" id="modalChat" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Chat</h4>
+            </div>
+            <div class="modal-body" id="modalChatBody">
 
+                <div class="row">
+                    <div class="users col-md-12">
+                        <div class="">
+                            <div id="users-list" style="overflow-wrap: normal"></div>
+                        </div>
+                    </div>
+                    <div class="chat col-md-12" id="chat-list">                        
+                    </div>
+                    <hr />
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <input type="text" placeholder="Digite aqui" id="message" name="message" class="message form-control" />
+                            <a class="input-group-addon btn-send" id="Cadastro_EmailEditar"><i class="glyphicon glyphicon-send"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

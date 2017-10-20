@@ -1,0 +1,578 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Finder Jobs</title>    
+    <!-- CDN Font CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Notify CSS -->
+    <link href="../notify/notify.css" rel="stylesheet" />
+    <style>
+        .corFinderJobs {
+            color: #2C3E50;
+        }
+    </style>
+</head>
+<body id="page-top" class="index">
+    <div class="container-fluid">
+        <br />
+        <nav id="" class="navbar">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span><i class="glyphicon glyphicon-menu-hamburger" style="font-size:x-large"></i>
+                </button>
+                <img src="../images/logo-fj.jpg" height="70" style="border-radius: 90px;" />              
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li class="">
+                        <a onclick="CarregarVagas()" class="" data-toggle="modal">Vagas</a>
+                    </li>
+                    <li class="">
+                        <a onclick="EditarCadastro()" id="btnCadastro" class="" data-toggle="modal"> <i class="glyphicon glyphicon-pencil"></i></a>
+                    </li>
+                    <li class="">
+                        <a href="javascript: Logout();" class="" data-toggle="modal">Sair</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <!-- Section -->
+    <section class="" style="background-color: #d9edf7">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="pager">
+                        <li><a onclick="PaginaAnterior()">Anterior</a></li>
+                        <li><a id="paginaAtual" href="#">1</a></li>
+                        <li><a onclick="ProximaPagina()">Próxima</a></li>
+                    </ul>
+                </div>
+                <div id="vagasProcessadas" class="col-lg-12">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="footer-below">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4 class="" style="color: #ed7c31">
+                            Processos Seletivos Inteligentes Utilizando Ciência de Dados
+                        </h4>
+                        <ul class="list-inline">
+                            <li>
+                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#" class="btn-social btn-outline"><i class="fa fa-fw fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                Direitos Reservados &copy; Finder Jobs 2014-<span id="anoAtual"></span>
+</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top page-scroll hidden-sm hidden-xs hidden-lg hidden-md">
+        <a class="btn btn-primary" href="#page-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../jquery/jquery.min.js"></script>
+    <!-- Notify JS -->
+    <script src="../notify/notify.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../bootstrap/js/bootstrap-switch.min.js"></script>
+    <script src="../bootstrap/js/bootstrap-filestyle.min.js"></script>
+    <!-- Plugin JavaScript -->
+    <script src="../jquery/jquery.easing.min.js"></script>
+    <!-- google maps -->
+    <script language="javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCycG73VSX4N6sFxieKuCpYBnAKCJrG3XI"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $(document).ready(function () {
+                $('#anoAtual').html(new Date().getFullYear());
+                if (localStorage.getItem("cadastro") != '' && localStorage.getItem("cadastro") != null)
+                    $('#btnCadastro').prepend('Olá, ' + JSON.parse(localStorage.getItem("cadastro")).Nome);
+            });
+
+            processarVagas(false, $('#paginaAtual').html());
+        });
+
+
+        function Logout() {
+            localStorage.setItem("cadastro", '');
+            window.location.replace('/Acesso');
+        }
+
+        function ProximaPagina() {
+            var pagina = parseInt($('#paginaAtual').html()) + 1;
+            processarVagas(true, pagina);
+        }
+
+        function PaginaAnterior() {
+            var pagina = parseInt($('#paginaAtual').html()) - 1;
+            if (pagina > 0)
+                processarVagas(true, pagina);
+            else
+                Notify('Você está na primeira página', null, null);
+        }
+
+        function EditarCadastro() {
+
+            if (localStorage.getItem("cadastro") == '' || localStorage.getItem("cadastro") == null)
+                window.location.replace('/Acesso');
+            else
+                var cadastro = JSON.parse(localStorage.getItem("cadastro"));
+
+            // caregar partial view cadastro.html
+            $.get("../Cadastro", function (data) {
+                $('#modalCadastroBody').html('');
+                $('#modalCadastroBody').html(data);
+
+                //carrega cadastro
+                $("#Cadastro_Id").val(cadastro.Id);
+                $("#Cadastro_Plano").val(cadastro.Plano.Nome);
+                $("#Cadastro_Nome").val(cadastro.Nome);
+                if (cadastro.UrlAvatar != null)
+                    $("#Cadastro_Avatar").attr('src', cadastro.UrlAvatar.replace('~', ''));
+                $("#Cadastro_Login").val(cadastro.Login);
+                $("#Cadastro_Email").val(cadastro.Email);
+                $("#Cadastro_Celular").val(cadastro.Celular);
+                $("#Cadastro_CpfCnpj").val(cadastro.CpfCnpj);
+                $("#Cadastro_EnderecoCep").val(cadastro.Endereco.Cep);
+                $("#Cadastro_EnderecoLogradouro").val(cadastro.Endereco.Logradouro);
+                $("#Cadastro_EnderecoNumero").val(cadastro.Endereco.Numero);
+                $("#Cadastro_EnderecoBairro").val(cadastro.Endereco.Bairro);
+                $("#Cadastro_EnderecoCidade").val(cadastro.Endereco.Cidade);
+                $("#Cadastro_EnderecoUF").val(cadastro.Endereco.UF);
+                $('#dvDownload a').attr('href', cadastro.CaminhoArquivo);
+                $('#btnAnonimo').bootstrapSwitch('state', cadastro.Anonimo);
+
+                AdicionarMascara();
+                CarregaCadastro(cadastro.Tipo);
+                CarregarTodosArquivos(cadastro.Id);
+
+                var habilidades = cadastro.Habilidades;
+                if (habilidades.length > 0) {
+                    $.each(habilidades, function (index, habilidade) {
+                        $('#habilidade' + (index + 1)).val(habilidade);
+                    });
+                }
+            });
+        }
+
+        function setHeader(xhr) {
+            xhr.setRequestHeader('Authorization', 'bearer ' + localStorage.getItem('token'));
+        }
+
+        function processarVagas(forcar, pagina) {
+
+            var dataSetVagas = JSON.parse(localStorage.getItem("dataSetVagas"));
+
+            if (forcar || dataSetVagas == null || dataSetVagas == undefined) {
+                var cadastro = JSON.parse(localStorage.getItem("cadastro"));
+
+                $.ajax({
+                    url: '../Vagas/PesquisaEmpresa?id=' + cadastro.Id + "&pagina=" + pagina,
+                    type: "GET",
+                    beforeSend: setHeader,
+                    success: function (data) {
+                        if (data.data != undefined && data.data.length > 0) {
+                            dataSetVagas = data.data;
+                            localStorage.setItem('dataSetVagas', JSON.stringify(dataSetVagas));
+                            CarregarGridVagas(dataSetVagas);
+                            $('#paginaAtual').html(pagina)
+                        }
+                        else
+                            Notify('Não foram encontradas vagas', null, null);
+                    }
+                });
+            }
+            else
+                CarregarGridVagas(dataSetVagas);
+        }
+
+        function CarregarGridVagas(dataSetVagas) {
+
+            var html = '';
+            $.each(dataSetVagas, function (index, vaga) {
+
+                var btnEditarVaga = '<a id="vaga_' + vaga.IdVaga + '" class="btn btn-sm" href="javascript: editarVaga(\'' + vaga.IdVaga + '\');"><span class="glyphicon glyphicon-edit"><span></a>';
+                var urlAvatar = vaga.CandidatoUrlAvatar == null || vaga.CandidatoUrlAvatar == "" ? '../images/icone-usuario.png' : vaga.CandidatoUrlAvatar.replace('~', '');
+                var candidatoNome = vaga.CandidatoNome == null || vaga.CandidatoNome == "" ? "Anônimo" : vaga.CandidatoNome;
+                var btnEnviarEmail = '<a class="btn btn-sm" href="javascript: enviarEmail(' + vaga.CandidatoId + ');"><span class="glyphicon glyphicon-envelope"><span></a>';
+                var habilidades = '';
+                $.each(vaga.Habilidades, function (index, habilidade) {
+                    habilidades += '<span style="margin: 1px; padding: 1px;" class="alert-info"> ' + habilidade + '</span>';
+                });
+
+                html += '<div class="row"><div class="col-lg-12 panel"><br /><div class="col-lg-1">' +
+                    '<img src="' + urlAvatar + '" height="44" /><span class="text-nowrap">' + candidatoNome + '<span></div>' +
+                    '<div class="col-lg-10"><div class="col-lg-6"> <span style="font-weight: bold">' + vaga.Descricao + '</span><br /> Cep ' + vaga.Cep + ', distância de ' + vaga.Distancia +
+                    ', assertividade de ' + vaga.Aderencia + ' </div>' +
+                    '<div class="col-lg-3">' + habilidades + ' </div>' +
+                    '<div class="col-lg-3"> Cadastrada em ' + vaga.DataCadastro + '<br /> Disponível até ' + vaga.DataExpiracao + ' </div></div><div class="col-lg-1">' + btnEditarVaga + btnEnviarEmail + '</div></div></div> ';
+            });
+            $('#vagasProcessadas').html(html)
+
+        }
+
+        function CadastrarVaga(btn) {
+
+            var cadastro = JSON.parse(localStorage.getItem("cadastro"));
+            if (cadastro == undefined) {
+                return Notify('Ocorreu um erro, cadastro não encontrado!', null, null, 'danger');
+            }
+
+            var descricao = $('#Vaga_Descricao').val();
+            if (descricao.length < 3) {
+                return Notify('Preencha a descrição', null, null);
+            }
+
+            if ($('#Vaga_Habilidades span').length == 0) {
+                return Notify('Informe as habilidades', null, null);
+            }
+
+            var id = $('#Vaga_Id').val();
+            var empresaId = cadastro.Id;
+            var empresaNome = cadastro.Anonimo ? null : cadastro.Nome;
+            var empresaUrlAvatar = cadastro.Anonimo ? null : cadastro.UrlAvatar;
+            var empresaCep = cadastro.Endereco.Cep;
+            var vagaDescricao = $('#Vaga_Descricao').val();
+            var Habilidades = { itens: [] };
+
+            $.each($('#Vaga_Habilidades span'), function (index, value) {
+                Habilidades.itens.push({
+                    'Id': value.id.split('_')[1],
+                    'Nome': value.innerText
+                });
+            });
+
+            if (Habilidades.itens == undefined || Habilidades.itens == null || Habilidades.itens.length < 5)
+                return Notify('Adicione 5 habilidades, no mínimo', null, null);
+
+            var dados =
+                {
+                    'Id': id,
+                    'EmpresaId': empresaId,
+                    'EmpresaNome': empresaNome,
+                    'EmpresaUrlAvatar': empresaUrlAvatar,
+                    'Descricao': vagaDescricao,
+                    'Cep': empresaCep,
+                    'Habilidades': Habilidades.itens
+                };
+
+            var $this = $(btn);
+            $this.button('loading');
+
+            $.ajax({
+                url: "../Vagas/CadastrarVaga",
+                type: "post",
+                data: JSON.stringify(dados),
+                contentType: 'application/json',
+                dataType: 'json',
+                beforeSend: setHeader,
+                success: function (data) {
+                    if (data.sucesso) {
+                        Notify('Cadastrado realizado! Estamos processado a nova vaga', null, null, 'success');
+                        Notify('Em instantes atualizaremos sua lista', null, null, 'success');
+                        processarVagas(true, $('#paginaAtual').html());
+                        $("#modalCadVaga").modal('toggle');
+                        $("#Vaga_Descricao").val('');
+                        $('#Vaga_Habilidades').html('');
+                    }
+                    else
+                        Notify('Ocorreu um erro ao cadastrar vaga', null, null, 'danger');
+
+                },
+                error: function (result) {
+                    Notify('Ocorreu um erro ' + result, null, null, 'danger');
+                }
+            });
+
+            setTimeout(function () {
+                $this.button('reset');
+            }, 1000);
+        };
+
+        function editarVaga(id) {
+            var dataSetVagas = JSON.parse(localStorage.getItem("dataSetVagas"));
+            $.each(dataSetVagas, function (index, vaga) {
+                if (vaga.IdVaga == id) {
+
+                    $("#Vaga_Id").val(vaga.IdVaga);
+                    $("#btnDesativarVaga").attr('href', 'javascript: DesativarVaga(\'' + vaga.IdVaga + '\')');
+                    $("#Vaga_Descricao").val(vaga.Descricao);
+
+                    var html = '';
+                    $.each(vaga.Habilidades, function (index, habilidade) {
+                        html += '<span id="habilidade_1' + habilidade + '" style="margin: 1px; padding: 4px;" class="alert-info">'
+                            + habilidade + '<a style="color:red" href="#" id="'
+                            + habilidade + '" onclick="RemoverHabilidade(this);return false;"><i class="fa fa-times"> </i></a></span>';
+                    });
+
+                    $('#Vaga_Habilidades').html(html);
+
+                    $("#modalCadVaga").modal();
+                }
+            });
+        }
+
+        function enviarEmail(idCandidato) {
+            alert("Enviando email para candidato " + idCandidato);
+        }
+    </script>
+
+    <!-- Modal Cadastro -->
+    <div class="modal fade" id="modalCadastro" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Cadastro</h4>
+                </div>
+                <div class="modal-body" id="modalCadastroBody">
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="form-group col-lg-6 text-center">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        </div>
+                        <div class="form-group col-lg-6 text-center">
+                            <button class="btn btn-success" id="btnGravarCadastro" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Aguarde">Alterar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal vagas-->
+    <div class="modal fade" id="modalVagas" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Vagas Cadastradas</h4> <a href="#modalCadVaga" class="portfolio-link" data-toggle="modal">Nova Vaga</a>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12" id="vagasLista">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="form-group col-lg-6 text-center">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        </div>
+                        <div class="form-group col-lg-6 text-center">
+                            <button id="btnCadastroVaga" onclick="CadastrarVaga(this)" type="button" class="btn btn-default" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+                <script>
+
+
+                    function CarregarVagas(id) {
+                        $.ajax({
+                            url: "../Vagas/Carregar",
+                            type: "get",
+                            contentType: 'application/json',
+                            dataType: 'json',
+                            beforeSend: setHeader,
+                            success: function (data) {
+                                ListaVagas(data.dados)
+                                $("#modalVagas").modal();
+                            },
+                            error: function (result) {
+                                Notify('Ocorreu um erro ao listar as vagas' + result, null, null, 'danger');
+                            }
+                        });
+                    }
+
+                    function ListaVagas(vagas) {
+
+                        var html = '';
+                        $.each(vagas, function (index, vaga) {
+                            var dataExpiracao = new Date(vaga.DataExpiracao.split('/')[2], vaga.DataExpiracao.split('/')[1] - 1, vaga.DataExpiracao.split('/')[0]);
+                            var corDataExpiracao = dataExpiracao > new Date() ? 'green' : 'red';
+                            var btnEditarVaga = '<a id="vaga_' + vaga.IdVaga + '" class="btn btn-sm" href="javascript: editarVaga(\'' + vaga.IdVaga + '\');"><span class="glyphicon glyphicon-edit"><span></a>';
+
+                            var iconeAtivo = vaga.Ativo ? 'ok' : 'remove';
+                            var iconeAtivo = '<a id="vaga_' + vaga.IdVaga + '" class="btn btn-sm"><span class="glyphicon glyphicon-' + iconeAtivo + '"><span></a>';
+
+                            var habilidades = '';
+                            $.each(vaga.Habilidades, function (index, habilidade) {
+                                habilidades += '<span style="margin: 1px; padding: 1px;" class="alert-info"> ' + habilidade + '</span>';
+                            });
+
+                            html += '<div class="row"><div class="col-lg-12 panel">' +
+                                '<div class="col-lg-10"><div class="col-lg-6"> <span style="font-weight: bold">' + vaga.Descricao + '</span><br /> Cep ' + vaga.Cep +
+                                ' </div>' +
+                                '<div class="col-lg-3">' + habilidades + ' </div>' +
+                                '<div class="col-lg-3"> Cadastrada em ' + vaga.DataCadastro + '<br /> Disponível até <span style="color: ' + corDataExpiracao + '">' + vaga.DataExpiracao + '<span> </div></div>' +
+                                '<div class="col-lg-1">' + btnEditarVaga + iconeAtivo + '</div></div></div> ';
+                        });
+                        $('#vagasLista').html(html)
+
+                    }
+
+                    function DesativarVaga(id) {
+                        Notify('Desativar vaga: ' + id, null, null);
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de cadastro vaga-->
+    <div class="modal fade" id="modalCadVaga" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" id="headerCadVaga">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Cadastro de Vaga</h4>
+                    <a id="btnDesativarVaga" href="" class="portfolio-link" data-toggle="modal">Desativar</a>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" value="" name="Vaga.Id" id="Vaga_Id">
+                        <div class="col-md-6">
+                            <div class="col-md-12 form-group">
+                                Descrição:<br />
+                                <input type="text" id="Vaga_Descricao" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12 form-group">
+                                <br />
+                                <div class="input-group">
+                                    <input id="txtHabilidadeVaga" type="text" class="form-control" placeholder="Habilidades...">
+                                    <span class="input-group-btn">
+                                        <button id="btnAddHabilidade" class="btn btn-secondary" type="button">Add</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="dropdown">
+                                    <button id="dropdownVaga" style="display:none" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Habilidades Lista
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" id="HabilidadesSugestoes"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-12 form-group" id="Vaga_Habilidades">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="form-group col-lg-6 text-center">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        </div>
+                        <div class="form-group col-lg-6 text-center">
+                            <button id="btnCadastroVaga" onclick="CadastrarVaga(this)" type="button" class="btn btn-default" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Aguarde">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    $("#txtHabilidadeVaga").keyup(function () {
+                        var parametro = $('#txtHabilidadeVaga').val();
+                        if (parametro != undefined && parametro != '') {
+                            $.get("../Habilidade/Index?parametro=" + parametro, function (data) {
+                                if (data.length > 0) {
+                                    var html = '';
+                                    $.each(data, function (index, value) {
+                                        html += "<li><a href=\"javascript: SelecionarDDL(\'" + value.Id + "_" + value.Nome + "\');\">" + value.Nome + "</a></li>";
+                                    });
+                                    $('#HabilidadesSugestoes').html(html);
+                                    $('#dropdownVaga').dropdown('toggle');
+                                    $("#txtHabilidadeVaga").focus();
+                                }
+                            });
+                        }
+                    });
+
+                    SelecionarDDL = function (selecionado) {
+                        var id = selecionado.split('_')[0];
+                        var habilidade = selecionado.split('_')[1];
+                        if (!HabilidadeVagaExiste(habilidade)) {
+                            var html = '<span id="habilidade_' + id + '" style="margin: 1px; padding: 4px;" class="alert-info">'
+                                + habilidade + '<a style="color:red" href="#" id="'
+                                + habilidade + '" onclick="RemoverHabilidade(this);return false;"><i class="glyphicon glyphicon-remove"> </i></a></span>';
+                            $('#Vaga_Habilidades').append(html);
+                        }
+                        else
+                            Notify('Você já adicionou esta habilidade', null, null);
+                    }
+
+                    function HabilidadeVagaExiste(habilidade) {
+                        var existe = false;
+                        var lista = $('#Vaga_Habilidades span');
+                        $.each(lista, function (index, value) {
+                            if (value.innerText.toLowerCase() == habilidade.toLowerCase())
+                                existe = true;
+                        });
+
+                        return existe;
+                    }
+
+                    $("#btnAddHabilidade").click(function () {
+                        var habilidade = $('#txtHabilidadeVaga').val();
+                        if (habilidade.length > 0) {
+                            if (!HabilidadeVagaExiste(habilidade)) {
+                                var html = '<span id="habilidade_' + habilidade + '" style="margin: 1px; padding: 4px;" class="alert-info">'
+                                    + habilidade + '<a style="color:red" href="#" id="'
+                                    + habilidade + '" onclick="RemoverHabilidade(this);return false;"><i class="fa fa-times"> </i></a></span>';
+                                $('#Vaga_Habilidades').append(html);
+                            }
+                            else
+                                Notify('Você já adicionou esta habilidade', null, null);
+
+                            $('#txtHabilidadeVaga').val('');
+                        }
+                        else
+                            Notify('Digite uma habilidade, por favor', null, null);
+                    });
+
+                    function RemoverHabilidade(habilidade) {
+                        $(habilidade).parent().remove();
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

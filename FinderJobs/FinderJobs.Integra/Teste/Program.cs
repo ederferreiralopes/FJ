@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using Uol.PagSeguro.Domain;
@@ -29,6 +31,16 @@ namespace Teste
         public DateTime DataCadastro { get; set; }
     }
 
+    public class Email : EntityBase
+    {
+        public string Remetente { get; set; }
+        public string Mensagem { get; set; }
+        public string Destino { get; set; }
+        public string Titulo { get; set; }
+        public Guid IdVaga { get; set; }
+        public string TipoDestino { get; set; }
+    }
+
     public class Log : EntityBase
     {
         public string Tipo { get; set; }
@@ -41,7 +53,9 @@ namespace Teste
     {
         static void Main(string[] args)
         {
-            SincroniarPagSeguro();
+            //SincroniarPagSeguro();
+
+            EnviarEmail();
         }
 
         private static IMongoCollection<Log> GetLogCollection()
@@ -98,6 +112,58 @@ namespace Teste
 
                 getLogCollection.InsertOneAsync(new Log { Ativo = true, Tipo = "Erro - " + (isSandbox ? "Teste" : "Produção"), Data = DateTime.Now, Mensagem = "Integração PagSeguro " + errorMsg, Objeto = ex.Source });
             }
+        }
+
+        public static void EnviarEmail()
+        {
+            var getLogCollection = GetLogCollection();
+            var getEmailCollection = GetEmailCollection();
+
+            try
+            {
+                var emails = getEmailCollection.Find(x => x.Ativo).ToList();
+                foreach (var item in emails)
+                {
+                    SendAsync(item);
+                    var resultado = getEmailCollection.UpdateOne(Builders<Email>.Filter.Eq("_id", item.Id), Builders<Email>.Update.Set("Ativo", "false"));
+                }
+
+                getLogCollection.InsertOneAsync(new Log { Ativo = true, Tipo = "Info", Data = DateTime.Now, Mensagem = "Encontrados " + emails.Count() + " emails em : " + DateTime.Now.ToString(), Objeto = "Serviço de Email" });
+            }
+            catch (Exception ex)
+            {
+                getLogCollection.InsertOneAsync(new Log { Ativo = true, Tipo = "Erro", Data = DateTime.Now, Mensagem = "Serviço de Email " + ex.Message, Objeto = ex.Source });
+            }
+        }
+
+        private static IMongoCollection<Email> GetEmailCollection()
+        {
+            return GetMongoDatabase().GetCollection<Email>("Email");
+        }
+
+        public static Task SendAsync(Email email)
+        {
+            var emailCredencial = ConfigurationManager.AppSettings.Get("EmailCredencial");
+            var emailSenha = ConfigurationManager.AppSettings.Get("EmailSenha");
+            var emailHost = ConfigurationManager.AppSettings.Get("EmailHostSmtp");
+
+            SmtpClient client = new SmtpClient();
+            client.Port = 587;
+            client.Host = emailHost;
+            client.EnableSsl = true;
+            client.Timeout = 10000;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
+            client.Credentials = new NetworkCredential(emailCredencial, emailSenha);
+            var mailMessage = new MailMessage();
+
+            mailMessage.To.Add(email.Destino);
+            mailMessage.Subject = email.Titulo;
+            mailMessage.Body = email.Mensagem;
+            mailMessage.IsBodyHtml = true;
+            mailMessage.From = new MailAddress("contato@finderJobs.com.br");
+
+            return client.SendMailAsync(mailMessage);
         }
     }
 }

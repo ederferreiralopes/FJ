@@ -1,0 +1,87 @@
+﻿@model IEnumerable<AspNet.Identity.MongoDB.IdentityRole>
+
+@{
+    ViewBag.Title = "Privilégios";
+}
+<div class="jumbotron">
+    <h4>Privilégios</h4>
+    <table class="table">
+        <tr>
+            <th>
+                <div class="col-md-1">
+                    <a id="btn_adicionar"><i class="glyphicon glyphicon-plus-sign"></i></a>
+                </div>
+                <div class="col-md-8">
+                    @using (Html.BeginForm("Create", "RolesAdmin", FormMethod.Post, new { id = "form_adicionar", style = "visibility: hidden" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                @Html.TextBox("Name", null, new { @class = "form-control", required = "" })
+                            </div>
+                            <div class="col-md-3">
+                                <input type="submit" value="Salvar" class="btn btn-success" />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </th>
+            <th>
+
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a onclick="Excluir('@item.Id', '@item.Name')"><i class="glyphicon glyphicon-remove"></i></a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<!-- Modal Confirmação -->
+<div class="modal fade" id="modalConfirmacao" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 style="color: #a94442">Deseja realmente fazer isso?</h4>
+                <span class="modal-title">Não será removido dos usuários. Você deverá fazer isso em cada um deles.</span>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                        <label>Privilégio: </label>
+                        <span id="nome_privilegio"></span>
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                        <form method="post" action="RolesAdmin/Delete" class="form-horizontal">
+                            @Html.AntiForgeryToken()
+                            <input id="id_privilegio" hidden name="id" value="" />
+                            <input type="submit" value="Excluir" class="btn btn-danger" />
+                        </form>
+                    </div> 
+                </div>               
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $('#btn_adicionar').on('click', function () {
+        $('#form_adicionar').css('visibility', 'visible');
+    });
+
+    function Excluir(id, nome) {
+        $('#id_privilegio').val(id);
+        $('#nome_privilegio').html(nome);
+        $('#modalConfirmacao').modal();
+    }
+</script>
