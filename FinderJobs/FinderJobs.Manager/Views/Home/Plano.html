@@ -3,76 +3,79 @@
     <title>Cadastro Planos</title>
 </head>
 <body>
-    <script src="https://unpkg.com/vue"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <link href="http://localhost/Notify/notify.css" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    
-    <div class="jumbotron" id="app">
-        <h4>Planos <a id="btn_adicionar"><i class="glyphicon glyphicon-plus-sign"></i></a></h4>
-        <table class="table" id="planos">
-            <thead>
-                <tr>
-                    <th>
-                        <div class="col-md-2">
-                            Nome
-                        </div>
-                    </th>
-                    <th>
-                        <div class="col-md-2">
-                            Tipo
-                        </div>
-                    </th>
-                    <th>
-                        <div class="col-md-2">
-                            Valor(R$)
-                        </div>
-                    </th>
-                    <th>
-                        <div class="col-md-2">
-                            Período
-                        </div>
-                    </th>
-                    <th>
-                        <div class="col-md-2">
-                            Características
-                        </div>
-                    </th>
-                    <th>
-                        <div class="col-md-2">
-                            Data Cadastro
-                        </div>
-                    </th>
-                    <th>
-                        <div class="col-md-2">
-                            Ativo
-                        </div>
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr :id="'tr_' + value.Id" v-for="value in items">                    
-                    <td>{{value.Nome}}</td>
-                    <td>{{value.Tipo}}</td>
-                    <td>{{value.Valor}}</td>
-                    <td>{{value.Periodo}}</td>
-                    <td><span v-for="item in value.Caracteristicas">{{item}}; </span></td>
-                    <td>{{value.DataCadastro | parseData}}</td>
-                    <td>
-                        <input type="checkbox" class="form-control" :checked="value.Ativo | checked" disabled></td>
-                        <td> <a :onclick="'Editar(\'' + value.Id + '\')'"><i class="glyphicon glyphicon-pencil"></i></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
+    <div id="app">
+        <menu-bar></menu-bar>
+        <div class="container">
+            <h4>Planos <a id="btn_adicionar"><i class="glyphicon glyphicon-plus-sign"></i></a></h4>
+            <table class="table" id="planos">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="col-md-2">
+                                Nome
+                            </div>
+                        </th>
+                        <th>
+                            <div class="col-md-2">
+                                Tipo
+                            </div>
+                        </th>
+                        <th>
+                            <div class="col-md-2">
+                                Valor(R$)
+                            </div>
+                        </th>
+                        <th>
+                            <div class="col-md-2">
+                                Período
+                            </div>
+                        </th>
+                        <th>
+                            <div class="col-md-2">
+                                Características
+                            </div>
+                        </th>
+                        <th>
+                            <div class="col-md-2">
+                                Data Cadastro
+                            </div>
+                        </th>
+                        <th>
+                            <div class="col-md-2">
+                                Ativo
+                            </div>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr :id="'tr_' + value.Id" v-for="value in items">
+                        <td>{{value.Nome}}</td>
+                        <td>{{value.Tipo}}</td>
+                        <td>{{value.Valor}}</td>
+                        <td>{{value.Periodo}}</td>
+                        <td><span v-for="item in value.Caracteristicas">{{item}}; </span></td>
+                        <td>{{value.DataCadastro | parseData}}</td>
+                        <td>
+                            <input type="checkbox" class="form-control" :checked="value.Ativo | checked" disabled>
+                        </td>
+                        <td>
+                            <a :onclick="'Editar(\'' + value.Id + '\')'"><i class="glyphicon glyphicon-pencil"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Modal Plano -->
     <div class="modal fade" id="modalPlano" role="dialog">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
-                 <div class="modal-header">
+                <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <input id="btn_gravar" type="button" class="btn btn-success" value="Salvar" />
                 </div>
@@ -114,21 +117,22 @@
                             </div>
                         </form>
                     </div>
-                </div>                
+                </div>
             </div>
         </div>
     </div>
 
-
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="../Scripts/moment.js"></script>
     <script src="http://localhost/Notify/notify.js"></script>
-
     <script>
 
         $(document).ready(function () {
             Listar();
         });
+
         var app = new Vue({
             el: '#app',
             data: {

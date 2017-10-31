@@ -11,6 +11,7 @@ namespace FinderJobs.Manager.Controllers
         public ActionResult Plano()
         {
             return View();
+            //return File("~/views/Index.html", "text/html");
         }
 
         public ActionResult Habilidade()

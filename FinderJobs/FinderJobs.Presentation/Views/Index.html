@@ -15,16 +15,15 @@
     <link href="notify/notify.css" rel="stylesheet" />
 
     <style>
-        .login-cor {
-            color: white;
-            background: #4267b2;
+        .login-cor {            
+            background: #2980B9;
             border-radius: 7px;
         }
 
         .link {
-            font-size: small;
-            color: white;
+            font-size: small;            
             font-weight: bold;
+            color: black;
         }
 
         .circulo {
@@ -32,7 +31,7 @@
             behavior: url(PIE.htc); /* remove if you don't care about IE8 */
             height: 100%;
             width: 100%;
-            background: #4267b2;
+            background: #2980B9;
             font-size: large;
             color: white;
             display: inline-block;
@@ -85,55 +84,6 @@
         .preco {
             font-weight: bold;
         }
-
-        .blink_text {
-            animation: 1s blinker linear infinite;
-            -webkit-animation: 1s blinker linear infinite;
-            -moz-animation: 1s blinker linear infinite;
-            color: red;
-        }
-
-        @-moz-keyframes blinker {
-            0% {
-                opacity: 1.0;
-            }
-
-            50% {
-                opacity: 0.0;
-            }
-
-            100% {
-                opacity: 1.0;
-            }
-        }
-
-        @-webkit-keyframes blinker {
-            0% {
-                opacity: 1.0;
-            }
-
-            50% {
-                opacity: 0.0;
-            }
-
-            100% {
-                opacity: 1.0;
-            }
-        }
-
-        @keyframes blinker {
-            0% {
-                opacity: 1.0;
-            }
-
-            50% {
-                opacity: 0.0;
-            }
-
-            100% {
-                opacity: 1.0;
-            }
-        }
     </style>
 </head>
 <body id="page-top" class="index">
@@ -151,8 +101,7 @@
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="fa fa-users" style="font-size:larger; color: #29487d"> Acesso </span>
-                            <span class="fa fa-briefcase" style="font-size:larger; color: #29487d"></span>
+                            <span class="glyphicon glyphicon-menu-hamburger" style="font-size: 24px;"></span>                            
                         </button>
                     </div>
                     <div class="collapse navbar-collapse">
@@ -171,7 +120,7 @@
                                             <div class="input-group">
                                                 <input type="password" class="form-control" placeholder="Senha" id="SenhaCand" name="Senha">
                                                 <span class="input-group-btn">
-                                                    <button id="btnEntrarCand" type="button" class="btn btn-success" data-loading-text="<i class='fa fa-spinner fa-spin '></i>">Acessar</button>
+                                                    <button id="btnEntrarCand" type="button" class="btn btn-warning" data-loading-text="<i class='fa fa-spinner fa-spin '></i>">Acessar</button>
                                                 </span>
                                             </div>
                                         </div>
@@ -196,7 +145,7 @@
                                             <div class="input-group">
                                                 <input type="password" class="form-control" placeholder="Senha" id="SenhaEmpr" name="Senha">
                                                 <span class="input-group-btn">
-                                                    <button id="btnEntrarEmpr" type="button" class="btn btn-success" data-loading-text="<i class='fa fa-spinner fa-spin '></i>">Acessar</button>
+                                                    <button id="btnEntrarEmpr" type="button" class="btn btn-warning" data-loading-text="<i class='fa fa-spinner fa-spin '></i>">Acessar</button>
                                                 </span>
                                             </div>
                                         </div>
